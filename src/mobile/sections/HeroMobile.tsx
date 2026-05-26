@@ -1,7 +1,9 @@
 import React from 'react';
-import { heroData } from '../../data';
+import { useData } from '../../context/DataContext';
 
 export const HeroMobile: React.FC = () => {
+    const { heroData } = useData();
+
     return (
         <section id="hero" className="w-full bg-[#f4f1ea] px-4 pt-12 pb-16 flex flex-col relative overflow-hidden">
             <h1 className="font-display-2xl text-[56px] leading-[0.9] uppercase tracking-tighter text-on-surface mb-6 font-extrabold z-10">

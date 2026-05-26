@@ -3,10 +3,11 @@ import { Button } from '../ui/Button';
 import { Title } from '../ui/Title';
 import { Input } from '../ui/Input';
 import { Textarea } from '../ui/Textarea';
-import { contactData } from '../data';
+import { useData } from '../context/DataContext';
 
 export const Contact: React.FC = () => {
-    const { headline, subtitle, form } = contactData;
+    const { contactData } = useData();
+    const { headline, subtitle, form, emailDestination } = contactData;
 
     return (
         <section className="py-24 px-gutter bg-theme-yellow neo-section-divider reveal-section w-full" id="contact">

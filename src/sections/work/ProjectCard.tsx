@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Project } from '../../data';
+import type { Project } from '../../context/DataContext';
 
 interface ProjectCardProps {
     project: Project;

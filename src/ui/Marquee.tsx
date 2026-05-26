@@ -1,7 +1,8 @@
 import React from 'react';
-import { marqueeItems } from '../data';
+import { useData } from '../context/DataContext';
 
 export const Marquee: React.FC = () => {
+    const { marqueeItems } = useData();
     // Repeat items enough times to fill ultra-wide screens
     const repeatedItems = Array.from({ length: 10 }).flatMap(() => marqueeItems);
 

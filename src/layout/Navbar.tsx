@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '../ui/Button';
-import { navigationData } from '../data';
+import { useData } from '../context/DataContext';
 
 export const Navbar: React.FC = () => {
     const [floating, setFloating] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const { navigationData } = useData();
     const { brandName, navLinks, ctaText } = navigationData;
 
     useEffect(() => {

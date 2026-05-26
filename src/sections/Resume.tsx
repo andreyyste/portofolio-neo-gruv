@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button } from '../ui/Button';
-import { resumeData } from '../data';
+import { useData } from '../context/DataContext';
 import { Badge } from '../ui/Badge';
 
 export const Resume: React.FC = () => {
+    const { resumeData } = useData();
     const { versionLabel, headline, ctaText } = resumeData;
 
     return (

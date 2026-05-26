@@ -2,9 +2,10 @@ import React from 'react';
 import { Button } from '../ui/Button';
 import { Marquee } from '../ui/Marquee';
 import { Title } from '../ui/Title';
-import { heroData } from '../data';
+import { useData } from '../context/DataContext';
 
 export const Hero: React.FC = () => {
+    const { heroData } = useData();
     const { headline, tagline, ctaText, heroImage } = heroData;
 
     return (

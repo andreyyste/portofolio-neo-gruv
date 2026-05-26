@@ -1,7 +1,9 @@
 import React from 'react';
-import { skillsData, skillsSectionData } from '../../data';
+import { useData } from '../../context/DataContext';
+const skillsSectionData = { headline: { prefix: 'THE ', highlight: 'ARSENAL' } };
 
 export const SkillsMobile: React.FC = () => {
+    const { skillsData } = useData();
     return (
         <section id="skills" className="w-full bg-[#f4f1ea] px-4 py-16 flex flex-col items-center">
             <h2 className="font-display-2xl text-[48px] leading-[0.9] uppercase tracking-tighter text-on-surface mb-10 font-extrabold flex items-center gap-3">

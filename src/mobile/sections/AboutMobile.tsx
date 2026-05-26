@@ -1,7 +1,9 @@
 import React from 'react';
-import { aboutData } from '../../data';
+import { useData } from '../../context/DataContext';
 
 export const AboutMobile: React.FC = () => {
+    const { aboutData } = useData();
+
     return (
         <section id="about" className="w-full bg-[#eeeae3] px-4 py-16 flex flex-col relative">
             <h2 className="font-display-2xl text-[48px] leading-[0.9] uppercase tracking-tighter text-on-surface mb-8 font-extrabold">

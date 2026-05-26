@@ -1,8 +1,9 @@
 import React from 'react';
-import { aboutData } from '../data';
+import { useData } from '../context/DataContext';
 import { Badge } from '../ui/Badge';
 
 export const About: React.FC = () => {
+    const { aboutData } = useData();
     const { badge, portraitLabel, headline, manifesto, rules } = aboutData;
 
     return (

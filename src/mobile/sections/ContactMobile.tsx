@@ -1,7 +1,8 @@
 import React from 'react';
-import { contactData } from '../../data';
+import { useData } from '../../context/DataContext';
 
 export const ContactMobile: React.FC = () => {
+    const { contactData } = useData();
     return (
         <section id="contact" className="w-full bg-[#fbdcdb] px-4 py-16 flex flex-col">
             <h2 className="font-display-2xl text-[48px] leading-[0.9] uppercase tracking-tighter text-on-surface mb-10 font-extrabold flex flex-col items-start gap-2">

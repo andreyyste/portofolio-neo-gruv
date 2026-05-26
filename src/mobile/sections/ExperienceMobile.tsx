@@ -1,7 +1,8 @@
 import React from 'react';
-import { resumeData } from '../../data';
+import { useData } from '../../context/DataContext';
 
 export const ExperienceMobile: React.FC = () => {
+    const { resumeData } = useData();
     return (
         <section id="experience" className="w-full bg-[#eeeae3] px-4 py-16 flex flex-col">
             <h2 className="font-display-2xl text-[48px] leading-[0.9] uppercase tracking-tighter text-on-surface mb-8 font-extrabold flex items-center gap-3">

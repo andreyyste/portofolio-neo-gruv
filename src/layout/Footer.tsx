@@ -1,7 +1,8 @@
 import React from 'react';
-import { footerData } from '../data';
+import { useData } from '../context/DataContext';
 
 export const Footer: React.FC = () => {
+    const { footerData } = useData();
     const { brandName, socials, copyright } = footerData;
 
     return (

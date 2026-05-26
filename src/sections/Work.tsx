@@ -2,11 +2,13 @@ import React, { useState, useCallback } from 'react';
 import { Button } from '../ui/Button';
 import { Title } from '../ui/Title';
 import { IconButton } from '../ui/IconButton';
-import { projectsData, projectsSectionData } from '../data';
+import { useData } from '../context/DataContext';
+const projectsSectionData = { headline: { prefix: 'SELECTED', highlight: 'WORKS' }, buttonText: 'ALL PROJECTS', mobileHeadline: { prefix: 'COLLECTION', highlight: 'ARCHIVES' } };
 import { ProjectCard } from './work/ProjectCard';
 import { ProjectExpanded } from './work/ProjectExpanded';
 
 export const Work: React.FC = () => {
+    const { projectsData } = useData();
     const total = projectsData.length;
     const [activeIndex, setActiveIndex] = useState(0);
     const [expandedIndex, setExpandedIndex] = useState<number | null>(null);

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { navigationData, marqueeItems } from '../data';
+import { useData } from '../context/DataContext';
 
 export const MobileHeader: React.FC = () => {
-    const { brandName, navLinks } = navigationData;
+    const { navigationData, marqueeItems } = useData();
+    const { brandName, navLinks, ctaText } = navigationData;
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const repeatedItems = Array.from({ length: 5 }).flatMap(() => marqueeItems);
 

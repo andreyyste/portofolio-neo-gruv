@@ -1,8 +1,10 @@
 import React from 'react';
 import { Title } from '../ui/Title';
-import { experienceData, experienceSectionData } from '../data';
+import { useData } from '../context/DataContext';
+const experienceSectionData = { headline: { prefix: 'THE', highlight: 'GRIND' } };
 
 export const Experience: React.FC = () => {
+    const { experiencesData: experienceData } = useData();
     return (
         <section className="py-24 px-gutter bg-theme-grey neo-section-divider reveal-section w-full" id="experience">
             <div className="max-w-container-max mx-auto">
