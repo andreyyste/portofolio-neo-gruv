@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>🎨 Frontend Portfolio </h1>
+  <h1>🎨 CREATIVE.RAW — Brutalist Frontend</h1>
   <p><i>A visually striking, unapologetic single-page portfolio designed for disruptors, built with pristine engineering.</i></p>
   
   [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
@@ -12,7 +12,7 @@
 
 ## 🚀 Overview
 
-Welcome to the **Neo-Brutalist** frontend for the portfolio. This application rejects boring, clean corporate aesthetics in favor of high-contrast colors, harsh borders, and massive typography. 
+Welcome to the **Neo-Brutalist** frontend for the CREATIVE.RAW portfolio. This application rejects boring, clean corporate aesthetics in favor of high-contrast colors, harsh borders, and massive typography. 
 
 Beneath its chaotic exterior lies a meticulously engineered architecture adhering to **SOLID principles** and **Clean Code**. It is entirely data-driven, seamlessly pulling live content from the dedicated NestJS backend while maintaining 100% type safety.
 
@@ -20,14 +20,14 @@ Beneath its chaotic exterior lies a meticulously engineered architecture adherin
 
 ## ✨ Features at a Glance
 
-- 💣 **Neo-Brutalist Aesthetic:** Heavy borders, high-contrast drop shadows, vivid color palettes, and bold typography that refuses to blend in.
-- 🏗️ **Clean Code Architecture:** 
+- **Neo-Brutalist Aesthetic:** Heavy borders, high-contrast drop shadows, vivid color palettes, and bold typography that refuses to blend in.
+- **Clean Code Architecture:** 
   - **Single Responsibility Principle (SRP):** API calls are decoupled into a dedicated `services/api.ts` layer.
   - **Strict Type Safety:** Centralized TypeScript definitions (`types/index.ts`) eliminate `any` types across the entire application.
-- 🎬 **Dynamic Animations:** Infinite scrolling marquees, intersection-observer based reveal animations, mouse-trail particle effects, and satisfying hover interactions.
-- ⚡ **Server-Side Rendering (SSR):** Built on the robust **Next.js 15 App Router** for blazing-fast load times and perfect SEO.
-- 🔗 **Dynamic API Integration:** All content (projects, experiences, skills) is fetched dynamically from the backend API.
-- 🛡️ **Ironclad Error Handling:** 
+- **Dynamic Animations:** Infinite scrolling marquees, intersection-observer based reveal animations, mouse-trail particle effects, and satisfying hover interactions.
+- **Server-Side Rendering (SSR):** Built on the robust **Next.js 15 App Router** for blazing-fast load times and perfect SEO.
+- **Dynamic API Integration:** All content (projects, experiences, skills) is fetched dynamically from the backend API.
+- **Robust Error Handling:** 
   - Centralized API error parsing.
   - Custom `error.tsx` Neo-Brutalist fallback boundary that catches connection failures gracefully without showing a generic browser error.
 
@@ -48,10 +48,10 @@ Beneath its chaotic exterior lies a meticulously engineered architecture adherin
 
 ## 🏁 Getting Started
 
-### 1️⃣ Prerequisites
+### Prerequisites
 Ensure you have [Node.js](https://nodejs.org/) installed, and that the `portofolio-backend` NestJS API is currently running locally.
 
-### 2️⃣ Installation
+### Installation
 Clone the repository and install the dependencies:
 
 ```bash
@@ -60,7 +60,7 @@ cd portofolio-neo-gruv
 npm install
 ```
 
-### 3️⃣ Environment Configuration
+### Environment Configuration
 Create a `.env` file in the root directory (or use `.env.example`):
 
 ```env
@@ -69,7 +69,7 @@ NEXT_PUBLIC_API_URL="http://localhost:3001"
 
 ---
 
-## 🏃‍♂️ Running the Client
+## 💻 Running the Client
 
 Start up the Next.js development server:
 
