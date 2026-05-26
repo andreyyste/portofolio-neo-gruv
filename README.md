@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>🎨 CREATIVE.RAW — Brutalist Frontend</h1>
+  <h1>🎨 Portfolio Frontend</h1>
   <p><i>A visually striking, unapologetic single-page portfolio designed for disruptors, built with pristine engineering.</i></p>
   
   [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
@@ -10,7 +10,7 @@
 
 <hr>
 
-## 🚀 Overview
+## Overview
 
 Welcome to the **Neo-Brutalist** frontend for the CREATIVE.RAW portfolio. This application rejects boring, clean corporate aesthetics in favor of high-contrast colors, harsh borders, and massive typography. 
 
@@ -18,7 +18,7 @@ Beneath its chaotic exterior lies a meticulously engineered architecture adherin
 
 ---
 
-## ✨ Features at a Glance
+## Features at a Glance
 
 - **Neo-Brutalist Aesthetic:** Heavy borders, high-contrast drop shadows, vivid color palettes, and bold typography that refuses to blend in.
 - **Clean Code Architecture:** 
@@ -33,7 +33,7 @@ Beneath its chaotic exterior lies a meticulously engineered architecture adherin
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Category | Technology |
 | :--- | :--- |
@@ -46,7 +46,7 @@ Beneath its chaotic exterior lies a meticulously engineered architecture adherin
 
 ---
 
-## 🏁 Getting Started
+## Getting Started
 
 ### Prerequisites
 Ensure you have [Node.js](https://nodejs.org/) installed, and that the `portofolio-backend` NestJS API is currently running locally.
@@ -55,7 +55,7 @@ Ensure you have [Node.js](https://nodejs.org/) installed, and that the `portofol
 Clone the repository and install the dependencies:
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/andreyyste/portofolio-neo-gruv.git
 cd portofolio-neo-gruv
 npm install
 ```
@@ -69,7 +69,7 @@ NEXT_PUBLIC_API_URL="http://localhost:3001"
 
 ---
 
-## 💻 Running the Client
+## Running the Client
 
 Start up the Next.js development server:
 
@@ -85,7 +85,7 @@ npm run start
 
 ---
 
-## 📂 Architecture & Structure
+## Architecture & Structure
 
 ```text
 src/
@@ -100,9 +100,3 @@ src/
 ├── ui/                # Reusable Atoms (Button, Marquee, Title)
 └── index.css          # Global Neo-Brutalist styling
 ```
-
----
-<div align="center">
-  <br>
-  <i>Stay raw. Stay creative. Code clean.</i>
-</div>
