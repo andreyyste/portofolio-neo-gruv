@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 
-export const useReveal = () => {
+export const useReveal = (ready: boolean = true) => {
     useEffect(() => {
+        if (!ready) return;
+
         const observerOptions = {
             root: null,
             rootMargin: '0px',
@@ -24,5 +26,5 @@ export const useReveal = () => {
         return () => {
             observer.disconnect();
         };
-    }, []);
+    }, [ready]);
 };
