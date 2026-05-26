@@ -1,73 +1,108 @@
-# CREATIVE.RAW — Brutalist Portfolio
+<div align="center">
+  <h1>🎨 Frontend Portfolio </h1>
+  <p><i>A visually striking, unapologetic single-page portfolio designed for disruptors, built with pristine engineering.</i></p>
+  
+  [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+  [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+</div>
 
-A visually striking, single-page portfolio built with a neo-brutalist aesthetic. Designed for disruptors, this portfolio features bold typography, high-contrast colors, harsh borders, and an unapologetic layout that refuses to blend in.
+<hr>
 
-## Features
+## 🚀 Overview
 
-- **Neo-Brutalist Aesthetic**: Heavy borders, high-contrast shadows, vivid colors (reds, teals, olives, yellows), and massive typography.
-- **Architectural Split for Responsiveness**: Uses a custom `useMediaQuery` hook to serve a completely tailored `<MobileApp />` layout on screens smaller than 768px, ensuring the desktop (`<DesktopApp />`) experience remains uncompromised.
-- **Dynamic Animations**: Includes an infinite scrolling marquee, intersection-observer based reveal animations, mouse-trail particle effects, and hover interactions.
-- **Server-Side Rendering (SSR)**: Built on Next.js 15 App Router for blazing-fast load times and perfect SEO.
-- **Dynamic API Integration**: All content is managed dynamically via a dedicated NestJS backend, completely eliminating static data files.
-- **Graceful Error Handling**: Implements a custom `error.tsx` Neo-Brutalist fallback boundary with an ISR caching strategy if the backend API is unreachable.
+Welcome to the **Neo-Brutalist** frontend for the portfolio. This application rejects boring, clean corporate aesthetics in favor of high-contrast colors, harsh borders, and massive typography. 
 
-## Tech Stack
+Beneath its chaotic exterior lies a meticulously engineered architecture adhering to **SOLID principles** and **Clean Code**. It is entirely data-driven, seamlessly pulling live content from the dedicated NestJS backend while maintaining 100% type safety.
 
-- **Framework**: Next.js 15 (App Router), React 19
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS 3.4
-- **Icons**: Google Material Symbols
-- **Fonts**: Hanken Grotesk, Space Grotesk, JetBrains Mono (via Google Fonts)
+---
 
-## Prerequisites
+## ✨ Features at a Glance
 
-Make sure you have [Node.js](https://nodejs.org/) installed on your machine, and that the `portofolio-backend` NestJS API is running on `localhost:3001`.
+- 💣 **Neo-Brutalist Aesthetic:** Heavy borders, high-contrast drop shadows, vivid color palettes, and bold typography that refuses to blend in.
+- 🏗️ **Clean Code Architecture:** 
+  - **Single Responsibility Principle (SRP):** API calls are decoupled into a dedicated `services/api.ts` layer.
+  - **Strict Type Safety:** Centralized TypeScript definitions (`types/index.ts`) eliminate `any` types across the entire application.
+- 🎬 **Dynamic Animations:** Infinite scrolling marquees, intersection-observer based reveal animations, mouse-trail particle effects, and satisfying hover interactions.
+- ⚡ **Server-Side Rendering (SSR):** Built on the robust **Next.js 15 App Router** for blazing-fast load times and perfect SEO.
+- 🔗 **Dynamic API Integration:** All content (projects, experiences, skills) is fetched dynamically from the backend API.
+- 🛡️ **Ironclad Error Handling:** 
+  - Centralized API error parsing.
+  - Custom `error.tsx` Neo-Brutalist fallback boundary that catches connection failures gracefully without showing a generic browser error.
 
-## Installation
+---
 
-1. **Clone the repository:**
-   ```bash
-   git clone <your-repository-url>
-   cd portofolio-neo-gruv
-   ```
+## 🛠️ Tech Stack
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+| Category | Technology |
+| :--- | :--- |
+| **Framework** | Next.js 15 (App Router) |
+| **Library** | React 19 |
+| **Language** | TypeScript (Strict Mode) |
+| **Styling** | Tailwind CSS 3.4 |
+| **Typography** | Hanken Grotesk, Space Grotesk, JetBrains Mono |
+| **Design Pattern** | Neo-Brutalism |
 
-3. **Start the development server:**
-   ```bash
-   npm run dev
-   ```
-   The application will be available at `http://localhost:3000`.
+---
 
-## Available Scripts
+## 🏁 Getting Started
 
-In the project directory, you can run:
+### 1️⃣ Prerequisites
+Ensure you have [Node.js](https://nodejs.org/) installed, and that the `portofolio-backend` NestJS API is currently running locally.
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Runs the Next.js app in development mode. |
-| `npm run build` | Builds the app for production. |
-| `npm run start` | Runs the production build. |
-| `npm run lint` | Runs ESLint to check for code quality issues. |
+### 2️⃣ Installation
+Clone the repository and install the dependencies:
 
-## Project Structure
+```bash
+git clone <your-repository-url>
+cd portofolio-neo-gruv
+npm install
+```
+
+### 3️⃣ Environment Configuration
+Create a `.env` file in the root directory (or use `.env.example`):
+
+```env
+NEXT_PUBLIC_API_URL="http://localhost:3001"
+```
+
+---
+
+## 🏃‍♂️ Running the Client
+
+Start up the Next.js development server:
+
+```bash
+# Development mode (Hot-reload)
+npm run dev
+
+# Production build
+npm run build
+npm run start
+```
+> The portfolio will be accessible at `http://localhost:3000`
+
+---
+
+## 📂 Architecture & Structure
 
 ```text
 src/
 ├── app/               # Next.js App Router (page.tsx, error.tsx, ClientEntry.tsx)
-├── context/           # Global Contexts (DataContext for global API data)
+├── context/           # Global State (DataContext with strict typings)
 ├── hooks/             # Custom React hooks (useReveal, useMediaQuery)
-├── layout/            # Desktop layout components (Navbar, Footer, etc.)
-├── mobile/            # Dedicated mobile architecture and components
-│   └── sections/      # Mobile-specific sections
-├── sections/          # Desktop-specific sections
-├── ui/                # Reusable UI components (Button, Marquee, MouseTrail, Title)
-└── index.css          # Global styles and Tailwind directives
+├── layout/            # Layout wrappers (Navbar, Footer)
+├── mobile/            # Tailored mobile UI components
+├── sections/          # Desktop-specific UI sections
+├── services/          # API Abstraction Layer (api.ts) - SRP applied!
+├── types/             # Centralized TypeScript Interfaces (index.ts)
+├── ui/                # Reusable Atoms (Button, Marquee, Title)
+└── index.css          # Global Neo-Brutalist styling
 ```
 
-## Content Updates
-
-To update the content of your portfolio, use the REST API provided by the `portofolio-backend` service. The Next.js frontend will automatically fetch the latest data on load!
+---
+<div align="center">
+  <br>
+  <i>Stay raw. Stay creative. Code clean.</i>
+</div>

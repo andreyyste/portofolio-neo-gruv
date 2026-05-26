@@ -13,15 +13,27 @@ export const Work: React.FC = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
+    /**
+     * Navigates to the next project in the carousel loop.
+     */
     const goNext = useCallback(() => {
         setActiveIndex((prev) => (prev + 1) % total);
     }, [total]);
 
+    /**
+     * Navigates to the previous project in the carousel loop.
+     */
     const goPrev = useCallback(() => {
         setActiveIndex((prev) => (prev - 1 + total) % total);
     }, [total]);
 
-    /** Returns the offset from the active card: -1 = left, 0 = center, 1 = right, etc. */
+    /** 
+     * Calculates the offset distance from the currently active card.
+     * This creates an infinite loop illusion by picking the shortest path.
+     * 
+     * @param index - The index of the card to calculate the offset for.
+     * @returns The offset from the active card: -1 = left, 0 = center, 1 = right, etc.
+     */
     const getOffset = (index: number): number => {
         let diff = index - activeIndex;
         // Wrap to shortest path for cycle illusion

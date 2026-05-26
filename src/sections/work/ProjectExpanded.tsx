@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Project } from '../../context/DataContext';
+import type { Project } from '../../types';
 
 interface ProjectExpandedProps {
     project: Project;

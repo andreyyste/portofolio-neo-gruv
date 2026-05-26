@@ -2,31 +2,7 @@
 
 import React, { createContext, useContext } from 'react';
 
-export interface Project {
-  title: string;
-  brief: string;
-  description: string;
-  tags: string[];
-  link: string;
-  image: {
-    src: string;
-    alt: string;
-  };
-}
-
-// We define a broad interface for the global data
-export interface SiteData {
-  heroData: any;
-  aboutData: any;
-  contactData: any;
-  marqueeItems: string[];
-  navigationData: any;
-  footerData: any;
-  resumeData: any;
-  projectsData: any[];
-  experiencesData: any[];
-  skillsData: any[];
-}
+import { SiteData } from '../types';
 
 const DataContext = createContext<SiteData | null>(null);
 

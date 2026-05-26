@@ -1,5 +1,11 @@
 import { useEffect } from 'react';
 
+/**
+ * Hook to trigger reveal animations when elements enter the viewport.
+ * Uses IntersectionObserver for optimal performance compared to scroll listeners.
+ * 
+ * @param ready - Boolean flag to control when the observer should start (e.g. wait for data to load). Defaults to true.
+ */
 export const useReveal = (ready: boolean = true) => {
     useEffect(() => {
         if (!ready) return;
