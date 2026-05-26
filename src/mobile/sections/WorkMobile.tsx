@@ -1,5 +1,5 @@
 import React from 'react';
-import { projectsData } from '../../data';
+import { projectsData, projectsSectionData } from '../../data';
 
 const BUTTON_COLORS = ['bg-[#1a4a4f]', 'bg-[#cc2929]', 'bg-[#7b8c47]'];
 
@@ -7,9 +7,9 @@ export const WorkMobile: React.FC = () => {
     return (
         <section id="work" className="w-full bg-[#eeeae3] px-4 py-16 flex flex-col">
             <h2 className="font-display-2xl text-[48px] leading-[0.9] uppercase tracking-tighter text-on-surface mb-12 font-extrabold flex flex-col items-start gap-2">
-                COLLECTION
+                {projectsSectionData.mobileHeadline.prefix}
                 <span className="inline-block bg-[#1a4a4f] text-[#f4f1ea] px-3 py-1 rounded-[4px] border-[3px] border-on-surface neo-shadow-sm -rotate-2">
-                    ARCHIVES
+                    {projectsSectionData.mobileHeadline.highlight}
                 </span>
             </h2>
 

@@ -6,6 +6,8 @@ export interface AboutRule {
 export const aboutData = {
   badge: 'Manifesto',
   portraitLabel: 'CREATOR. DESTROYER.',
+  portraitPlaceholder: '[PORTRAIT]',
+  groupImagePlaceholder: '[GROUP IMAGE]',
   headline: {
     line1: 'WE ARE',
     line2: 'CREATIVE',

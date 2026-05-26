@@ -1,5 +1,5 @@
 import React from 'react';
-import { skillsData } from '../data';
+import { skillsData, skillsSectionData } from '../data';
 import { Title } from '../ui/Title';
 
 export const Skills: React.FC = () => {
@@ -8,8 +8,8 @@ export const Skills: React.FC = () => {
             <div className="max-w-container-max mx-auto">
                 <div className="text-center mb-16 border-b-[8px] border-on-surface pb-8">
                     <Title
-                        prefix="THE "
-                        highlight="ARSENAL"
+                        prefix={skillsSectionData.headline.prefix}
+                        highlight={skillsSectionData.headline.highlight}
                         highlightColorClass="bg-theme-red text-surface-container-lowest"
                         highlightRotateClass="rotate-[-2deg]"
                     />

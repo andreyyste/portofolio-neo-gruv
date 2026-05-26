@@ -1,12 +1,12 @@
 export { heroData } from './hero';
 export { aboutData } from './about';
-export { skillsData } from './skills';
-export { projectsData } from './projects';
+export { skillsData, skillsSectionData } from './skills';
+export { projectsData, projectsSectionData } from './projects';
 export { resumeData } from './resume';
 export { contactData } from './contact';
 export { navigationData, footerData } from './navigation';
 export { marqueeItems } from './marquee';
-export { experienceData } from './experience';
+export { experienceData, experienceSectionData } from './experience';
 
 export type { AboutRule } from './about';
 export type { Skill } from './skills';

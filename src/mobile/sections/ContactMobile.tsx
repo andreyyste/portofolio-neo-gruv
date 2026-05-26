@@ -11,11 +11,12 @@ export const ContactMobile: React.FC = () => {
                 </span>
             </h2>
 
-            <form className="flex flex-col gap-6 w-full" onSubmit={(e) => e.preventDefault()}>
+            <form action={contactData.emailDestination} method="POST" encType="text/plain" className="flex flex-col gap-6 w-full">
                 <div className="flex flex-col gap-2">
                     <label className="font-label-bold font-bold text-xs tracking-widest uppercase text-on-surface">NAME</label>
                     <input 
                         type="text" 
+                        name="name"
                         placeholder={contactData.form.namePlaceholder}
                         className="w-full bg-white border-[3px] border-on-surface px-4 py-3 font-body-lg shadow-[4px_4px_0px_0px_#1e1b19] focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all"
                     />
@@ -25,6 +26,7 @@ export const ContactMobile: React.FC = () => {
                     <label className="font-label-bold font-bold text-xs tracking-widest uppercase text-on-surface">EMAIL ALIAS</label>
                     <input 
                         type="email" 
+                        name="email"
                         placeholder={contactData.form.emailPlaceholder}
                         className="w-full bg-white border-[3px] border-on-surface px-4 py-3 font-body-lg shadow-[4px_4px_0px_0px_#1e1b19] focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all"
                     />
@@ -33,6 +35,7 @@ export const ContactMobile: React.FC = () => {
                 <div className="flex flex-col gap-2">
                     <label className="font-label-bold font-bold text-xs tracking-widest uppercase text-on-surface">MESSAGE</label>
                     <textarea 
+                        name="message"
                         rows={4}
                         placeholder={contactData.form.messagePlaceholder}
                         className="w-full bg-white border-[3px] border-on-surface px-4 py-3 font-body-lg shadow-[4px_4px_0px_0px_#1e1b19] focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all resize-none"

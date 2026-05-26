@@ -21,10 +21,12 @@ export const Hero: React.FC = () => {
                     <p className="font-body-lg text-body-lg max-w-2xl mb-12 bg-surface-container p-6 neo-border neo-shadow-sm -rotate-1">
                         {tagline}
                     </p>
-                    <Button className="bg-theme-blue text-surface-container-lowest neo-border-heavy neo-shadow px-8 py-4 text-lg gap-2 group">
-                        {ctaText}
-                        <span className="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
-                    </Button>
+                    <a href={heroData.ctaHref} className="inline-block">
+                        <Button className="bg-theme-blue text-surface-container-lowest neo-border-heavy neo-shadow px-8 py-4 text-lg gap-2 group">
+                            {ctaText}
+                            <span className="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+                        </Button>
+                    </a>
                 </div>
                 <div className="md:col-span-4 relative -top-12 md:top-0 right-0 md:-right-12 z-0 opacity-80 md:opacity-100">
                     <div className="w-full aspect-[3/4] bg-surface-dim neo-border neo-shadow overflow-hidden relative rotate-3 animate-float" style={{ animationDelay: '1s' }}>

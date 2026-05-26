@@ -10,6 +10,18 @@ export interface Project {
   };
 }
 
+export const projectsSectionData = {
+  headline: {
+    prefix: 'SELECTED',
+    highlight: 'WORKS',
+  },
+  buttonText: 'ALL PROJECTS',
+  mobileHeadline: {
+    prefix: 'COLLECTION',
+    highlight: 'ARCHIVES',
+  }
+};
+
 export const projectsData: Project[] = [
   {
     title: 'Neon Void',

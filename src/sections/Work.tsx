@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Button } from '../ui/Button';
 import { Title } from '../ui/Title';
 import { IconButton } from '../ui/IconButton';
-import { projectsData } from '../data';
+import { projectsData, projectsSectionData } from '../data';
 import { ProjectCard } from './work/ProjectCard';
 import { ProjectExpanded } from './work/ProjectExpanded';
 
@@ -36,12 +36,12 @@ export const Work: React.FC = () => {
                 {/* Header */}
                 <div className="flex justify-between items-end mb-16 border-b-[8px] border-on-surface pb-4">
                     <Title 
-                        prefix={<>SELECTED<br/></>}
-                        highlight="WORKS"
+                        prefix={<>{projectsSectionData.headline.prefix}<br/></>}
+                        highlight={projectsSectionData.headline.highlight}
                         highlightColorClass="bg-theme-green text-surface-container-lowest"
                     />
                     <Button className="bg-on-surface text-surface px-6 py-4 neo-border-heavy neo-shadow-sm hover:bg-theme-blue hover:text-surface-container-lowest hover:scale-105 hover:-translate-y-1 duration-300 mb-2">
-                        ALL PROJECTS
+                        {projectsSectionData.buttonText}
                     </Button>
                 </div>
 

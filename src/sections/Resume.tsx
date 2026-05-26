@@ -18,10 +18,12 @@ export const Resume: React.FC = () => {
                         <h2 className="font-display-2xl text-[48px] md:text-[80px] leading-none uppercase mb-12 text-on-surface tracking-tighter">
                             {headline.prefix} <span className="bg-theme-yellow px-4 neo-border inline-block rotate-2 animate-float">{headline.highlight}</span>
                         </h2>
-                        <Button className="bg-on-surface text-theme-green neo-border-heavy px-6 md:px-12 py-8 font-display-2xl text-[5vw] sm:text-[32px] md:text-[48px] hover:-translate-y-2 hover:shadow-[16px_16px_0px_0px_#b8bb26] hover:bg-surface hover:text-on-surface shadow-[8px_8px_0px_0px_#b8bb26] duration-300 gap-4 active:translate-y-2 active:shadow-[0px_0px_0px_0px_#b8bb26]">
-                            <span className="material-symbols-outlined text-[5vw] sm:text-[32px] md:text-[48px] group-hover:animate-bounce flex-shrink-0">download</span>
-                            {ctaText}
-                        </Button>
+                        <a href={resumeData.downloadUrl} download className="block">
+                            <Button className="bg-on-surface text-theme-green neo-border-heavy px-6 md:px-12 py-8 font-display-2xl text-[5vw] sm:text-[32px] md:text-[48px] hover:-translate-y-2 hover:shadow-[16px_16px_0px_0px_#b8bb26] hover:bg-surface hover:text-on-surface shadow-[8px_8px_0px_0px_#b8bb26] duration-300 gap-4 active:translate-y-2 active:shadow-[0px_0px_0px_0px_#b8bb26]">
+                                <span className="material-symbols-outlined text-[5vw] sm:text-[32px] md:text-[48px] group-hover:animate-bounce flex-shrink-0">download</span>
+                                {ctaText}
+                            </Button>
+                        </a>
                     </div>
                 </div>
             </div>

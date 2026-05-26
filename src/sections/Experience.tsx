@@ -1,6 +1,6 @@
 import React from 'react';
 import { Title } from '../ui/Title';
-import { experienceData } from '../data';
+import { experienceData, experienceSectionData } from '../data';
 
 export const Experience: React.FC = () => {
     return (
@@ -9,8 +9,8 @@ export const Experience: React.FC = () => {
                 <div className="mb-16 border-b-[8px] border-on-surface pb-4">
                     <Title 
                         className="font-display-2xl text-[48px] md:text-[64px] lg:text-[96px] uppercase tracking-tighter text-on-surface leading-none"
-                        prefix={<>WORK<br/></>}
-                        highlight="HISTORY"
+                        prefix={<>{experienceSectionData.headline.prefix}<br/></>}
+                        highlight={experienceSectionData.headline.highlight}
                         highlightColorClass="bg-theme-blue text-surface-container-lowest"
                     />
                 </div>

@@ -6,6 +6,13 @@ export interface ExperienceItem {
   skills: string[];
 }
 
+export const experienceSectionData = {
+  headline: {
+    prefix: 'WORK',
+    highlight: 'HISTORY',
+  }
+};
+
 export const experienceData: ExperienceItem[] = [
   {
     role: 'Lead Frontend Engineer',

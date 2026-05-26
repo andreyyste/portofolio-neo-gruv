@@ -22,11 +22,11 @@ export const Contact: React.FC = () => {
                     <p className="font-body-lg text-on-surface font-bold mb-8 max-w-md bg-theme-grey px-6 py-3 neo-border neo-shadow-sm rotate-2 hover:-rotate-1 hover:scale-105 transition-all duration-300">
                         {subtitle}
                     </p>
-                    <form className="w-full max-w-2xl flex flex-col gap-6 relative z-10">
-                        <Input focusColorClass="focus:bg-theme-red" placeholder={form.namePlaceholder} type="text"/>
-                        <Input focusColorClass="focus:bg-theme-blue" placeholder={form.emailPlaceholder} type="email"/>
-                        <Textarea focusColorClass="focus:bg-theme-green" placeholder={form.messagePlaceholder}></Textarea>
-                        <Button type="button" className="w-full bg-on-surface text-theme-yellow font-display-2xl text-[32px] md:text-[40px] py-6 neo-border-heavy hover:bg-surface hover:text-on-surface hover:-translate-y-2 shadow-[8px_8px_0px_0px_#1e1b19] hover:shadow-[16px_16px_0px_0px_#1e1b19] active:translate-y-2 active:shadow-none duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] mt-4 tracking-tighter">
+                    <form action={contactData.emailDestination} method="POST" encType="text/plain" className="w-full max-w-2xl flex flex-col gap-6 relative z-10">
+                        <Input focusColorClass="focus:bg-theme-red" placeholder={form.namePlaceholder} type="text" name="name" />
+                        <Input focusColorClass="focus:bg-theme-blue" placeholder={form.emailPlaceholder} type="email" name="email" />
+                        <Textarea focusColorClass="focus:bg-theme-green" placeholder={form.messagePlaceholder} name="message"></Textarea>
+                        <Button type="submit" className="w-full bg-on-surface text-theme-yellow font-display-2xl text-[32px] md:text-[40px] py-6 neo-border-heavy hover:bg-surface hover:text-on-surface hover:-translate-y-2 shadow-[8px_8px_0px_0px_#1e1b19] hover:shadow-[16px_16px_0px_0px_#1e1b19] active:translate-y-2 active:shadow-none duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] mt-4 tracking-tighter">
                             {form.submitText}
                         </Button>
                     </form>

@@ -11,4 +11,5 @@ export const contactData = {
     messagePlaceholder: 'YOUR DIRECTIVE (MESSAGE)',
     submitText: 'SEND TRANSMISSION',
   },
+  emailDestination: 'mailto:hello@creative.raw',
 };
