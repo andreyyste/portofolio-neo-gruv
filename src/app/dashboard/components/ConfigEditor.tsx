@@ -8,8 +8,9 @@ import { Input } from '../../../ui/Input';
 interface FieldConfig {
   key: string;
   label: string;
-  type: 'text' | 'textarea' | 'nested';
-  fields?: FieldConfig[]; // for nested objects like headline: { prefix, highlight }
+  type: 'text' | 'textarea' | 'nested' | 'root_string_array' | 'object_array';
+  fields?: FieldConfig[]; // for nested objects or object_array
+  defaultItem?: any; // for object_array
 }
 
 interface ConfigEditorProps {
@@ -33,7 +34,12 @@ export function ConfigEditor({ configKey, title, fields }: ConfigEditorProps) {
       const res = await fetch(`/api/proxy/config/${configKey}`);
       if (res.ok) {
         const json = await res.json();
-        setData(json.value || {});
+        // Handle case where they previously saved wrapped { value: ... }
+        if (json && json.value !== undefined && !json.headline && !json.brandName && !Array.isArray(json)) {
+            setData(json.value);
+        } else {
+            setData(json || {});
+        }
       } else {
         setData({});
       }
@@ -52,7 +58,7 @@ export function ConfigEditor({ configKey, title, fields }: ConfigEditorProps) {
       const res = await fetch(`/api/proxy/config/${configKey}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ value: data }),
+        body: JSON.stringify(data),
       });
       if (res.ok) {
         setMessage('Saved successfully!');
@@ -73,6 +79,8 @@ export function ConfigEditor({ configKey, title, fields }: ConfigEditorProps) {
       let current = newData;
       for (let i = 0; i < path.length - 1; i++) {
         if (!current[path[i]]) current[path[i]] = {};
+        // Shallow clone arrays or objects to trigger re-render properly
+        current[path[i]] = Array.isArray(current[path[i]]) ? [...current[path[i]]] : { ...current[path[i]] };
         current = current[path[i]];
       }
       current[path[path.length - 1]] = value;
@@ -80,9 +88,69 @@ export function ConfigEditor({ configKey, title, fields }: ConfigEditorProps) {
     });
   };
 
+  const handleArrayAction = (path: string[], action: 'add' | 'remove', index?: number, defaultItem?: any) => {
+    setData((prev: any) => {
+      const newData = { ...prev };
+      let current = newData;
+      for (let i = 0; i < path.length - 1; i++) {
+        if (!current[path[i]]) current[path[i]] = {};
+        current[path[i]] = Array.isArray(current[path[i]]) ? [...current[path[i]]] : { ...current[path[i]] };
+        current = current[path[i]];
+      }
+      const targetKey = path[path.length - 1];
+      const arr = Array.isArray(current[targetKey]) ? [...current[targetKey]] : [];
+      if (action === 'add') arr.push(defaultItem || {});
+      if (action === 'remove' && index !== undefined) arr.splice(index, 1);
+      current[targetKey] = arr;
+      return newData;
+    });
+  };
+
   const renderField = (field: FieldConfig, parentPath: string[] = []) => {
+    if (field.type === 'root_string_array') {
+      const val = Array.isArray(data) ? data.join('\n') : '';
+      return (
+        <div key="root_array" className="flex flex-col gap-2">
+          <label className="font-label-bold text-sm uppercase opacity-80">{field.label}</label>
+          <textarea 
+            className="w-full p-3 font-mono text-sm neo-border bg-surface text-on-surface focus:outline-none focus:ring-4 focus:ring-theme-yellow min-h-[150px]"
+            value={val}
+            onChange={(e) => setData(e.target.value.split('\n'))}
+          />
+        </div>
+      );
+    }
+
     const path = [...parentPath, field.key];
     const value = path.reduce((obj, key) => (obj && obj[key] !== undefined) ? obj[key] : '', data) || '';
+
+    if (field.type === 'object_array') {
+      const arr = (path.reduce((obj, key) => (obj && obj[key] !== undefined) ? obj[key] : null, data) || []) as any[];
+      return (
+        <div key={path.join('.')} className="flex flex-col gap-4 border-l-4 border-theme-yellow pl-4">
+          <label className="font-label-bold text-sm uppercase opacity-80">{field.label}</label>
+          {arr.map((item, index) => (
+            <div key={index} className="flex flex-col gap-3 p-4 border-2 border-surface-variant relative">
+              <button 
+                type="button" 
+                onClick={() => handleArrayAction(path, 'remove', index)}
+                className="absolute top-2 right-2 text-theme-red hover:text-white uppercase font-bold text-xs"
+              >
+                [X] Remove
+              </button>
+              {field.fields?.map(subField => renderField(subField, [...path, String(index)]))}
+            </div>
+          ))}
+          <button 
+            type="button" 
+            onClick={() => handleArrayAction(path, 'add', undefined, field.defaultItem)}
+            className="w-full py-2 border-2 border-dashed border-surface-variant hover:border-theme-yellow text-sm uppercase font-bold"
+          >
+            + Add Item
+          </button>
+        </div>
+      );
+    }
 
     if (field.type === 'nested' && field.fields) {
       return (
