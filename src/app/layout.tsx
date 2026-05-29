@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'nre.codes - Portfolio',
-  description: 'Single-page React 19 + Next.js 15 + Tailwind CSS portfolio. Neo-brutalism theme.',
+  title: 'Andre Christian Manurung | nre.codes',
+  description: 'Personal portfolio of Andre Christian Manurung - Fullstack Software Engineer specializing in web and mobile development.',
 };
 
 export default function RootLayout({
