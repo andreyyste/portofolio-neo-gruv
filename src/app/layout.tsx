@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'CREATIVE.RAW - Portfolio',
+  title: 'nre.codes - Portfolio',
   description: 'Single-page React 19 + Next.js 15 + Tailwind CSS portfolio. Neo-brutalism theme.',
 };
 
