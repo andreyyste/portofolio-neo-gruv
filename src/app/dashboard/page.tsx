@@ -50,6 +50,8 @@ export default function DashboardPage() {
           },
           { key: 'manifesto', label: 'Manifesto / Paragraph', type: 'textarea' },
           { key: 'portraitLabel', label: 'Portrait Label', type: 'text' },
+          { key: 'portraitPlaceholder', label: 'Portrait Image URL / Text Placeholder', type: 'text' },
+          { key: 'groupImagePlaceholder', label: 'Group Image URL / Text Placeholder (Mobile)', type: 'text' },
           {
             key: 'rules',
             label: 'Rules / Core Values',

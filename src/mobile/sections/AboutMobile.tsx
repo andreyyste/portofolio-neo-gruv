@@ -13,8 +13,12 @@ export const AboutMobile: React.FC = () => {
                 </span>
             </h2>
 
-            <div className="w-full aspect-square border-[6px] border-on-surface bg-gray-400 mb-8 flex items-center justify-center neo-shadow">
-                <span className="font-display-2xl text-[48px] text-on-surface opacity-50">{aboutData.portraitPlaceholder}</span>
+            <div className="w-full aspect-square border-[6px] border-on-surface bg-gray-400 mb-8 flex items-center justify-center neo-shadow overflow-hidden">
+                {aboutData.portraitPlaceholder.startsWith('http') || aboutData.portraitPlaceholder.startsWith('/') ? (
+                    <img src={aboutData.portraitPlaceholder} alt={aboutData.portraitLabel} className="w-full h-full object-cover filter grayscale contrast-125" />
+                ) : (
+                    <span className="font-display-2xl text-[48px] text-on-surface opacity-50">{aboutData.portraitPlaceholder}</span>
+                )}
             </div>
 
             <p className="font-body-lg text-[16px] text-on-surface mb-10 font-medium leading-relaxed">
@@ -22,8 +26,12 @@ export const AboutMobile: React.FC = () => {
             </p>
 
             <div className="w-full relative border-[6px] border-on-surface bg-white shadow-[8px_8px_0px_0px_#1e1b19] flex flex-col">
-                <div className="w-full aspect-square bg-gray-300 flex items-center justify-center">
-                    <span className="font-display-2xl text-[40px] text-on-surface opacity-50 text-center whitespace-pre-line">{aboutData.groupImagePlaceholder.replace(' ', '\n')}</span>
+                <div className="w-full aspect-square bg-gray-300 flex items-center justify-center overflow-hidden">
+                    {aboutData.groupImagePlaceholder.startsWith('http') || aboutData.groupImagePlaceholder.startsWith('/') ? (
+                        <img src={aboutData.groupImagePlaceholder} alt="Group" className="w-full h-full object-cover filter grayscale contrast-125" />
+                    ) : (
+                        <span className="font-display-2xl text-[40px] text-on-surface opacity-50 text-center whitespace-pre-line">{aboutData.groupImagePlaceholder.replace(' ', '\n')}</span>
+                    )}
                 </div>
                 <div className="w-full py-2 bg-white flex justify-center items-center border-t-[4px] border-on-surface">
                     <span className="text-[#cc2929] font-label-bold font-bold text-sm tracking-wider uppercase">{aboutData.badge}</span>
