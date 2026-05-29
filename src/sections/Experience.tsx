@@ -3,6 +3,13 @@ import { Title } from '../ui/Title';
 import { useData } from '../context/DataContext';
 const experienceSectionData = { headline: { prefix: 'THE', highlight: 'GRIND' } };
 
+const TAG_COLORS = [
+    'bg-theme-red text-surface-container-lowest',
+    'bg-theme-blue text-surface-container-lowest',
+    'bg-theme-green text-on-surface',
+    'bg-theme-yellow text-on-surface'
+];
+
 export const Experience: React.FC = () => {
     const { experiencesData: experienceData } = useData();
     return (
@@ -47,14 +54,17 @@ export const Experience: React.FC = () => {
                             </div>
 
                             <div className="flex flex-wrap gap-3">
-                                {exp.skills.map((skill, sIdx) => (
-                                    <span 
-                                        key={sIdx}
-                                        className="font-label-bold text-xs uppercase px-3 py-1.5 neo-border border-[3px] bg-surface-dim text-on-surface group-hover:bg-theme-green group-hover:text-surface-container-lowest transition-colors duration-300"
-                                    >
-                                        {skill}
-                                    </span>
-                                ))}
+                                {exp.skills.map((skill, sIdx) => {
+                                    const colorClass = TAG_COLORS[sIdx % TAG_COLORS.length];
+                                    return (
+                                        <span 
+                                            key={sIdx}
+                                            className={`font-label-bold text-xs uppercase px-3 py-1.5 neo-border border-[3px] transition-colors duration-300 ${colorClass}`}
+                                        >
+                                            {skill}
+                                        </span>
+                                    );
+                                })}
                             </div>
                         </div>
                     ))}

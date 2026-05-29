@@ -14,6 +14,7 @@ export default function ExperiencesDashboard() {
     company: '',
     period: '',
     description: '',
+    skills: '',
   });
 
   useEffect(() => {
@@ -40,15 +41,22 @@ export default function ExperiencesDashboard() {
     const url = isEditing ? `/api/proxy/portfolio/experiences/${editingId}` : '/api/proxy/portfolio/experiences';
     const method = isEditing ? 'PATCH' : 'POST';
 
+    const payload = {
+      ...formData,
+      skills: formData.skills
+        ? formData.skills.split(',').map(s => s.trim()).filter(Boolean)
+        : [],
+    };
+
     try {
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
       
       if (res.ok) {
-        setFormData({ role: '', company: '', period: '', description: '' });
+        setFormData({ role: '', company: '', period: '', description: '', skills: '' });
         setEditingId(null);
         fetchExperiences();
       } else {
@@ -66,6 +74,7 @@ export default function ExperiencesDashboard() {
       company: exp.company,
       period: exp.period,
       description: exp.description,
+      skills: exp.skills ? exp.skills.map((s: any) => s.name).join(', ') : '',
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -112,6 +121,10 @@ export default function ExperiencesDashboard() {
               <Input className="w-full" value={formData.period} onChange={e => setFormData({...formData, period: e.target.value})} required />
             </div>
             <div className="md:col-span-2">
+              <label className="font-label-bold text-sm uppercase opacity-80 mb-2 block">Skills / Tags (Comma-separated, e.g. HTML5, SASS, JavaScript)</label>
+              <Input className="w-full" value={formData.skills} onChange={e => setFormData({...formData, skills: e.target.value})} placeholder="HTML5, SASS, JavaScript" />
+            </div>
+            <div className="md:col-span-2">
               <label className="font-label-bold text-sm uppercase opacity-80 mb-2 block">Description</label>
               <textarea 
                 className="w-full p-3 font-mono text-sm neo-border bg-surface focus:outline-none focus:ring-4 focus:ring-theme-yellow min-h-[100px]"
@@ -126,7 +139,7 @@ export default function ExperiencesDashboard() {
               {editingId ? 'UPDATE EXPERIENCE' : 'ADD EXPERIENCE'}
             </Button>
             {editingId && (
-              <Button type="button" onClick={() => { setEditingId(null); setFormData({ role: '', company: '', period: '', description: '' }); }} className="bg-theme-grey text-on-surface py-4 neo-border hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_#1e1b19] transition-all px-8">
+              <Button type="button" onClick={() => { setEditingId(null); setFormData({ role: '', company: '', period: '', description: '', skills: '' }); }} className="bg-theme-grey text-on-surface py-4 neo-border hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_#1e1b19] transition-all px-8">
                 CANCEL
               </Button>
             )}
@@ -141,6 +154,15 @@ export default function ExperiencesDashboard() {
               <h4 className="font-display-2xl text-2xl uppercase tracking-tighter">{exp.role}</h4>
               <p className="font-label-bold opacity-60 text-sm mb-2">{exp.company} • {exp.period}</p>
               <p className="text-sm font-mono opacity-80 line-clamp-2">{exp.description}</p>
+              {exp.skills && exp.skills.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-3">
+                  {exp.skills.map((s: any) => (
+                    <span key={s.id} className="font-mono text-xs uppercase px-2 py-0.5 bg-theme-yellow/20 neo-border border-[2px]">
+                      {s.name}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="flex gap-3 w-full md:w-auto md:flex-col lg:flex-row">
               <button onClick={() => handleEdit(exp)} className="font-label-bold text-xs uppercase bg-theme-yellow px-6 py-3 neo-border flex-1 hover:bg-on-surface hover:text-surface transition-colors">Edit</button>
