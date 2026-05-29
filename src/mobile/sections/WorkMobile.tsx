@@ -32,12 +32,28 @@ export const WorkMobile: React.FC = () => {
                                     <h3 className="font-display-2xl text-[32px] uppercase tracking-tighter text-on-surface leading-none mb-1">{project.title}</h3>
                                     <p className="font-label-bold font-bold text-sm text-on-surface opacity-80 uppercase tracking-widest">{project.tags.join(' / ')}</p>
                                 </div>
-                                <a 
-                                    href={project.link}
-                                    className={`w-12 h-12 ${btnColor} border-[3px] border-on-surface shadow-[4px_4px_0px_0px_#1e1b19] flex justify-center items-center active:translate-y-1 active:translate-x-1 active:shadow-none transition-all`}
-                                >
-                                    <span className="material-symbols-outlined text-white font-bold">arrow_forward</span>
-                                </a>
+                                <div className="flex gap-2">
+                                    {project.githubLink && (
+                                        <a 
+                                            href={project.githubLink}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="w-12 h-12 bg-surface border-[3px] border-on-surface shadow-[4px_4px_0px_0px_#1e1b19] flex justify-center items-center active:translate-y-1 active:translate-x-1 active:shadow-none transition-all"
+                                            title="GitHub Source"
+                                        >
+                                            <span className="material-symbols-outlined text-on-surface font-bold">code</span>
+                                        </a>
+                                    )}
+                                    <a 
+                                        href={project.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={`w-12 h-12 ${btnColor} border-[3px] border-on-surface shadow-[4px_4px_0px_0px_#1e1b19] flex justify-center items-center active:translate-y-1 active:translate-x-1 active:shadow-none transition-all`}
+                                        title="Live Demo"
+                                    >
+                                        <span className="material-symbols-outlined text-white font-bold">arrow_forward</span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     );

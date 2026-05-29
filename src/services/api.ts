@@ -38,6 +38,7 @@ interface ProjectRaw {
     brief: string;
     description: string;
     link: string;
+    githubLink?: string;
     imageSrc: string;
     imageAlt: string;
     tags?: Array<{ id: number; name: string; projectId: number }>;
@@ -101,6 +102,7 @@ export async function fetchSiteData(baseUrl: string): Promise<SiteData> {
         brief: p.brief,
         description: p.description,
         link: p.link,
+        githubLink: p.githubLink || '',
         image: { src: p.imageSrc, alt: p.imageAlt },
         tags: p.tags?.map((t: { name: string }) => t.name) || []
     }));

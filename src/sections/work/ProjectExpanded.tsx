@@ -76,13 +76,25 @@ export const ProjectExpanded: React.FC<ProjectExpandedProps> = ({
                                 </div>
                             </div>
 
-                            {/* View → button at bottom right */}
-                            <div className="flex justify-end mt-10">
+                            {/* View → buttons at bottom right */}
+                            <div className="flex justify-end gap-4 mt-10">
+                                {project.githubLink && (
+                                    <a
+                                        href={project.githubLink}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="font-label-bold uppercase text-sm bg-surface text-on-surface px-6 py-3 neo-border shadow-[4px_4px_0px_0px_#1e1b19] hover:bg-theme-green hover:text-surface-container-lowest hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all duration-200 inline-flex items-center gap-3"
+                                    >
+                                        Source Code <span className="text-xl leading-none">↗</span>
+                                    </a>
+                                )}
                                 <a
                                     href={project.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="font-label-bold uppercase text-sm bg-theme-yellow text-on-surface px-6 py-3 neo-border shadow-[4px_4px_0px_0px_#1e1b19] hover:bg-theme-blue hover:text-surface-container-lowest hover:shadow-none hover:translate-x-1 hover:translate-y-1 active:bg-theme-green transition-all duration-200 inline-flex items-center gap-3"
                                 >
-                                    View <span className="text-xl leading-none">→</span>
+                                    Live Demo <span className="text-xl leading-none">→</span>
                                 </a>
                             </div>
                         </div>

@@ -14,6 +14,7 @@ export default function ProjectsDashboard() {
     brief: '',
     description: '',
     link: '',
+    githubLink: '',
     imageSrc: '',
     imageAlt: '',
   });
@@ -50,7 +51,7 @@ export default function ProjectsDashboard() {
       });
       
       if (res.ok) {
-        setFormData({ title: '', brief: '', description: '', link: '', imageSrc: '', imageAlt: '' });
+        setFormData({ title: '', brief: '', description: '', link: '', githubLink: '', imageSrc: '', imageAlt: '' });
         setEditingId(null);
         fetchProjects();
       } else {
@@ -68,6 +69,7 @@ export default function ProjectsDashboard() {
       brief: project.brief,
       description: project.description,
       link: project.link,
+      githubLink: project.githubLink || '',
       imageSrc: project.imageSrc,
       imageAlt: project.imageAlt,
     });
@@ -119,9 +121,13 @@ export default function ProjectsDashboard() {
               <label className="font-label-bold text-sm uppercase opacity-80 mb-2 block">Image Alt</label>
               <Input className="w-full" value={formData.imageAlt} onChange={e => setFormData({...formData, imageAlt: e.target.value})} required />
             </div>
-            <div className="md:col-span-2">
-              <label className="font-label-bold text-sm uppercase opacity-80 mb-2 block">Link (URL)</label>
+            <div>
+              <label className="font-label-bold text-sm uppercase opacity-80 mb-2 block">Link (Demo / URL)</label>
               <Input className="w-full" value={formData.link} onChange={e => setFormData({...formData, link: e.target.value})} required />
+            </div>
+            <div>
+              <label className="font-label-bold text-sm uppercase opacity-80 mb-2 block">GitHub / Source Link</label>
+              <Input className="w-full" value={formData.githubLink} onChange={e => setFormData({...formData, githubLink: e.target.value})} />
             </div>
             <div className="md:col-span-2">
               <label className="font-label-bold text-sm uppercase opacity-80 mb-2 block">Description</label>
@@ -138,7 +144,7 @@ export default function ProjectsDashboard() {
               {editingId ? 'UPDATE PROJECT' : 'ADD PROJECT'}
             </Button>
             {editingId && (
-              <Button type="button" onClick={() => { setEditingId(null); setFormData({ title: '', brief: '', description: '', link: '', imageSrc: '', imageAlt: '' }); }} className="bg-theme-grey text-on-surface py-4 neo-border hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_#1e1b19] transition-all px-8">
+              <Button type="button" onClick={() => { setEditingId(null); setFormData({ title: '', brief: '', description: '', link: '', githubLink: '', imageSrc: '', imageAlt: '' }); }} className="bg-theme-grey text-on-surface py-4 neo-border hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_#1e1b19] transition-all px-8">
                 CANCEL
               </Button>
             )}

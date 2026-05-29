@@ -84,6 +84,7 @@ export interface Project {
     description: string;
     tags: string[];
     link: string;
+    githubLink?: string;
     image: {
         src: string;
         alt: string;

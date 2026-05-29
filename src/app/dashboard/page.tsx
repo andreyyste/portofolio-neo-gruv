@@ -20,7 +20,16 @@ export default function DashboardPage() {
             ]
           },
           { key: 'ctaText', label: 'CTA Button Text', type: 'text' },
-          { key: 'ctaHref', label: 'CTA Button Link', type: 'text' }
+          { key: 'ctaHref', label: 'CTA Button Link', type: 'text' },
+          { 
+            key: 'heroImage', 
+            label: 'Hero Graphic Image', 
+            type: 'nested', 
+            fields: [
+              { key: 'src', label: 'Image URL', type: 'text' },
+              { key: 'alt', label: 'Image Alt Text', type: 'text' }
+            ]
+          }
         ]}
       />
 
@@ -41,6 +50,16 @@ export default function DashboardPage() {
           },
           { key: 'manifesto', label: 'Manifesto / Paragraph', type: 'textarea' },
           { key: 'portraitLabel', label: 'Portrait Label', type: 'text' },
+          {
+            key: 'rules',
+            label: 'Rules / Core Values',
+            type: 'object_array',
+            defaultItem: { label: 'Rule 0X', text: 'Rule description goes here.' },
+            fields: [
+              { key: 'label', label: 'Label (e.g. Rule 01)', type: 'text' },
+              { key: 'text', label: 'Text', type: 'text' }
+            ]
+          }
         ]}
       />
 
