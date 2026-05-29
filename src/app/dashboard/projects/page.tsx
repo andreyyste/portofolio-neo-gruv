@@ -17,6 +17,7 @@ export default function ProjectsDashboard() {
     githubLink: '',
     imageSrc: '',
     imageAlt: '',
+    tags: '',
   });
 
   useEffect(() => {
@@ -44,14 +45,18 @@ export default function ProjectsDashboard() {
     const method = isEditing ? 'PATCH' : 'POST';
 
     try {
+      const payload = {
+        ...formData,
+        tags: formData.tags ? formData.tags.split(',').map((t: string) => t.trim()).filter(Boolean) : []
+      };
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
       
       if (res.ok) {
-        setFormData({ title: '', brief: '', description: '', link: '', githubLink: '', imageSrc: '', imageAlt: '' });
+        setFormData({ title: '', brief: '', description: '', link: '', githubLink: '', imageSrc: '', imageAlt: '', tags: '' });
         setEditingId(null);
         fetchProjects();
       } else {
@@ -72,6 +77,7 @@ export default function ProjectsDashboard() {
       githubLink: project.githubLink || '',
       imageSrc: project.imageSrc,
       imageAlt: project.imageAlt,
+      tags: project.tags ? project.tags.map((t: any) => typeof t === 'string' ? t : t.name).join(', ') : '',
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -130,6 +136,10 @@ export default function ProjectsDashboard() {
               <Input className="w-full" value={formData.githubLink} onChange={e => setFormData({...formData, githubLink: e.target.value})} />
             </div>
             <div className="md:col-span-2">
+              <label className="font-label-bold text-sm uppercase opacity-80 mb-2 block">Tags (Comma-separated, e.g. React, Phaser 3)</label>
+              <Input className="w-full" value={formData.tags} onChange={e => setFormData({...formData, tags: e.target.value})} />
+            </div>
+            <div className="md:col-span-2">
               <label className="font-label-bold text-sm uppercase opacity-80 mb-2 block">Description</label>
               <textarea 
                 className="w-full p-3 font-mono text-sm neo-border bg-surface focus:outline-none focus:ring-4 focus:ring-theme-yellow min-h-[100px]"
@@ -144,7 +154,7 @@ export default function ProjectsDashboard() {
               {editingId ? 'UPDATE PROJECT' : 'ADD PROJECT'}
             </Button>
             {editingId && (
-              <Button type="button" onClick={() => { setEditingId(null); setFormData({ title: '', brief: '', description: '', link: '', githubLink: '', imageSrc: '', imageAlt: '' }); }} className="bg-theme-grey text-on-surface py-4 neo-border hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_#1e1b19] transition-all px-8">
+              <Button type="button" onClick={() => { setEditingId(null); setFormData({ title: '', brief: '', description: '', link: '', githubLink: '', imageSrc: '', imageAlt: '', tags: '' }); }} className="bg-theme-grey text-on-surface py-4 neo-border hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_#1e1b19] transition-all px-8">
                 CANCEL
               </Button>
             )}
