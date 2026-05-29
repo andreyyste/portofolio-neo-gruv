@@ -1,6 +1,13 @@
 import React from 'react';
 import type { Project } from '../../types';
 
+const TAG_COLORS = [
+    'bg-theme-red text-surface-container-lowest',
+    'bg-theme-blue text-surface-container-lowest',
+    'bg-theme-green text-on-surface',
+    'bg-theme-yellow text-on-surface'
+];
+
 interface ProjectExpandedProps {
     project: Project;
     index: number;
@@ -46,14 +53,17 @@ export const ProjectExpanded: React.FC<ProjectExpandedProps> = ({
                             <div>
                                 {/* Tags */}
                                 <div className="flex gap-2 mb-6">
-                                    {project.tags.map((tag, tagIndex) => (
-                                        <span
-                                            key={tagIndex}
-                                            className="px-4 py-1.5 neo-border border-[3px] text-xs font-label-bold uppercase bg-on-surface text-surface"
-                                        >
-                                            {tag}
-                                        </span>
-                                    ))}
+                                    {project.tags.map((tag, tagIndex) => {
+                                        const colorClass = TAG_COLORS[tagIndex % TAG_COLORS.length];
+                                        return (
+                                            <span
+                                                key={tagIndex}
+                                                className={`px-4 py-1.5 neo-border border-[3px] text-xs font-label-bold uppercase ${colorClass}`}
+                                            >
+                                                {tag}
+                                            </span>
+                                        );
+                                    })}
                                 </div>
 
                                 {/* Title */}
@@ -83,7 +93,7 @@ export const ProjectExpanded: React.FC<ProjectExpandedProps> = ({
                                         href={project.githubLink}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="font-label-bold uppercase text-sm bg-surface text-on-surface px-6 py-3 neo-border shadow-[4px_4px_0px_0px_#1e1b19] hover:bg-theme-green hover:text-surface-container-lowest hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all duration-200 inline-flex items-center gap-3"
+                                        className="font-label-bold uppercase text-sm bg-on-surface text-surface px-6 py-3 neo-border shadow-[4px_4px_0px_0px_#1e1b19] hover:bg-theme-green hover:text-surface-container-lowest hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all duration-200 inline-flex items-center gap-3"
                                     >
                                         Source Code <span className="text-xl leading-none">↗</span>
                                     </a>

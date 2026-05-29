@@ -1,6 +1,13 @@
 import React from 'react';
 import type { Project } from '../../types';
 
+const TAG_COLORS = [
+    'bg-theme-red text-surface-container-lowest',
+    'bg-theme-blue text-surface-container-lowest',
+    'bg-theme-green text-on-surface',
+    'bg-theme-yellow text-on-surface'
+];
+
 interface ProjectCardProps {
     project: Project;
     index: number;
@@ -80,19 +87,22 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                     >
                         <div>
                             <div className="flex gap-2 mb-4">
-                                {project.tags.map((tag, tagIndex) => (
-                                    <span
-                                        key={tagIndex}
-                                        className={[
-                                            'px-3 py-1 neo-border border-[3px] text-xs font-label-bold uppercase transition-colors duration-500',
-                                            isActive
-                                                ? 'bg-on-surface text-surface'
-                                                : 'bg-on-surface/40 text-surface/80',
-                                        ].join(' ')}
-                                    >
-                                        {tag}
-                                    </span>
-                                ))}
+                                {project.tags.map((tag, tagIndex) => {
+                                    const colorClass = TAG_COLORS[tagIndex % TAG_COLORS.length];
+                                    return (
+                                        <span
+                                            key={tagIndex}
+                                            className={[
+                                                'px-3 py-1 neo-border border-[3px] text-xs font-label-bold uppercase transition-colors duration-500',
+                                                isActive
+                                                    ? colorClass
+                                                    : 'bg-on-surface/20 text-on-surface/50',
+                                            ].join(' ')}
+                                        >
+                                            {tag}
+                                        </span>
+                                    );
+                                })}
                             </div>
                             <h3
                                 className={[
