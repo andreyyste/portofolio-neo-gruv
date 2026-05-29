@@ -1,4 +1,15 @@
-import { SiteData, Project, Experience } from '../types';
+import { 
+    SiteData, 
+    Project, 
+    Experience, 
+    HeroData, 
+    AboutData, 
+    ContactData, 
+    NavigationData, 
+    FooterData, 
+    ResumeData, 
+    SkillItem 
+} from '../types';
 
 /**
  * Custom error class for API failures
@@ -19,6 +30,26 @@ async function fetchWithError<T>(url: string): Promise<T> {
         throw new APIError(response.status, `Failed to fetch from ${url}: ${response.statusText}`);
     }
     return await response.json() as T;
+}
+
+interface ProjectRaw {
+    id: number;
+    title: string;
+    brief: string;
+    description: string;
+    link: string;
+    imageSrc: string;
+    imageAlt: string;
+    tags?: Array<{ id: number; name: string; projectId: number }>;
+}
+
+interface ExperienceRaw {
+    id: number;
+    role: string;
+    company: string;
+    period: string;
+    description: string;
+    skills?: Array<{ id: number; name: string; experienceId: number }>;
 }
 
 /**
@@ -52,28 +83,34 @@ export async function fetchSiteData(baseUrl: string): Promise<SiteData> {
         experiencesDataRaw,
         skillsData
     ] = await Promise.all([
-        fetchWithError<any>(endpoints.hero),
-        fetchWithError<any>(endpoints.about),
-        fetchWithError<any>(endpoints.contact),
+        fetchWithError<HeroData>(endpoints.hero),
+        fetchWithError<AboutData>(endpoints.about),
+        fetchWithError<ContactData>(endpoints.contact),
         fetchWithError<string[]>(endpoints.marquee),
-        fetchWithError<any>(endpoints.navigation),
-        fetchWithError<any>(endpoints.footer),
-        fetchWithError<any>(endpoints.resume),
-        fetchWithError<any[]>(endpoints.projects),
-        fetchWithError<any[]>(endpoints.experiences),
-        fetchWithError<any[]>(endpoints.skills),
+        fetchWithError<NavigationData>(endpoints.navigation),
+        fetchWithError<FooterData>(endpoints.footer),
+        fetchWithError<ResumeData>(endpoints.resume),
+        fetchWithError<ProjectRaw[]>(endpoints.projects),
+        fetchWithError<ExperienceRaw[]>(endpoints.experiences),
+        fetchWithError<SkillItem[]>(endpoints.skills),
     ]);
 
     // Transform API structures into our frontend domain models
-    const mappedProjects: Project[] = projectsDataRaw.map((p: any) => ({
-        ...p,
+    const mappedProjects: Project[] = projectsDataRaw.map((p: ProjectRaw) => ({
+        title: p.title,
+        brief: p.brief,
+        description: p.description,
+        link: p.link,
         image: { src: p.imageSrc, alt: p.imageAlt },
-        tags: p.tags?.map((t: any) => t.name) || []
+        tags: p.tags?.map((t: { name: string }) => t.name) || []
     }));
 
-    const mappedExperiences: Experience[] = experiencesDataRaw.map((e: any) => ({
-        ...e,
-        skills: e.skills?.map((s: any) => s.name) || []
+    const mappedExperiences: Experience[] = experiencesDataRaw.map((e: ExperienceRaw) => ({
+        role: e.role,
+        company: e.company,
+        period: e.period,
+        description: e.description,
+        skills: e.skills?.map((s: { name: string }) => s.name) || []
     }));
 
     return {
