@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-export async function loginAction(prevState: any, formData: FormData) {
+export async function loginAction(prevState: { error: string } | null, formData: FormData) {
   const email = formData.get('email');
   const password = formData.get('password');
 
@@ -12,7 +12,8 @@ export async function loginAction(prevState: any, formData: FormData) {
   }
 
   try {
-    const res = await fetch('http://localhost:3001/auth/login', {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    const res = await fetch(`${baseUrl}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
