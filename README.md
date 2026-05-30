@@ -12,7 +12,11 @@
 
 ## Overview
 
-Welcome to the **Neo-Brutalist** frontend for the CREATIVE.RAW portfolio. This application rejects boring, clean corporate aesthetics in favor of high-contrast colors, harsh borders, and massive typography. 
+Welcome to the **Neo-Brutalist** frontend for the nre.codes portfolio. This application rejects boring, clean corporate aesthetics in favor of high-contrast colors, harsh borders, and massive typography. 
+
+### Live Production Demo
+* **Website URL:** [https://nre.codes](https://nre.codes)
+* **Backend API URL:** [https://api.nre.codes](https://api.nre.codes)
 
 Beneath its chaotic exterior lies a meticulously engineered architecture adhering to **SOLID principles** and **Clean Code**. It is entirely data-driven, seamlessly pulling live content from the dedicated NestJS backend while maintaining 100% type safety.
 
