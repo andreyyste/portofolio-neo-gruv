@@ -8,8 +8,8 @@ export const Resume: React.FC = () => {
     const { versionLabel, headline, ctaText } = resumeData;
 
     return (
-        <section className="py-32 px-gutter bg-theme-green neo-section-divider flex items-center justify-center reveal-section w-full" id="resume">
-            <div className="w-full max-w-4xl mx-auto text-center relative animate-float">
+        <section className="py-32 px-gutter bg-theme-green neo-section-divider flex items-center justify-center w-full" id="resume">
+            <div className="w-full max-w-4xl mx-auto text-center relative animate-float reveal-section">
                 <Badge className="absolute -top-12 left-10 bg-on-surface text-theme-green rotate-[-10deg] z-10 hover:rotate-0 transition-transform duration-300">
                     {versionLabel}
                 </Badge>

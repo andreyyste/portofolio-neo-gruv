@@ -7,8 +7,8 @@ export const About: React.FC = () => {
     const { badge, portraitLabel, headline, manifesto, rules } = aboutData;
 
     return (
-        <section className="py-24 px-gutter bg-theme-red neo-section-divider relative reveal-section w-full overflow-hidden" id="about">
-            <div className="max-w-container-max mx-auto">
+        <section className="py-24 px-gutter bg-theme-red neo-section-divider relative w-full overflow-hidden" id="about">
+            <div className="max-w-container-max mx-auto reveal-section">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
                     <div className="order-2 md:order-1 relative animate-float">
                         <div className="absolute inset-0 bg-on-surface neo-border translate-x-4 translate-y-4 z-0"></div>

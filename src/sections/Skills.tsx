@@ -6,8 +6,8 @@ import { Title } from '../ui/Title';
 export const Skills: React.FC = () => {
     const { skillsData } = useData();
     return (
-        <section className="py-24 px-gutter bg-theme-blue neo-section-divider overflow-hidden reveal-section w-full" id="skills">
-            <div className="max-w-container-max mx-auto">
+        <section className="py-24 px-gutter bg-theme-blue neo-section-divider overflow-hidden w-full" id="skills">
+            <div className="max-w-container-max mx-auto reveal-section">
                 <div className="text-center mb-16 border-b-[8px] border-on-surface pb-8">
                     <Title
                         prefix={skillsSectionData.headline.prefix}

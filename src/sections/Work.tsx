@@ -45,8 +45,8 @@ export const Work: React.FC = () => {
     const expandedProject = expandedIndex !== null ? projectsData[expandedIndex] : null;
 
     return (
-        <section className="py-24 px-gutter bg-surface neo-section-divider reveal-section w-full overflow-hidden" id="work">
-            <div className="max-w-container-max mx-auto">
+        <section className="py-24 px-gutter bg-surface neo-section-divider w-full overflow-hidden" id="work">
+            <div className="max-w-container-max mx-auto reveal-section">
                 {/* Header */}
                 <div className="flex justify-between items-end mb-16 border-b-[8px] border-on-surface pb-4">
                     <Title 
