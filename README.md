@@ -28,6 +28,10 @@ Beneath its chaotic exterior lies a meticulously engineered architecture adherin
 - **Clean Code Architecture:** 
   - **Single Responsibility Principle (SRP):** API calls are decoupled into a dedicated `services/api.ts` layer.
   - **Strict Type Safety:** Centralized TypeScript definitions (`types/index.ts`) eliminate `any` types across the entire application.
+- **Interactive Codebase Explorer:** Browses GitHub repository directories, trees, and reads files directly in the browser using a persistent tree sidebar and Shiki syntax highlighting.
+- **Mock List Blurs & Redirection:** Blurs mock lists for Issues, Pull Requests, and Actions, using a retro brutalist overlay to redirect users to live GitHub tracking.
+- **CMS Admin Dashboard:** Secured admin dashboard (`/nre-masuk` -> `/dashboard`) allowing live edits to projects, skills, and configuration. Features manual GitHub sync triggers.
+- **Token Deadlock Protection:** Next.js middleware JWT expiration verification and API proxy `401` session eviction to gracefully prevent stale/deadlocked admin sessions.
 - **Dynamic Animations:** Infinite scrolling marquees, intersection-observer based reveal animations, mouse-trail particle effects, and satisfying hover interactions.
 - **Server-Side Rendering (SSR):** Built on the robust **Next.js 15 App Router** for blazing-fast load times and perfect SEO.
 - **Dynamic API Integration:** All content (projects, experiences, skills) is fetched dynamically from the backend API.
