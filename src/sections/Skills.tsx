@@ -27,7 +27,7 @@ export const Skills: React.FC = () => {
                         highlightRotateClass="rotate-[-2deg]"
                     />
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 pt-4 pb-12">
+                <div className="flex flex-wrap justify-center gap-6 md:gap-8 pt-4 pb-12 max-w-4xl mx-auto">
                     {skillsData.map((skill, index) => {
                         const layout = BRUTALIST_LAYOUTS[index % BRUTALIST_LAYOUTS.length];
                         return (
@@ -35,7 +35,7 @@ export const Skills: React.FC = () => {
                                 key={index} 
                                 className="reveal-bounce"
                                 style={{ 
-                                    transitionDelay: `${index * 0.08}s`,
+                                    transitionDelay: `${index * 0.06}s`,
                                     ['--rotation-deg' as any]: layout.rawDeg 
                                 }}
                             >
@@ -43,7 +43,7 @@ export const Skills: React.FC = () => {
                                     className={[
                                         skill.color,
                                         skill.text,
-                                        'p-6 neo-border-heavy neo-shadow flex flex-col items-center justify-center aspect-square',
+                                        'px-8 py-5 neo-border-heavy neo-shadow flex items-center justify-center font-bold',
                                         layout.rotate,
                                         layout.hoverRotate,
                                         layout.mt,
@@ -55,7 +55,7 @@ export const Skills: React.FC = () => {
                                         animationDuration: `${5 + (index % 3)}s` 
                                     }}
                                 >
-                                    <h3 className="font-display-2xl text-[24px] md:text-[32px] font-bold uppercase tracking-tighter text-center group-hover:scale-110 transition-transform duration-300">
+                                    <h3 className="font-display-2xl text-[20px] md:text-[28px] font-bold uppercase tracking-tighter text-center group-hover:scale-110 transition-transform duration-300 whitespace-nowrap">
                                         {skill.name}
                                     </h3>
                                 </div>
