@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import type { Project } from '../../types';
 
 const TAG_COLORS = [
@@ -61,6 +62,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     const layout = getCardLayout(offset);
     const revealClass = getRevealClass(offset);
     const revealDelay = getRevealDelay(offset);
+    const imageSrc = project.coverImage || project.image?.src || '';
 
     return (
         <div
@@ -100,13 +102,19 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                     ].join(' ')}
                     style={isActive ? { animationDelay: `${index * 0.4}s` } : {}}
                 >
+                    {/* Featured Badge */}
+                    {project.featured && (
+                        <div className="absolute top-4 left-4 z-20 font-label-bold text-xs uppercase bg-theme-red text-surface px-3 py-1 neo-border">
+                            Featured
+                        </div>
+                    )}
                     {/* Image */}
                     <div className="h-64 overflow-hidden border-b-[6px] border-on-surface relative">
                         <div className="absolute inset-0 bg-on-surface opacity-0 group-hover:opacity-20 transition-opacity z-10 mix-blend-overlay" />
                         <img
-                            alt={project.image.alt}
+                            alt={project.title}
                             className="w-full h-full object-cover transition-all duration-700 filter-none group-hover:scale-110"
-                            src={project.image.src}
+                            src={imageSrc}
                         />
                     </div>
                     {/* Content */}
@@ -118,7 +126,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                         ].join(' ')}
                     >
                         <div>
-                            <div className="flex gap-2 mb-4">
+                            <div className="flex gap-2 mb-4 flex-wrap">
                                 {project.tags.map((tag, tagIndex) => {
                                     const colorClass = TAG_COLORS[tagIndex % TAG_COLORS.length];
                                     return (
@@ -154,16 +162,39 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                             </p>
                         </div>
 
-                        {/* Expand button */}
+                        {/* Expand & Action buttons */}
                         {isActive && (
-                            <div className="flex justify-end mt-5">
-                                <button
-                                    onClick={onExpand}
-                                    className="font-label-bold uppercase text-sm bg-theme-yellow text-on-surface px-5 py-2.5 neo-border border-[3px] shadow-[3px_3px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] active:bg-theme-green transition-all duration-200 inline-flex items-center gap-2"
-                                >
-                                    <span className="material-symbols-outlined text-lg leading-none">open_in_full</span>
-                                    Expand
-                                </button>
+                            <div className="flex flex-col gap-2 mt-5">
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={onExpand}
+                                        className="font-label-bold uppercase text-xs bg-theme-yellow text-on-surface px-4 py-2 neo-border flex-1 shadow-[2px_2px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 inline-flex items-center justify-center gap-1.5"
+                                    >
+                                        <span className="material-symbols-outlined text-base leading-none">open_in_full</span>
+                                        Details
+                                    </button>
+                                    
+                                    {project.liveUrl && (
+                                        <a
+                                            href={project.liveUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="font-label-bold uppercase text-xs bg-theme-blue text-surface px-4 py-2 neo-border flex-1 shadow-[2px_2px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 inline-flex items-center justify-center gap-1.5"
+                                        >
+                                            <span className="material-symbols-outlined text-base leading-none">public</span>
+                                            Live Demo
+                                        </a>
+                                    )}
+                                </div>
+                                {project.hasSourceCode && project.githubRepo && (
+                                    <Link
+                                        href={`/source-code/${project.githubRepo}`}
+                                        className="font-label-bold uppercase text-xs bg-on-surface text-surface px-4 py-2 neo-border w-full shadow-[2px_2px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 inline-flex items-center justify-center gap-1.5"
+                                    >
+                                        <span className="material-symbols-outlined text-base leading-none">code</span>
+                                        Source Code
+                                    </Link>
+                                )}
                             </div>
                         )}
                     </div>

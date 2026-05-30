@@ -37,11 +37,13 @@ interface ProjectRaw {
     title: string;
     brief: string;
     description: string;
-    link: string;
-    githubLink?: string;
-    imageSrc: string;
-    imageAlt: string;
-    tags?: Array<{ id: number; name: string; projectId: number }>;
+    tags?: string[];
+    coverImage?: string | null;
+    featured: boolean;
+    hasSourceCode: boolean;
+    liveUrl?: string | null;
+    source: 'GITHUB' | 'CMS';
+    githubRepo?: string | null;
 }
 
 interface ExperienceRaw {
@@ -101,10 +103,16 @@ export async function fetchSiteData(baseUrl: string): Promise<SiteData> {
         title: p.title,
         brief: p.brief,
         description: p.description,
-        link: p.link,
-        githubLink: p.githubLink || '',
-        image: { src: p.imageSrc, alt: p.imageAlt },
-        tags: p.tags?.map((t: { name: string }) => t.name) || []
+        tags: p.tags || [],
+        coverImage: p.coverImage || null,
+        featured: p.featured,
+        hasSourceCode: p.hasSourceCode,
+        liveUrl: p.liveUrl || null,
+        source: p.source,
+        githubRepo: p.githubRepo || null,
+        // Compatibility fallbacks
+        link: p.liveUrl || '#',
+        image: { src: p.coverImage || '', alt: p.title }
     }));
 
     const mappedExperiences: Experience[] = experiencesDataRaw.map((e: ExperienceRaw) => ({

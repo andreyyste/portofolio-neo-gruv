@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import Link from 'next/link';
 import { Button } from '../ui/Button';
 import { Title } from '../ui/Title';
 import { IconButton } from '../ui/IconButton';
@@ -121,9 +122,15 @@ export const Work: React.FC = () => {
                                 >
                                     <div className="absolute inset-0 bg-theme-yellow neo-border-heavy translate-x-3 translate-y-3 z-0" />
                                     <div className="relative z-10 neo-border-heavy overflow-hidden flex flex-col border-[6px] bg-surface min-h-[500px]">
+                                        {/* Featured Badge */}
+                                        {project.featured && (
+                                            <div className="absolute top-4 left-4 z-20 font-label-bold text-xs uppercase bg-theme-red text-surface px-3 py-1 neo-border">
+                                                Featured
+                                            </div>
+                                        )}
                                         {/* Image */}
                                         <div className="h-48 overflow-hidden border-b-[6px] border-on-surface relative">
-                                            <img alt={project.image.alt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src={project.image.src}/>
+                                            <img alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src={project.coverImage || project.image?.src || ''}/>
                                         </div>
                                         {/* Content */}
                                         <div className="p-6 flex-grow flex flex-col justify-between">
@@ -141,14 +148,36 @@ export const Work: React.FC = () => {
                                                 <h3 className="font-display-2xl text-[28px] leading-tight font-bold uppercase mb-2 text-on-surface">{project.title}</h3>
                                                 <p className="font-body-md font-bold border-t-[4px] border-on-surface pt-4 mt-2 text-on-surface-variant line-clamp-3">{project.brief}</p>
                                             </div>
-                                            <div className="flex justify-end mt-5">
-                                                <button
-                                                    onClick={() => setExpandedIndex(index)}
-                                                    className="font-label-bold uppercase text-sm bg-theme-yellow text-on-surface px-5 py-2.5 neo-border border-[3px] shadow-[3px_3px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] active:bg-theme-green transition-all duration-200 inline-flex items-center gap-2"
-                                                >
-                                                    <span className="material-symbols-outlined text-lg leading-none">open_in_full</span>
-                                                    Expand
-                                                </button>
+                                            <div className="flex flex-col gap-2 mt-5">
+                                                <div className="flex gap-2">
+                                                    <button
+                                                        onClick={() => setExpandedIndex(index)}
+                                                        className="font-label-bold uppercase text-xs bg-theme-yellow text-on-surface px-4 py-2 neo-border flex-1 shadow-[2px_2px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 inline-flex items-center justify-center gap-1.5"
+                                                    >
+                                                        <span className="material-symbols-outlined text-base leading-none">open_in_full</span>
+                                                        Details
+                                                    </button>
+                                                    {project.liveUrl && (
+                                                        <a
+                                                            href={project.liveUrl}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="font-label-bold uppercase text-xs bg-theme-blue text-surface px-4 py-2 neo-border flex-1 shadow-[2px_2px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 inline-flex items-center justify-center gap-1.5"
+                                                        >
+                                                            <span className="material-symbols-outlined text-base leading-none">public</span>
+                                                            Live
+                                                        </a>
+                                                    )}
+                                                </div>
+                                                {project.hasSourceCode && project.githubRepo && (
+                                                    <Link
+                                                        href={`/source-code/${project.githubRepo}`}
+                                                        className="font-label-bold uppercase text-xs bg-on-surface text-surface px-4 py-2 neo-border w-full shadow-[2px_2px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 inline-flex items-center justify-center gap-1.5"
+                                                    >
+                                                        <span className="material-symbols-outlined text-base leading-none">code</span>
+                                                        Source Code
+                                                    </Link>
+                                                )}
                                             </div>
                                         </div>
                                     </div>

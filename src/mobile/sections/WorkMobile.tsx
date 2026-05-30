@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { useData } from '../../context/DataContext';
 const projectsSectionData = { headline: { prefix: 'SELECTED', highlight: 'WORKS' }, buttonText: 'ALL PROJECTS', mobileHeadline: { prefix: 'COLLECTION', highlight: 'ARCHIVES' } };
 
@@ -19,11 +20,17 @@ export const WorkMobile: React.FC = () => {
                 {projectsData.map((project, index) => {
                     const btnColor = BUTTON_COLORS[index % BUTTON_COLORS.length];
                     const revealClass = index % 3 === 0 ? 'reveal-left' : index % 3 === 1 ? 'reveal-bottom' : 'reveal-right';
+                    const imageSrc = project.coverImage || project.image?.src || '';
                     return (
                         <div key={index} className={`w-full flex flex-col ${revealClass}`}>
                             <div className="w-full aspect-[4/3] border-[5px] border-on-surface shadow-[8px_8px_0px_0px_#1e1b19] mb-4 flex items-center justify-center bg-gray-400 overflow-hidden relative">
-                                {project.image.src ? (
-                                    <img src={project.image.src} alt={project.image.alt} className="w-full h-full object-cover" />
+                                {project.featured && (
+                                    <div className="absolute top-2 left-2 z-20 font-label-bold text-[10px] uppercase bg-[#cc2929] text-[#f4f1ea] px-2 py-0.5 rounded-[2px] border-[2px] border-on-surface shadow-[2px_2px_0px_0px_#1e1b19]">
+                                        Featured
+                                    </div>
+                                )}
+                                {imageSrc ? (
+                                    <img src={imageSrc} alt={project.title} className="w-full h-full object-cover" />
                                 ) : (
                                     <span className="font-display-2xl text-3xl opacity-50 text-center">[{project.title}<br/>IMAGE]</span>
                                 )}
@@ -34,26 +41,26 @@ export const WorkMobile: React.FC = () => {
                                     <p className="font-label-bold font-bold text-sm text-on-surface opacity-80 uppercase tracking-widest">{project.tags.join(' / ')}</p>
                                 </div>
                                 <div className="flex gap-2">
-                                    {project.githubLink && (
-                                        <a 
-                                            href={project.githubLink}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
+                                    {project.hasSourceCode && project.githubRepo && (
+                                        <Link 
+                                            href={`/source-code/${project.githubRepo}`}
                                             className="w-12 h-12 bg-surface border-[3px] border-on-surface shadow-[4px_4px_0px_0px_#1e1b19] flex justify-center items-center active:translate-y-1 active:translate-x-1 active:shadow-none transition-all"
-                                            title="GitHub Source"
+                                            title="Source Code"
                                         >
                                             <span className="material-symbols-outlined text-on-surface font-bold">code</span>
+                                        </Link>
+                                    )}
+                                    {project.liveUrl && (
+                                        <a 
+                                            href={project.liveUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={`w-12 h-12 ${btnColor} border-[3px] border-on-surface shadow-[4px_4px_0px_0px_#1e1b19] flex justify-center items-center active:translate-y-1 active:translate-x-1 active:shadow-none transition-all`}
+                                            title="Live Demo"
+                                        >
+                                            <span className="material-symbols-outlined text-white font-bold">arrow_forward</span>
                                         </a>
                                     )}
-                                    <a 
-                                        href={project.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={`w-12 h-12 ${btnColor} border-[3px] border-on-surface shadow-[4px_4px_0px_0px_#1e1b19] flex justify-center items-center active:translate-y-1 active:translate-x-1 active:shadow-none transition-all`}
-                                        title="Live Demo"
-                                    >
-                                        <span className="material-symbols-outlined text-white font-bold">arrow_forward</span>
-                                    </a>
                                 </div>
                             </div>
                         </div>

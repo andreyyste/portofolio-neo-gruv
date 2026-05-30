@@ -83,9 +83,15 @@ export interface Project {
     brief: string;
     description: string;
     tags: string[];
-    link: string;
-    githubLink?: string;
-    image: {
+    coverImage?: string | null;
+    featured: boolean;
+    hasSourceCode: boolean;
+    liveUrl?: string | null;
+    source: 'GITHUB' | 'CMS';
+    githubRepo?: string | null;
+    // Compatibility fields
+    link?: string;
+    image?: {
         src: string;
         alt: string;
     };

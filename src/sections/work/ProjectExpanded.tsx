@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import type { Project } from '../../types';
 
 const TAG_COLORS = [
@@ -21,6 +22,7 @@ export const ProjectExpanded: React.FC<ProjectExpandedProps> = ({
     total,
     onClose,
 }) => {
+    const imageSrc = project.coverImage || project.image?.src || '';
     return (
         <div className="animate-[expandCardIn_0.6s_cubic-bezier(0.16,1,0.3,1)_both]">
             <div className="relative">
@@ -41,10 +43,15 @@ export const ProjectExpanded: React.FC<ProjectExpandedProps> = ({
                     <div className="flex flex-col md:flex-row">
                         {/* Image — left side */}
                         <div className="md:w-1/2 h-72 md:h-auto md:min-h-[480px] overflow-hidden border-b-[6px] md:border-b-0 md:border-r-[6px] border-on-surface relative animate-[expandContentLeft_0.6s_cubic-bezier(0.16,1,0.3,1)_both]">
+                            {project.featured && (
+                                <div className="absolute top-4 left-4 z-20 font-label-bold text-xs uppercase bg-theme-red text-surface px-3 py-1 neo-border">
+                                    Featured
+                                </div>
+                            )}
                             <img
-                                alt={project.image.alt}
+                                alt={project.title}
                                 className="w-full h-full object-cover"
-                                src={project.image.src}
+                                src={imageSrc}
                             />
                         </div>
 
@@ -52,7 +59,7 @@ export const ProjectExpanded: React.FC<ProjectExpandedProps> = ({
                         <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-between bg-surface animate-[expandContentRight_0.6s_cubic-bezier(0.16,1,0.3,1)_both]">
                             <div>
                                 {/* Tags */}
-                                <div className="flex gap-2 mb-6">
+                                <div className="flex gap-2 mb-6 flex-wrap">
                                     {project.tags.map((tag, tagIndex) => {
                                         const colorClass = TAG_COLORS[tagIndex % TAG_COLORS.length];
                                         return (
@@ -73,7 +80,7 @@ export const ProjectExpanded: React.FC<ProjectExpandedProps> = ({
 
                                 {/* Description */}
                                 <div className="border-t-[4px] border-on-surface pt-6">
-                                    <p className="font-body-lg text-on-surface-variant leading-relaxed">
+                                    <p className="font-body-lg text-on-surface-variant leading-relaxed whitespace-pre-line">
                                         {project.description}
                                     </p>
                                 </div>
@@ -87,25 +94,25 @@ export const ProjectExpanded: React.FC<ProjectExpandedProps> = ({
                             </div>
 
                             {/* View → buttons at bottom right */}
-                            <div className="flex justify-end gap-4 mt-10">
-                                {project.githubLink && (
-                                    <a
-                                        href={project.githubLink}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                            <div className="flex justify-end gap-4 mt-10 flex-wrap">
+                                {project.hasSourceCode && project.githubRepo && (
+                                    <Link
+                                        href={`/source-code/${project.githubRepo}`}
                                         className="font-label-bold uppercase text-sm bg-on-surface text-surface px-6 py-3 neo-border shadow-[4px_4px_0px_0px_#1e1b19] hover:bg-theme-green hover:text-surface-container-lowest hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all duration-200 inline-flex items-center gap-3"
                                     >
-                                        Source Code <span className="text-xl leading-none">↗</span>
+                                        Source Code <span className="material-symbols-outlined text-lg leading-none">code</span>
+                                    </Link>
+                                )}
+                                {project.liveUrl && (
+                                    <a
+                                        href={project.liveUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="font-label-bold uppercase text-sm bg-theme-yellow text-on-surface px-6 py-3 neo-border shadow-[4px_4px_0px_0px_#1e1b19] hover:bg-theme-blue hover:text-surface-container-lowest hover:shadow-none hover:translate-x-1 hover:translate-y-1 active:bg-theme-green transition-all duration-200 inline-flex items-center gap-3"
+                                    >
+                                        Live Demo <span className="material-symbols-outlined text-lg leading-none">public</span>
                                     </a>
                                 )}
-                                <a
-                                    href={project.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="font-label-bold uppercase text-sm bg-theme-yellow text-on-surface px-6 py-3 neo-border shadow-[4px_4px_0px_0px_#1e1b19] hover:bg-theme-blue hover:text-surface-container-lowest hover:shadow-none hover:translate-x-1 hover:translate-y-1 active:bg-theme-green transition-all duration-200 inline-flex items-center gap-3"
-                                >
-                                    Live Demo <span className="text-xl leading-none">→</span>
-                                </a>
                             </div>
                         </div>
                     </div>
