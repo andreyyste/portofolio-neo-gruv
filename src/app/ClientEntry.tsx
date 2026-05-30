@@ -20,9 +20,9 @@ const DesktopApp: React.FC = () => {
             <MouseTrail /> 
             <Hero />
             <About />
-            <Skills />
             <Work />
             <Experience />
+            <Skills />
             <Resume />
             <Contact />
         </Layout>

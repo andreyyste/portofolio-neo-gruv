@@ -15,9 +15,9 @@ export const MobileApp: React.FC = () => {
             <main className="flex-grow w-full flex flex-col">
                 <HeroMobile />
                 <AboutMobile />
-                <SkillsMobile />
                 <WorkMobile />
                 <ExperienceMobile />
+                <SkillsMobile />
                 <ContactMobile />
             </main>
             <MobileFooter />
