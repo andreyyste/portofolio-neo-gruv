@@ -105,7 +105,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 >
                     {/* Image */}
                     {imageSrc && (
-                        <div className="h-48 overflow-hidden border-b-[6px] border-on-surface relative">
+                        <div className="h-40 overflow-hidden border-b-[6px] border-on-surface relative">
                             <div className="absolute inset-0 bg-on-surface opacity-0 group-hover:opacity-20 transition-opacity z-10 mix-blend-overlay" />
                             <img
                                 alt={project.title}
@@ -117,7 +117,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                     {/* Content */}
                     <div
                         className={[
-                            'p-6 flex-grow flex flex-col justify-between transition-all duration-500',
+                            'p-5 flex-grow flex flex-col justify-between transition-all duration-500',
                             isActive ? 'bg-surface' : 'bg-surface-dim',
                             Math.abs(offset) > 1 ? 'opacity-0 pointer-events-none' : 'opacity-100'
                         ].join(' ')}
@@ -136,7 +136,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                                         Featured
                                     </span>
                                 )}
-                                {project.tags.map((tag, tagIndex) => {
+                                {project.tags.slice(0, 2).map((tag, tagIndex) => {
                                     const colorClass = TAG_COLORS[tagIndex % TAG_COLORS.length];
                                     return (
                                         <span
@@ -152,6 +152,18 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                                         </span>
                                     );
                                 })}
+                                {project.tags.length > 2 && (
+                                    <span
+                                        className={[
+                                            'px-3 py-1 neo-border border-[3px] text-xs font-label-bold uppercase transition-colors duration-500',
+                                            isActive
+                                                ? 'bg-surface-variant text-on-surface'
+                                                : 'bg-on-surface/20 text-on-surface/50',
+                                        ].join(' ')}
+                                    >
+                                        +{project.tags.length - 2}
+                                    </span>
+                                )}
                             </div>
                             <h3
                                 className={[
@@ -163,7 +175,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                             </h3>
                             <p
                                 className={[
-                                    'font-body-md font-bold border-t-[4px] border-on-surface pt-4 mt-2 transition-colors duration-500',
+                                    'font-body-md font-bold border-t-[3px] border-on-surface pt-3 mt-1.5 transition-colors duration-500',
                                     isActive ? 'text-on-surface-variant' : 'text-on-surface-variant/50',
                                 ].join(' ')}
                             >
@@ -173,35 +185,34 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
                         {/* Expand & Action buttons */}
                         {isActive && (
-                            <div className="flex flex-col gap-2 mt-5">
-                                <div className="flex gap-2">
-                                    <button
-                                        onClick={onExpand}
-                                        className="font-label-bold uppercase text-xs bg-theme-yellow text-on-surface px-4 py-2 neo-border flex-1 shadow-[2px_2px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 inline-flex items-center justify-center gap-1.5"
+                            <div className="flex gap-2 mt-5">
+                                <button
+                                    onClick={onExpand}
+                                    className="font-label-bold uppercase text-xs bg-theme-yellow text-on-surface px-4 py-2.5 neo-border flex-grow shadow-[2px_2px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 inline-flex items-center justify-center gap-1.5"
+                                >
+                                    <span className="material-symbols-outlined text-base leading-none">open_in_full</span>
+                                    Details
+                                </button>
+                                
+                                {project.liveUrl && (
+                                    <a
+                                        href={project.liveUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="w-10 h-10 bg-theme-blue text-surface neo-border flex items-center justify-center shadow-[2px_2px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200"
+                                        title="Live Demo"
                                     >
-                                        <span className="material-symbols-outlined text-base leading-none">open_in_full</span>
-                                        Details
-                                    </button>
-                                    
-                                    {project.liveUrl && (
-                                        <a
-                                            href={project.liveUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="font-label-bold uppercase text-xs bg-theme-blue text-surface px-4 py-2 neo-border flex-1 shadow-[2px_2px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 inline-flex items-center justify-center gap-1.5"
-                                        >
-                                            <span className="material-symbols-outlined text-base leading-none">public</span>
-                                            Live Demo
-                                        </a>
-                                    )}
-                                </div>
+                                        <span className="material-symbols-outlined text-base leading-none">public</span>
+                                    </a>
+                                )}
+
                                 {project.hasSourceCode && project.githubRepo && (
                                     <Link
                                         href={`/source-code/${project.githubRepo}`}
-                                        className="font-label-bold uppercase text-xs bg-on-surface text-surface px-4 py-2 neo-border w-full shadow-[2px_2px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 inline-flex items-center justify-center gap-1.5"
+                                        className="w-10 h-10 bg-on-surface text-surface neo-border flex items-center justify-center shadow-[2px_2px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200"
+                                        title="Source Code"
                                     >
                                         <span className="material-symbols-outlined text-base leading-none">code</span>
-                                        Source Code
                                     </Link>
                                 )}
                             </div>

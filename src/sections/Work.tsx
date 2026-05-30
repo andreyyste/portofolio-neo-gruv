@@ -122,15 +122,15 @@ export const Work: React.FC = () => {
                                     }}
                                 >
                                     <div className="absolute inset-0 bg-theme-yellow neo-border-heavy translate-x-3 translate-y-3 z-0" />
-                                    <div className="relative z-10 neo-border-heavy overflow-hidden flex flex-col border-[6px] bg-surface min-h-[380px]">
+                                    <div className="relative z-10 neo-border-heavy overflow-hidden flex flex-col border-[6px] bg-surface min-h-[340px]">
                                         {/* Image */}
                                         {(project.coverImage || project.image?.src) && (
-                                            <div className="h-48 overflow-hidden border-b-[6px] border-on-surface relative">
+                                            <div className="h-40 overflow-hidden border-b-[6px] border-on-surface relative">
                                                 <img alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src={formatImageUrl(project.coverImage || project.image?.src || '')}/>
                                             </div>
                                         )}
                                         {/* Content */}
-                                        <div className="p-6 flex-grow flex flex-col justify-between">
+                                        <div className="p-5 flex-grow flex flex-col justify-between">
                                             <div>
                                                 <div className="flex gap-2 mb-4 flex-wrap">
                                                     {project.featured && (
@@ -138,46 +138,49 @@ export const Work: React.FC = () => {
                                                             Featured
                                                         </span>
                                                     )}
-                                                    {project.tags.map((tag, tagIndex) => {
+                                                    {project.tags.slice(0, 2).map((tag, tagIndex) => {
                                                         const colorClass = TAG_COLORS[tagIndex % TAG_COLORS.length];
                                                         return (
                                                             <span key={tagIndex} className={`px-3 py-1 neo-border border-[3px] text-xs font-label-bold uppercase ${colorClass}`}>
                                                                 {tag}
-                                                            </span>
+                                                                </span>
                                                         );
                                                     })}
-                                                </div>
-                                                <h3 className="font-display-2xl text-[28px] leading-tight font-bold uppercase mb-2 text-on-surface">{project.title}</h3>
-                                                <p className="font-body-md font-bold border-t-[4px] border-on-surface pt-4 mt-2 text-on-surface-variant line-clamp-3">{project.brief}</p>
-                                            </div>
-                                            <div className="flex flex-col gap-2 mt-5">
-                                                <div className="flex gap-2">
-                                                    <button
-                                                        onClick={() => setExpandedIndex(index)}
-                                                        className="font-label-bold uppercase text-xs bg-theme-yellow text-on-surface px-4 py-2 neo-border flex-1 shadow-[2px_2px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 inline-flex items-center justify-center gap-1.5"
-                                                    >
-                                                        <span className="material-symbols-outlined text-base leading-none">open_in_full</span>
-                                                        Details
-                                                    </button>
-                                                    {project.liveUrl && (
-                                                        <a
-                                                            href={project.liveUrl}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="font-label-bold uppercase text-xs bg-theme-blue text-surface px-4 py-2 neo-border flex-1 shadow-[2px_2px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 inline-flex items-center justify-center gap-1.5"
-                                                        >
-                                                            <span className="material-symbols-outlined text-base leading-none">public</span>
-                                                            Live
-                                                        </a>
+                                                    {project.tags.length > 2 && (
+                                                        <span className="px-3 py-1 neo-border border-[3px] text-xs font-label-bold uppercase bg-surface-variant text-on-surface">
+                                                            +{project.tags.length - 2}
+                                                        </span>
                                                     )}
                                                 </div>
+                                                <h3 className="font-display-2xl text-[28px] leading-tight font-bold uppercase mb-2 text-on-surface">{project.title}</h3>
+                                                <p className="font-body-md font-bold border-t-[3px] border-on-surface pt-3 mt-1.5 text-on-surface-variant line-clamp-3">{project.brief}</p>
+                                            </div>
+                                            <div className="flex gap-2 mt-5">
+                                                <button
+                                                    onClick={() => setExpandedIndex(index)}
+                                                    className="font-label-bold uppercase text-xs bg-theme-yellow text-on-surface px-4 py-2.5 neo-border flex-grow shadow-[2px_2px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 inline-flex items-center justify-center gap-1.5"
+                                                >
+                                                    <span className="material-symbols-outlined text-base leading-none">open_in_full</span>
+                                                    Details
+                                                </button>
+                                                {project.liveUrl && (
+                                                    <a
+                                                        href={project.liveUrl}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="w-10 h-10 bg-theme-blue text-surface neo-border flex items-center justify-center shadow-[2px_2px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200"
+                                                        title="Live Demo"
+                                                    >
+                                                        <span className="material-symbols-outlined text-base leading-none">public</span>
+                                                    </a>
+                                                )}
                                                 {project.hasSourceCode && project.githubRepo && (
                                                     <Link
                                                         href={`/source-code/${project.githubRepo}`}
-                                                        className="font-label-bold uppercase text-xs bg-on-surface text-surface px-4 py-2 neo-border w-full shadow-[2px_2px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 inline-flex items-center justify-center gap-1.5"
+                                                        className="w-10 h-10 bg-on-surface text-surface neo-border flex items-center justify-center shadow-[2px_2px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200"
+                                                        title="Source Code"
                                                     >
                                                         <span className="material-symbols-outlined text-base leading-none">code</span>
-                                                        Source Code
                                                     </Link>
                                                 )}
                                             </div>

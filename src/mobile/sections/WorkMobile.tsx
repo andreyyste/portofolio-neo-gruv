@@ -39,7 +39,11 @@ export const WorkMobile: React.FC = () => {
                             <div className="flex justify-between items-end">
                                 <div>
                                     <h3 className="font-display-2xl text-[32px] uppercase tracking-tighter text-on-surface leading-none mb-1">{project.title}</h3>
-                                    <p className="font-label-bold font-bold text-sm text-on-surface opacity-80 uppercase tracking-widest">{project.tags.join(' / ')}</p>
+                                    <p className="font-label-bold font-bold text-sm text-on-surface opacity-80 uppercase tracking-widest">
+                                        {project.tags.length > 3 
+                                            ? project.tags.slice(0, 3).join(' / ') + ` +${project.tags.length - 3}` 
+                                            : project.tags.join(' / ')}
+                                    </p>
                                 </div>
                                 <div className="flex gap-2">
                                     {project.hasSourceCode && project.githubRepo && (
