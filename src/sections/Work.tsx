@@ -70,57 +70,65 @@ export const Work: React.FC = () => {
                     </Button>
                 </div>
 
-                {/* Grid View */}
-                {showAll && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 py-8 animate-brutalist-vertical">
-                        {projectsData.map((project, index) => (
-                            <div key={index} className="group relative w-full">
-                                <div className="absolute inset-0 bg-theme-yellow neo-border-heavy translate-x-3 translate-y-3 z-0" />
-                                <div className="relative z-10 neo-border-heavy overflow-hidden flex flex-col border-[6px] bg-surface min-h-[500px]">
-                                    {/* Image */}
-                                    <div className="h-48 overflow-hidden border-b-[6px] border-on-surface relative">
-                                        <img alt={project.image.alt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src={project.image.src}/>
-                                    </div>
-                                    {/* Content */}
-                                    <div className="p-6 flex-grow flex flex-col justify-between">
-                                        <div>
-                                            <div className="flex gap-2 mb-4 flex-wrap">
-                                                {project.tags.map((tag, tagIndex) => {
-                                                    const colorClass = TAG_COLORS[tagIndex % TAG_COLORS.length];
-                                                    return (
-                                                        <span key={tagIndex} className={`px-3 py-1 neo-border border-[3px] text-xs font-label-bold uppercase ${colorClass}`}>
-                                                            {tag}
-                                                        </span>
-                                                    );
-                                                })}
-                                            </div>
-                                            <h3 className="font-display-2xl text-[28px] leading-tight font-bold uppercase mb-2 text-on-surface">{project.title}</h3>
-                                            <p className="font-body-md font-bold border-t-[4px] border-on-surface pt-4 mt-2 text-on-surface-variant line-clamp-3">{project.brief}</p>
+                {/* Content views wrapper */}
+                <div className="relative w-full">
+                    {/* Grid View */}
+                    <div
+                        className={[
+                            'transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform',
+                            showAll && expandedIndex === null
+                                ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto relative z-10'
+                                : 'opacity-0 translate-y-8 scale-95 pointer-events-none absolute inset-x-0 top-0 z-0 invisible'
+                        ].join(' ')}
+                    >
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 py-8">
+                            {projectsData.map((project, index) => (
+                                <div key={index} className="group relative w-full">
+                                    <div className="absolute inset-0 bg-theme-yellow neo-border-heavy translate-x-3 translate-y-3 z-0" />
+                                    <div className="relative z-10 neo-border-heavy overflow-hidden flex flex-col border-[6px] bg-surface min-h-[500px]">
+                                        {/* Image */}
+                                        <div className="h-48 overflow-hidden border-b-[6px] border-on-surface relative">
+                                            <img alt={project.image.alt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src={project.image.src}/>
                                         </div>
-                                        <div className="flex justify-end mt-5">
-                                            <button
-                                                onClick={() => setExpandedIndex(index)}
-                                                className="font-label-bold uppercase text-sm bg-theme-yellow text-on-surface px-5 py-2.5 neo-border border-[3px] shadow-[3px_3px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] active:bg-theme-green transition-all duration-200 inline-flex items-center gap-2"
-                                            >
-                                                <span className="material-symbols-outlined text-lg leading-none">open_in_full</span>
-                                                Expand
-                                            </button>
+                                        {/* Content */}
+                                        <div className="p-6 flex-grow flex flex-col justify-between">
+                                            <div>
+                                                <div className="flex gap-2 mb-4 flex-wrap">
+                                                    {project.tags.map((tag, tagIndex) => {
+                                                        const colorClass = TAG_COLORS[tagIndex % TAG_COLORS.length];
+                                                        return (
+                                                            <span key={tagIndex} className={`px-3 py-1 neo-border border-[3px] text-xs font-label-bold uppercase ${colorClass}`}>
+                                                                {tag}
+                                                            </span>
+                                                        );
+                                                    })}
+                                                </div>
+                                                <h3 className="font-display-2xl text-[28px] leading-tight font-bold uppercase mb-2 text-on-surface">{project.title}</h3>
+                                                <p className="font-body-md font-bold border-t-[4px] border-on-surface pt-4 mt-2 text-on-surface-variant line-clamp-3">{project.brief}</p>
+                                            </div>
+                                            <div className="flex justify-end mt-5">
+                                                <button
+                                                    onClick={() => setExpandedIndex(index)}
+                                                    className="font-label-bold uppercase text-sm bg-theme-yellow text-on-surface px-5 py-2.5 neo-border border-[3px] shadow-[3px_3px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] active:bg-theme-green transition-all duration-200 inline-flex items-center gap-2"
+                                                >
+                                                    <span className="material-symbols-outlined text-lg leading-none">open_in_full</span>
+                                                    Expand
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
-                )}
 
-                {/* Carousel View */}
-                {!showAll && (
+                    {/* Carousel View */}
                     <div
                         className={[
-                            'transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]',
-                            expandedIndex !== null
-                                ? 'max-h-0 opacity-0 overflow-hidden pointer-events-none'
-                                : 'max-h-[800px] opacity-100',
+                            'transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform',
+                            !showAll && expandedIndex === null
+                                ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto relative z-10'
+                                : 'opacity-0 translate-y-8 scale-95 pointer-events-none absolute inset-x-0 top-0 z-0 invisible'
                         ].join(' ')}
                     >
                         <div className="relative">
@@ -176,7 +184,7 @@ export const Work: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                )}
+                </div>
 
                 {/* Expanded Single Project View */}
                 {expandedProject && expandedIndex !== null && (

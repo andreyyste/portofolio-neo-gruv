@@ -171,17 +171,51 @@
   }
 }
 
-/* Staggered card entrance for expanded grid */
-
+/* Card expand transition using clip-path and scale to look like physical bounds expansion */
 @keyframes expandCardIn {
   0% {
     opacity: 0;
-    transform: translateY(30px) scale(0.95);
+    transform: scale(0.85);
+    clip-path: inset(15% 25% 15% 25% round 12px);
   }
-
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: scale(1);
+    clip-path: inset(0% 0% 0% 0% round 0px);
+  }
+}
+
+/* Card inner contents sliding along with boundaries */
+@keyframes expandContentLeft {
+  0% {
+    transform: translateX(-60px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes expandContentRight {
+  0% {
+    transform: translateX(60px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes closeButtonIn {
+  0% {
+    transform: scale(0) rotate(-45deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
   }
 }
 
