@@ -20,7 +20,7 @@ export function formatImageUrl(url: string | null | undefined): string {
   const trimmed = url.trim();
 
   // Convert Google Drive sharing links to direct download links
-  if (trimmed.includes('drive.google.com')) {
+  if (trimmed.includes('drive.google.com') || trimmed.includes('googleusercontent.com')) {
     let fileId = '';
     
     // Pattern: /file/d/FILE_ID/view...
@@ -36,7 +36,9 @@ export function formatImageUrl(url: string | null | undefined): string {
     }
     
     if (fileId) {
-      return `https://drive.google.com/uc?export=download&id=${fileId}`;
+      // Use the fife server format which serves the raw image directly with a 200 OK
+      // instead of redirecting with a 303 (which gets blocked in many browsers due to third-party cookies)
+      return `https://lh3.googleusercontent.com/d/${fileId}`;
     }
   }
 
