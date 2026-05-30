@@ -517,127 +517,131 @@ export default async function SourceCodePage({ params, searchParams }: PageProps
             )}
 
             {/* B. ISSUES TAB CONTENT */}
+            {/* B. ISSUES TAB CONTENT */}
             {activeTab === 'issues' && (
-              <div className="flex flex-col border-[4px] border-on-surface bg-white shadow-[8px_8px_0px_0px_#1e1b19] overflow-hidden">
-                {(() => {
-                  const hasIssues = repoMetadata?.issues && repoMetadata.issues.length > 0;
-                  const activeIssues = hasIssues ? repoMetadata.issues : [
-                    { number: 8, title: "Contrast ratio is too low on surface container", state: "open", createdAt: new Date(Date.now() - 86400000).toISOString(), userLogin: "design-cop", comments: 2 },
-                    { number: 7, title: "Rounded corners detected in mobile dialog layout", state: "open", createdAt: new Date(Date.now() - 3 * 86400000).toISOString(), userLogin: "brutalist-enforcer", comments: 0 },
-                    { number: 6, title: "Soft blur shadow found on primary hero CTA button", state: "closed", createdAt: new Date(Date.now() - 7 * 86400000).toISOString(), userLogin: "andreyyste", comments: 1 },
-                    { number: 5, title: "Mouse trail particles need more friction & larger gravity", state: "open", createdAt: new Date(Date.now() - 14 * 86400000).toISOString(), userLogin: "ux-rebel", comments: 5 },
-                    { number: 4, title: "Next.js dev server hot reload latency on dynamic paths", state: "closed", createdAt: new Date(Date.now() - 21 * 86400000).toISOString(), userLogin: "nest-nest", comments: 3 }
-                  ];
-
-                  const openCount = activeIssues.filter((i: any) => i.state === 'open').length;
-
-                  return (
-                    <>
-                      <div className="bg-[#e9e1de] p-4 border-b-[4px] border-on-surface font-label-bold text-xs uppercase font-extrabold text-on-surface">
-                        Repository Issues ({openCount} Open)
-                      </div>
-                      <div className="flex flex-col divide-y divide-on-surface/20">
-                        {activeIssues.map((issue: any) => {
-                          const isOpen = issue.state === 'open';
-                          return (
-                            <div key={issue.number} className="p-4 hover:bg-theme-grey/30 transition-colors flex flex-col gap-1 text-xs">
-                              <span className={`font-extrabold uppercase ${isOpen ? 'text-theme-red' : 'text-on-surface-variant/50 line-through'}`}>
-                                {isOpen ? '●' : '✓'} Issue #{issue.number}: {issue.title}
-                              </span>
-                              <span className="text-on-surface-variant font-semibold">
-                                {isOpen ? 'Opened' : 'Closed'} {getRelativeAge(issue.createdAt)} by {issue.userLogin} • {issue.comments} comments
-                              </span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </>
-                  );
-                })()}
+              <div className="relative border-[4px] border-on-surface bg-white shadow-[8px_8px_0px_0px_#1e1b19] overflow-hidden">
+                {/* Blurred mockup content */}
+                <div className="flex flex-col select-none pointer-events-none blur-[4px] opacity-40">
+                  <div className="bg-[#e9e1de] p-4 border-b-[4px] border-on-surface font-label-bold text-xs uppercase font-extrabold text-on-surface">
+                    Repository Issues (3 Open)
+                  </div>
+                  <div className="flex flex-col divide-y divide-on-surface/20">
+                    <div className="p-4 flex flex-col gap-1 text-xs">
+                      <span className="font-extrabold uppercase text-theme-red">● Issue #8: Contrast ratio is too low on surface container</span>
+                      <span className="text-on-surface-variant font-semibold">Opened 1 day ago by design-cop • 2 comments</span>
+                    </div>
+                    <div className="p-4 flex flex-col gap-1 text-xs">
+                      <span className="font-extrabold uppercase text-theme-red">● Issue #7: Rounded corners detected in mobile dialog layout</span>
+                      <span className="text-on-surface-variant font-semibold">Opened 3 days ago by brutalist-enforcer • 0 comments</span>
+                    </div>
+                    <div className="p-4 flex flex-col gap-1 text-xs">
+                      <span className="font-extrabold uppercase text-on-surface-variant/50 line-through">✓ Issue #6: Soft blur shadow found on primary hero CTA button</span>
+                      <span className="text-on-surface-variant font-semibold">Closed 7 days ago by andreyyste • 1 comment</span>
+                    </div>
+                  </div>
+                </div>
+                {/* Absolute overlay */}
+                <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px] flex items-center justify-center p-6 z-10">
+                  <div className="bg-white border-[4px] border-on-surface p-6 shadow-[6px_6px_0px_0px_#1e1b19] flex flex-col items-center gap-3 text-center max-w-sm">
+                    <h4 className="font-display-2xl text-lg font-bold uppercase text-on-surface">View on GitHub</h4>
+                    <p className="text-xs font-bold text-on-surface-variant leading-relaxed">
+                      Issues are tracked live on GitHub. Open to view or report repository issues.
+                    </p>
+                    <a
+                      href={`https://github.com/andreyyste/${repo}/issues`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-label-bold uppercase text-xs bg-theme-yellow text-on-surface px-6 py-2.5 border-[3px] border-on-surface shadow-[4px_4px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all inline-flex items-center gap-1.5"
+                    >
+                      <span className="material-symbols-outlined text-base leading-none">open_in_new</span>
+                      Open Issues
+                    </a>
+                  </div>
+                </div>
               </div>
             )}
 
             {/* C. PULL REQUESTS TAB CONTENT */}
             {activeTab === 'pulls' && (
-              <div className="flex flex-col border-[4px] border-on-surface bg-white shadow-[8px_8px_0px_0px_#1e1b19] overflow-hidden">
-                {(() => {
-                  const hasPulls = repoMetadata?.pulls && repoMetadata.pulls.length > 0;
-                  const activePulls = hasPulls ? repoMetadata.pulls : [
-                    { number: 12, title: "Replace soft gradients with heavy black borders", state: "closed", mergedAt: new Date(Date.now() - 2 * 86400000).toISOString(), createdAt: new Date(Date.now() - 3 * 86400000).toISOString(), userLogin: "andreyyste" },
-                    { number: 11, title: "Implement strict sharp 0px border-radius rule for elements", state: "open", mergedAt: null, createdAt: new Date(Date.now() - 4 * 86400000).toISOString(), userLogin: "brutalist-bot" },
-                    { number: 10, title: "Try using Tailwind default utility blue colors instead of HSL theme", state: "closed", mergedAt: null, createdAt: new Date(Date.now() - 14 * 86400000).toISOString(), userLogin: "moderator-classic" }
-                  ];
-
-                  const openCount = activePulls.filter((p: any) => p.state === 'open').length;
-
-                  return (
-                    <>
-                      <div className="bg-[#e9e1de] p-4 border-b-[4px] border-on-surface font-label-bold text-xs uppercase font-extrabold text-on-surface">
-                        Repository Pull Requests ({openCount} Active)
-                      </div>
-                      <div className="flex flex-col divide-y divide-on-surface/20">
-                        {activePulls.map((pull: any) => {
-                          const isOpen = pull.state === 'open';
-                          const isMerged = pull.mergedAt !== null;
-                          return (
-                            <div key={pull.number} className="p-4 hover:bg-theme-grey/30 transition-colors flex flex-col gap-1 text-xs">
-                              <span className={`font-extrabold uppercase ${isOpen ? 'text-theme-blue' : isMerged ? 'text-theme-green' : 'text-on-surface-variant/50 line-through'}`}>
-                                ⇄ PR #{pull.number}: {pull.title}
-                              </span>
-                              <span className="text-on-surface-variant font-semibold">
-                                {isOpen ? 'Opened' : isMerged ? 'Merged' : 'Closed'} {getRelativeAge(isMerged ? pull.mergedAt : pull.createdAt)} by {pull.userLogin}
-                              </span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </>
-                  );
-                })()}
+              <div className="relative border-[4px] border-on-surface bg-white shadow-[8px_8px_0px_0px_#1e1b19] overflow-hidden">
+                {/* Blurred mockup content */}
+                <div className="flex flex-col select-none pointer-events-none blur-[4px] opacity-40">
+                  <div className="bg-[#e9e1de] p-4 border-b-[4px] border-on-surface font-label-bold text-xs uppercase font-extrabold text-on-surface">
+                    Repository Pull Requests (1 Active)
+                  </div>
+                  <div className="flex flex-col divide-y divide-on-surface/20">
+                    <div className="p-4 flex flex-col gap-1 text-xs">
+                      <span className="font-extrabold uppercase text-theme-blue">⇄ PR #11: Implement strict sharp 0px border-radius rule</span>
+                      <span className="text-on-surface-variant font-semibold">Opened 4 days ago by brutalist-bot</span>
+                    </div>
+                    <div className="p-4 flex flex-col gap-1 text-xs">
+                      <span className="font-extrabold uppercase text-theme-green">⇄ PR #12: Replace soft gradients with heavy black borders</span>
+                      <span className="text-on-surface-variant font-semibold">Merged 2 days ago by andreyyste</span>
+                    </div>
+                  </div>
+                </div>
+                {/* Absolute overlay */}
+                <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px] flex items-center justify-center p-6 z-10">
+                  <div className="bg-white border-[4px] border-on-surface p-6 shadow-[6px_6px_0px_0px_#1e1b19] flex flex-col items-center gap-3 text-center max-w-sm">
+                    <h4 className="font-display-2xl text-lg font-bold uppercase text-on-surface">View on GitHub</h4>
+                    <p className="text-xs font-bold text-on-surface-variant leading-relaxed">
+                      Pull requests are tracked live on GitHub. Open to view current and historical pull requests.
+                    </p>
+                    <a
+                      href={`https://github.com/andreyyste/${repo}/pulls`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-label-bold uppercase text-xs bg-theme-yellow text-on-surface px-6 py-2.5 border-[3px] border-on-surface shadow-[4px_4px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all inline-flex items-center gap-1.5"
+                    >
+                      <span className="material-symbols-outlined text-base leading-none">open_in_new</span>
+                      Open Pull Requests
+                    </a>
+                  </div>
+                </div>
               </div>
             )}
 
             {/* D. ACTIONS TAB CONTENT */}
             {activeTab === 'actions' && (
-              <div className="flex flex-col border-[4px] border-on-surface bg-white shadow-[8px_8px_0px_0px_#1e1b19] overflow-hidden">
-                {(() => {
-                  const hasRuns = repoMetadata?.workflowRuns && repoMetadata.workflowRuns.length > 0;
-                  const activeRuns = hasRuns ? repoMetadata.workflowRuns : [
-                    { name: "lint-and-check-validity-of-types", status: "completed", conclusion: "success", branch: "main", commitMessage: "Update structural reference implementation", commitSha: "b7f9a2c", actorLogin: "andreyyste", createdAt: new Date(Date.now() - 2 * 3600000).toISOString() },
-                    { name: "deploy-production-bundle-to-vercel", status: "completed", conclusion: "success", branch: "main", commitMessage: "Update structural reference implementation", commitSha: "b7f9a2c", actorLogin: "andreyyste", createdAt: new Date(Date.now() - 2 * 3600000).toISOString() },
-                    { name: "try-tailwindcss-v4-alpha-compat", status: "completed", conclusion: "failure", branch: "feature/tw4", commitMessage: "Try tailwindcss beta release", commitSha: "fe881c2", actorLogin: "andreyyste", createdAt: new Date(Date.now() - 7 * 86400000).toISOString() },
-                    { name: "database-migration-supabase-production", status: "completed", conclusion: "success", branch: "main", commitMessage: "Add project soft delete hidden flags", commitSha: "d944e82", actorLogin: "andreyyste", createdAt: new Date(Date.now() - 14 * 86400000).toISOString() }
-                  ];
-
-                  return (
-                    <>
-                      <div className="bg-[#e9e1de] p-4 border-b-[4px] border-on-surface font-label-bold text-xs uppercase font-extrabold text-on-surface">
-                        CI/CD Build Pipeline Runs
+              <div className="relative border-[4px] border-on-surface bg-white shadow-[8px_8px_0px_0px_#1e1b19] overflow-hidden">
+                {/* Blurred mockup content */}
+                <div className="flex flex-col select-none pointer-events-none blur-[4px] opacity-40">
+                  <div className="bg-[#e9e1de] p-4 border-b-[4px] border-on-surface font-label-bold text-xs uppercase font-extrabold text-on-surface">
+                    CI/CD Build Pipeline Runs
+                  </div>
+                  <div className="flex flex-col divide-y divide-on-surface/20">
+                    <div className="p-4 flex items-center justify-between text-xs">
+                      <div className="flex flex-col gap-1">
+                        <span className="font-extrabold text-theme-green">✓ lint-and-check-validity-of-types</span>
+                        <span className="text-on-surface-variant font-semibold">Passed • Commit b7f9a2c by andreyyste on main</span>
                       </div>
-                      <div className="flex flex-col divide-y divide-on-surface/20">
-                        {activeRuns.map((run: any, idx: number) => {
-                          const isSuccess = run.conclusion === 'success';
-                          const isFailure = run.conclusion === 'failure';
-                          return (
-                            <div key={idx} className="p-4 hover:bg-theme-grey/30 transition-colors flex items-center justify-between text-xs">
-                              <div className="flex flex-col gap-1 min-w-0 pr-4">
-                                <span className={`font-extrabold truncate ${isSuccess ? 'text-theme-green' : isFailure ? 'text-theme-red' : 'text-[#fabd2f]'}`}>
-                                  {isSuccess ? '✓' : isFailure ? '✗' : '⚡'} {run.name}
-                                </span>
-                                <span className="text-on-surface-variant font-semibold truncate">
-                                  {run.status === 'completed' ? 'Passed' : 'Running'} • Commit {run.commitSha.substring(0, 7)} ({run.commitMessage.split('\n')[0]}) • event: push by {run.actorLogin} on {run.branch}
-                                </span>
-                              </div>
-                              <span className="text-on-surface-variant font-mono shrink-0">
-                                {getRelativeAge(run.createdAt)}
-                              </span>
-                            </div>
-                          );
-                        })}
+                    </div>
+                    <div className="p-4 flex items-center justify-between text-xs">
+                      <div className="flex flex-col gap-1">
+                        <span className="font-extrabold text-theme-green">✓ deploy-production-bundle-to-vercel</span>
+                        <span className="text-on-surface-variant font-semibold">Passed • Commit b7f9a2c by andreyyste on main</span>
                       </div>
-                    </>
-                  );
-                })()}
+                    </div>
+                  </div>
+                </div>
+                {/* Absolute overlay */}
+                <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px] flex items-center justify-center p-6 z-10">
+                  <div className="bg-white border-[4px] border-on-surface p-6 shadow-[6px_6px_0px_0px_#1e1b19] flex flex-col items-center gap-3 text-center max-w-sm">
+                    <h4 className="font-display-2xl text-lg font-bold uppercase text-on-surface">View on GitHub</h4>
+                    <p className="text-xs font-bold text-on-surface-variant leading-relaxed">
+                      Workflow runs and automation pipelines are tracked live on GitHub. Open to inspect active builds.
+                    </p>
+                    <a
+                      href={`https://github.com/andreyyste/${repo}/actions`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-label-bold uppercase text-xs bg-theme-yellow text-on-surface px-6 py-2.5 border-[3px] border-on-surface shadow-[4px_4px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all inline-flex items-center gap-1.5"
+                    >
+                      <span className="material-symbols-outlined text-base leading-none">open_in_new</span>
+                      Open Actions
+                    </a>
+                  </div>
+                </div>
               </div>
             )}
           </div>

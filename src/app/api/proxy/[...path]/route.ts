@@ -16,26 +16,32 @@ async function handleProxy(request: NextRequest) {
   const contentType = request.headers.get('Content-Type');
   if (contentType) {
     headers.set('Content-Type', contentType);
-  } else {
-    headers.set('Content-Type', 'application/json');
   }
   
   if (token) {
     headers.set('Authorization', `Bearer ${token}`);
   }
 
-  let body = null;
+  let body = undefined;
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     const rawBody = await request.text();
-    body = rawBody ? rawBody : null;
+    if (rawBody) {
+      body = rawBody;
+      if (!contentType) {
+        headers.set('Content-Type', 'application/json');
+      }
+    }
   }
 
   try {
-    const response = await fetch(url, {
+    const fetchOptions: RequestInit = {
       method: request.method,
       headers,
-      body,
-    });
+    };
+    if (body !== undefined) {
+      fetchOptions.body = body;
+    }
+    const response = await fetch(url, fetchOptions);
 
     const data = await response.text();
     let parsedData;

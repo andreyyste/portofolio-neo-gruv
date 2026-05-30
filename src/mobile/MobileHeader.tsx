@@ -1,9 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { useData } from '../context/DataContext';
 
+const getOrderedLinks = (links: Array<{ label: string; href: string }>) => {
+    if (!links || links.length === 0) return [];
+    const skillsLink = links.find(l => l.label.toLowerCase() === 'skills' || l.href.toLowerCase().includes('skills'));
+    if (!skillsLink) return links;
+
+    const filtered = links.filter(l => l !== skillsLink);
+    const expIdx = filtered.findIndex(l => l.label.toLowerCase() === 'experience' || l.href.toLowerCase().includes('experience'));
+    const resumeIdx = filtered.findIndex(l => l.label.toLowerCase() === 'resume' || l.href.toLowerCase().includes('resume'));
+
+    if (expIdx !== -1) {
+        const res = [...filtered];
+        res.splice(expIdx + 1, 0, skillsLink);
+        return res;
+    } else if (resumeIdx !== -1) {
+        const res = [...filtered];
+        res.splice(resumeIdx, 0, skillsLink);
+        return res;
+    }
+    return links;
+};
+
 export const MobileHeader: React.FC = () => {
     const { navigationData, marqueeItems } = useData();
     const { brandName, navLinks, ctaText } = navigationData;
+    const orderedNavLinks = getOrderedLinks(navLinks);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const repeatedItems = Array.from({ length: 5 }).flatMap(() => marqueeItems);
 
@@ -66,7 +88,7 @@ export const MobileHeader: React.FC = () => {
                 ].join(' ')}
             >
                 <div className="flex flex-col items-center gap-8 w-full px-8 mt-16">
-                    {navLinks.map((link, index) => (
+                    {orderedNavLinks.map((link, index) => (
                         <button 
                             key={link.href} 
                             onClick={() => handleMobileNav(link.href)}
@@ -85,7 +107,7 @@ export const MobileHeader: React.FC = () => {
                         onClick={() => handleMobileNav('contact')}
                         className="mt-8 bg-theme-yellow text-on-surface neo-border-heavy px-8 py-4 text-2xl uppercase w-full max-w-[280px] font-label-bold font-bold"
                         style={{ 
-                            transitionDelay: isMobileMenuOpen ? `${navLinks.length * 100}ms` : '0ms',
+                            transitionDelay: isMobileMenuOpen ? `${orderedNavLinks.length * 100}ms` : '0ms',
                             opacity: isMobileMenuOpen ? 1 : 0,
                             transform: isMobileMenuOpen ? 'translateY(0)' : 'translateY(20px)',
                             transition: 'all 0.4s ease-out'

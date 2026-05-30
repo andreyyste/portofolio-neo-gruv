@@ -46,7 +46,13 @@ export default function ProjectsDashboard() {
 
     try {
       const payload = {
-        ...formData,
+        title: formData.title,
+        brief: formData.brief,
+        description: formData.description,
+        liveUrl: formData.link || null,
+        githubRepo: formData.githubLink || null,
+        coverImage: formData.imageSrc || null,
+        hasSourceCode: !!formData.githubLink,
         tags: formData.tags ? formData.tags.split(',').map((t: string) => t.trim()).filter(Boolean) : []
       };
       const res = await fetch(url, {
@@ -73,10 +79,10 @@ export default function ProjectsDashboard() {
       title: project.title,
       brief: project.brief,
       description: project.description,
-      link: project.link,
-      githubLink: project.githubLink || '',
-      imageSrc: project.imageSrc,
-      imageAlt: project.imageAlt,
+      link: project.liveUrl || '',
+      githubLink: project.githubRepo || '',
+      imageSrc: project.coverImage || '',
+      imageAlt: '',
       tags: project.tags ? project.tags.map((t: any) => typeof t === 'string' ? t : t.name).join(', ') : '',
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });

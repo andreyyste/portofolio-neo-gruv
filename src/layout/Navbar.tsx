@@ -1,10 +1,44 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { Button } from '../ui/Button';
 import { useData } from '../context/DataContext';
 
+const getOrderedLinks = (links: Array<{ label: string; href: string }>) => {
+    if (!links || links.length === 0) return [];
+    const skillsLink = links.find(l => l.label.toLowerCase() === 'skills' || l.href.toLowerCase().includes('skills'));
+    if (!skillsLink) return links;
+
+    const filtered = links.filter(l => l !== skillsLink);
+    const expIdx = filtered.findIndex(l => l.label.toLowerCase() === 'experience' || l.href.toLowerCase().includes('experience'));
+    const resumeIdx = filtered.findIndex(l => l.label.toLowerCase() === 'resume' || l.href.toLowerCase().includes('resume'));
+
+    if (expIdx !== -1) {
+        const res = [...filtered];
+        res.splice(expIdx + 1, 0, skillsLink);
+        return res;
+    } else if (resumeIdx !== -1) {
+        const res = [...filtered];
+        res.splice(resumeIdx, 0, skillsLink);
+        return res;
+    }
+    return links;
+};
+
 export const Navbar: React.FC = () => {
+    const pathname = usePathname();
+    const isSourceCode = pathname?.startsWith('/source-code/');
+    
+    // Extract repo name if in source code
+    let repoName = '';
+    if (isSourceCode && pathname) {
+        const segments = pathname.split('/');
+        if (segments.length > 2) {
+            repoName = segments[2];
+        }
+    }
+
     const [floating, setFloating] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const { navigationData } = useData();
@@ -32,6 +66,44 @@ export const Navbar: React.FC = () => {
         }
     };
 
+    if (isSourceCode) {
+        return (
+            <nav
+                className={[
+                    'sticky top-0 z-[110] flex justify-between items-center px-gutter text-primary',
+                    'transition-all duration-300 ease-in-out',
+                    floating
+                        ? 'mx-4 mt-5 h-16 rounded-2xl border-[3px] border-on-surface bg-background/90 backdrop-blur-md shadow-[4px_4px_0px_0px_#1e1b19]'
+                        : 'w-full h-24 border-b-[4px] border-on-surface bg-background shadow-[8px_8px_0px_0px_#1e1b19]',
+                ].join(' ')}
+            >
+                <div 
+                    onClick={() => window.location.href = '/'}
+                    className={[
+                        'font-display-2xl font-extrabold uppercase tracking-tighter text-on-surface transition-all duration-300 relative z-[120] cursor-pointer',
+                        floating ? 'text-[24px]' : 'text-[32px]',
+                    ].join(' ')}
+                >
+                    {brandName}
+                </div>
+                <div className="flex items-center gap-3 md:gap-4 z-[120]">
+                    <Button 
+                        onClick={() => window.location.href = '/'}
+                        className="bg-surface text-on-surface neo-border neo-shadow px-3 py-1.5 text-xs md:text-sm md:px-6 md:py-2 hover:bg-theme-red hover:text-surface-container-lowest hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_#1e1b19]"
+                    >
+                        BACK TO PORTFOLIO
+                    </Button>
+                    <Button 
+                        onClick={() => window.open(`https://github.com/andreyyste/${repoName}`, '_blank')}
+                        className="bg-theme-yellow text-on-surface neo-border neo-shadow px-3 py-1.5 text-xs md:text-sm md:px-6 md:py-2 hover:bg-theme-blue hover:text-surface-container-lowest hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_#1e1b19]"
+                    >
+                        OPEN ON GITHUB
+                    </Button>
+                </div>
+            </nav>
+        );
+    }
+
     return (
         <>
             <nav
@@ -50,7 +122,7 @@ export const Navbar: React.FC = () => {
                     {brandName}
                 </div>
                 <div className="hidden md:flex items-center gap-8">
-                    {navLinks.map((link) => (
+                    {getOrderedLinks(navLinks).map((link) => (
                         <a key={link.href} className="text-on-surface font-label-bold text-label-bold uppercase hover:bg-theme-yellow hover:text-on-surface transition-colors duration-100 p-2 border-[4px] border-transparent hover:border-on-surface active:translate-x-1 active:translate-y-1" href={link.href}>{link.label}</a>
                     ))}
                 </div>
@@ -77,7 +149,7 @@ export const Navbar: React.FC = () => {
                     </span>
                 </button>
             </nav>
-
+ 
             {/* Mobile Menu Overlay */}
             <div 
                 className={[
@@ -86,7 +158,7 @@ export const Navbar: React.FC = () => {
                 ].join(' ')}
             >
                 <div className="flex flex-col items-center gap-8 w-full px-8">
-                    {navLinks.map((link, index) => (
+                    {getOrderedLinks(navLinks).map((link, index) => (
                         <button 
                             key={link.href} 
                             onClick={() => handleMobileNav(link.href)}

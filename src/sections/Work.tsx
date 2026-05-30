@@ -121,21 +121,22 @@ export const Work: React.FC = () => {
                                     }}
                                 >
                                     <div className="absolute inset-0 bg-theme-yellow neo-border-heavy translate-x-3 translate-y-3 z-0" />
-                                    <div className="relative z-10 neo-border-heavy overflow-hidden flex flex-col border-[6px] bg-surface min-h-[500px]">
-                                        {/* Featured Badge */}
-                                        {project.featured && (
-                                            <div className="absolute top-4 left-4 z-20 font-label-bold text-xs uppercase bg-theme-red text-surface px-3 py-1 neo-border">
-                                                Featured
+                                    <div className="relative z-10 neo-border-heavy overflow-hidden flex flex-col border-[6px] bg-surface min-h-[380px]">
+                                        {/* Image */}
+                                        {(project.coverImage || project.image?.src) && (
+                                            <div className="h-48 overflow-hidden border-b-[6px] border-on-surface relative">
+                                                <img alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src={project.coverImage || project.image?.src || ''}/>
                                             </div>
                                         )}
-                                        {/* Image */}
-                                        <div className="h-48 overflow-hidden border-b-[6px] border-on-surface relative">
-                                            <img alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src={project.coverImage || project.image?.src || ''}/>
-                                        </div>
                                         {/* Content */}
                                         <div className="p-6 flex-grow flex flex-col justify-between">
                                             <div>
                                                 <div className="flex gap-2 mb-4 flex-wrap">
+                                                    {project.featured && (
+                                                        <span className="px-3 py-1 neo-border border-[3px] text-xs font-label-bold uppercase bg-theme-red text-surface-container-lowest">
+                                                            Featured
+                                                        </span>
+                                                    )}
                                                     {project.tags.map((tag, tagIndex) => {
                                                         const colorClass = TAG_COLORS[tagIndex % TAG_COLORS.length];
                                                         return (

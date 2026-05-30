@@ -102,21 +102,17 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                     ].join(' ')}
                     style={isActive ? { animationDelay: `${index * 0.4}s` } : {}}
                 >
-                    {/* Featured Badge */}
-                    {project.featured && (
-                        <div className="absolute top-4 left-4 z-20 font-label-bold text-xs uppercase bg-theme-red text-surface px-3 py-1 neo-border">
-                            Featured
+                    {/* Image */}
+                    {imageSrc && (
+                        <div className="h-48 overflow-hidden border-b-[6px] border-on-surface relative">
+                            <div className="absolute inset-0 bg-on-surface opacity-0 group-hover:opacity-20 transition-opacity z-10 mix-blend-overlay" />
+                            <img
+                                alt={project.title}
+                                className="w-full h-full object-cover transition-all duration-700 filter-none group-hover:scale-110"
+                                src={imageSrc}
+                            />
                         </div>
                     )}
-                    {/* Image */}
-                    <div className="h-64 overflow-hidden border-b-[6px] border-on-surface relative">
-                        <div className="absolute inset-0 bg-on-surface opacity-0 group-hover:opacity-20 transition-opacity z-10 mix-blend-overlay" />
-                        <img
-                            alt={project.title}
-                            className="w-full h-full object-cover transition-all duration-700 filter-none group-hover:scale-110"
-                            src={imageSrc}
-                        />
-                    </div>
                     {/* Content */}
                     <div
                         className={[
@@ -127,6 +123,18 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                     >
                         <div>
                             <div className="flex gap-2 mb-4 flex-wrap">
+                                {project.featured && (
+                                    <span
+                                        className={[
+                                            'px-3 py-1 neo-border border-[3px] text-xs font-label-bold uppercase transition-colors duration-500',
+                                            isActive
+                                                ? 'bg-theme-red text-surface-container-lowest'
+                                                : 'bg-on-surface/20 text-on-surface/50',
+                                        ].join(' ')}
+                                    >
+                                        Featured
+                                    </span>
+                                )}
                                 {project.tags.map((tag, tagIndex) => {
                                     const colorClass = TAG_COLORS[tagIndex % TAG_COLORS.length];
                                     return (
@@ -146,7 +154,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                             </div>
                             <h3
                                 className={[
-                                    'font-headline-lg-mobile text-[40px] leading-tight font-bold uppercase mb-2 transition-colors duration-500',
+                                    'font-display-2xl text-2xl md:text-[28px] leading-tight font-extrabold uppercase mb-2 transition-colors duration-500',
                                     isActive ? 'text-on-surface' : 'text-on-surface/50',
                                 ].join(' ')}
                             >
