@@ -25,7 +25,7 @@ export const useReveal = (ready: boolean = true) => {
             });
         }, observerOptions);
 
-        document.querySelectorAll('.reveal-section, .reveal-left, .reveal-right, .reveal-bottom, .reveal-top').forEach(section => {
+        document.querySelectorAll('.reveal-section, .reveal-left, .reveal-right, .reveal-bottom, .reveal-top, .reveal-bounce').forEach(section => {
             observer.observe(section);
         });
 
