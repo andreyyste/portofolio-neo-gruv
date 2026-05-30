@@ -1,28 +1,77 @@
 import React from 'react';
 import { useData } from '../../context/DataContext';
 
+const TAG_COLORS = [
+    'bg-theme-red text-white',
+    'bg-theme-blue text-white',
+    'bg-theme-green text-on-surface',
+    'bg-theme-yellow text-on-surface'
+];
+
 export const ExperienceMobile: React.FC = () => {
-    const { resumeData } = useData();
+    const { experiencesData } = useData();
+
     return (
-        <section id="experience" className="w-full bg-[#eeeae3] px-4 py-16 flex flex-col">
-            <h2 className="font-display-2xl text-[48px] leading-[0.9] uppercase tracking-tighter text-on-surface mb-8 font-extrabold flex items-center gap-3">
-                {resumeData.headline.prefix} 
-                <span className="inline-block bg-on-surface text-[#f4f1ea] px-3 py-1 rounded-[4px] border-[3px] border-on-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]">
-                    {resumeData.headline.highlight}
+        <section id="experience" className="w-full bg-[#f4f1ea] px-4 py-16 flex flex-col relative border-t-[6px] border-on-surface">
+            {/* Section Header */}
+            <h2 className="font-display-2xl text-[48px] leading-[0.9] uppercase tracking-tighter text-on-surface mb-12 font-extrabold flex flex-col items-start">
+                THE
+                <span className="inline-block bg-theme-blue text-white px-3 py-1 rounded-[4px] border-[3px] border-on-surface shadow-[4px_4px_0px_0px_#1e1b19] mt-2">
+                    GRIND
                 </span>
             </h2>
 
-            <div className="w-full aspect-square bg-[#0f241d] border-[6px] border-on-surface shadow-[8px_8px_0px_0px_#1e1b19] mb-8 flex items-center justify-center">
-                <span className="font-display-2xl text-[40px] text-[#4af071] opacity-50 text-center">[FLOPPY<br/>DISK]</span>
-            </div>
+            {/* Timeline Container */}
+            <div className="relative w-full py-4 pl-8">
+                {/* Vertical Dashed Line */}
+                <div className="absolute left-[8px] top-0 bottom-0 w-0 border-l-[3px] border-dashed border-on-surface z-0" />
 
-            <a 
-                href={resumeData.downloadUrl}
-                className="w-full bg-[#1a4a4f] text-white py-4 border-[4px] border-on-surface shadow-[6px_6px_0px_0px_#1e1b19] flex justify-center items-center gap-3 active:translate-y-1 active:translate-x-1 active:shadow-none transition-all"
-            >
-                <span className="material-symbols-outlined font-bold">download</span>
-                <span className="font-label-bold font-bold uppercase tracking-wider">DOWNLOAD {resumeData.ctaText}</span>
-            </a>
+                {/* Timeline Items */}
+                <div className="flex flex-col gap-10 relative z-10">
+                    {experiencesData.map((exp, index) => (
+                        <div key={index} className="relative flex flex-col w-full">
+                            {/* Dot Indicator */}
+                            <div className="absolute -left-[30px] top-2 w-4 h-4 rounded-full border-[3px] border-on-surface bg-theme-yellow shadow-[1px_1px_0px_0px_#1e1b19] z-20" />
+
+                            {/* Card Content */}
+                            <div className="w-full bg-surface border-[4px] border-on-surface p-5 shadow-[6px_6px_0px_0px_#1e1b19] relative">
+                                <div className="flex flex-col gap-2 mb-3">
+                                    <span className="font-label-bold text-[10px] uppercase bg-on-surface/10 text-on-surface px-2 py-1 border-[2px] border-on-surface inline-block self-start font-bold">
+                                        {exp.period}
+                                    </span>
+                                    <h3 className="font-display-xl text-xl font-bold uppercase tracking-tight text-on-surface leading-tight">
+                                        {exp.role}
+                                    </h3>
+                                    <span className="font-label-bold text-xs uppercase text-theme-red font-bold">
+                                        {exp.company}
+                                    </span>
+                                </div>
+
+                                <div className="border-t-[2px] border-on-surface pt-3 mb-4">
+                                    <p className="font-body-md text-on-surface-variant text-sm leading-relaxed">
+                                        {exp.description}
+                                    </p>
+                                </div>
+
+                                {/* Skills Badges */}
+                                <div className="flex flex-wrap gap-1.5">
+                                    {exp.skills.map((skill: string, sIdx: number) => {
+                                        const colorClass = TAG_COLORS[sIdx % TAG_COLORS.length];
+                                        return (
+                                            <span 
+                                                key={sIdx}
+                                                className={`font-label-bold text-[9px] uppercase px-2 py-0.5 border-[2px] border-on-surface font-semibold ${colorClass}`}
+                                            >
+                                                {skill}
+                                            </span>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </section>
     );
 };

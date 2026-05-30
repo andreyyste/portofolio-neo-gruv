@@ -5,6 +5,7 @@ import { AboutMobile } from './sections/AboutMobile';
 import { SkillsMobile } from './sections/SkillsMobile';
 import { WorkMobile } from './sections/WorkMobile';
 import { ExperienceMobile } from './sections/ExperienceMobile';
+import { ResumeMobile } from './sections/ResumeMobile';
 import { ContactMobile } from './sections/ContactMobile';
 import { MobileFooter } from './MobileFooter';
 
@@ -18,6 +19,7 @@ export const MobileApp: React.FC = () => {
                 <WorkMobile />
                 <ExperienceMobile />
                 <SkillsMobile />
+                <ResumeMobile />
                 <ContactMobile />
             </main>
             <MobileFooter />
