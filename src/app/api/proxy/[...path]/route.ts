@@ -47,9 +47,15 @@ async function handleProxy(request: NextRequest) {
     let parsedData;
     try { parsedData = JSON.parse(data); } catch { parsedData = data; }
 
-    return NextResponse.json(parsedData, {
+    const res = NextResponse.json(parsedData, {
       status: response.status,
     });
+
+    if (response.status === 401) {
+      res.cookies.delete('jwt_token');
+    }
+
+    return res;
   } catch (error) {
     return NextResponse.json({ error: 'Proxy failed' }, { status: 500 });
   }
@@ -59,3 +65,4 @@ export const GET = handleProxy;
 export const POST = handleProxy;
 export const PATCH = handleProxy;
 export const DELETE = handleProxy;
+
