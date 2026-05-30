@@ -9,6 +9,7 @@ import { IssuesTabContent } from '../components/IssuesTabContent';
 import { PullsTabContent } from '../components/PullsTabContent';
 import { ActionsTabContent } from '../components/ActionsTabContent';
 import { formatSize } from '../utils/formatters';
+import { GithubRepo, GithubRepoMetadata, GithubTreeItem, GithubFileContent, GithubIssue } from '../../../../types/github';
 
 interface PageProps {
   params: Promise<{
@@ -29,19 +30,19 @@ export default async function SourceCodePage({ params, searchParams }: PageProps
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
   // 1. Fetch Repository Info from database via backend API
-  let repoDetail: any = null;
+  let repoDetail: GithubRepo | null = null;
   try {
     const reposRes = await fetch(`${baseUrl}/github/repos`, { cache: 'no-store' });
     if (reposRes.ok) {
       const repos = await reposRes.json();
-      repoDetail = repos.find((r: any) => r.githubRepo === repo);
+      repoDetail = repos.find((r: GithubRepo) => r.githubRepo === repo);
     }
   } catch (error) {
     console.error('Error fetching repo info:', error);
   }
 
   // 1b. Fetch dynamic metadata from the backend (stars, forks, watchers, releases, contributors)
-  let repoMetadata: any = null;
+  let repoMetadata: GithubRepoMetadata | null = null;
   try {
     const metaRes = await fetch(`${baseUrl}/github/repos/${repo}/metadata`, { cache: 'no-store' });
     if (metaRes.ok) {
@@ -62,8 +63,8 @@ export default async function SourceCodePage({ params, searchParams }: PageProps
 
   // 2. Fetch Directory Tree or File Contents if Tab is 'Code'
   let isDirectory = false;
-  let treeData: any[] | null = null;
-  let fileData: any = null;
+  let treeData: GithubTreeItem[] | null = null;
+  let fileData: GithubFileContent | null = null;
   let readmeContent = '';
   let highlightedHtml = '';
 
@@ -82,7 +83,7 @@ export default async function SourceCodePage({ params, searchParams }: PageProps
         });
 
         // Check for README.md in the current directory and fetch it
-        const readmeFile = treeData.find((n: any) => n.name.toLowerCase() === 'readme.md');
+        const readmeFile = treeData.find((n: GithubTreeItem) => n.name.toLowerCase() === 'readme.md');
         if (readmeFile) {
           const readmeRes = await fetch(`${baseUrl}/github/repos/${repo}/file?path=${encodeURIComponent(readmeFile.path)}`, { cache: 'no-store' });
           if (readmeRes.ok) {
@@ -151,7 +152,7 @@ export default async function SourceCodePage({ params, searchParams }: PageProps
             <span className="material-symbols-outlined text-base leading-none">code</span>Code
           </Link>
           <Link href={`/source-code/${repo}/${filePath ? filePath : ''}?tab=issues`} className={`font-label-bold uppercase text-xs px-5 py-3 border-[3px] border-on-surface border-b-0 mr-1 cursor-pointer flex items-center gap-1.5 relative top-[3px] z-10 transition-all ${activeTab === 'issues' ? 'bg-theme-red/15 text-theme-red font-bold shadow-[2px_-2px_0px_0px_#1e1b19]' : 'bg-white hover:bg-theme-grey'}`}>
-            <span className="material-symbols-outlined text-base leading-none">info</span>Issues <span className="bg-theme-red text-white text-[9px] px-1.5 py-0.5 rounded-full ml-1">{repoMetadata?.issues?.filter((i: any) => i.state === 'open').length ?? 5}</span>
+            <span className="material-symbols-outlined text-base leading-none">info</span>Issues <span className="bg-theme-red text-white text-[9px] px-1.5 py-0.5 rounded-full ml-1">{repoMetadata?.issues?.filter((i: GithubIssue) => i.state === 'open').length ?? 5}</span>
           </Link>
           <Link href={`/source-code/${repo}/${filePath ? filePath : ''}?tab=pulls`} className={`font-label-bold uppercase text-xs px-5 py-3 border-[3px] border-on-surface border-b-0 mr-1 cursor-pointer flex items-center gap-1.5 relative top-[3px] z-10 transition-all ${activeTab === 'pulls' ? 'bg-theme-red/15 text-theme-red font-bold shadow-[2px_-2px_0px_0px_#1e1b19]' : 'bg-white hover:bg-theme-grey'}`}>
             <span className="material-symbols-outlined text-base leading-none">call_split</span>Pull Requests

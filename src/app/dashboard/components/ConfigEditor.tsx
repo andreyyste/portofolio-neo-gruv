@@ -11,7 +11,7 @@ interface FieldConfig {
   label: string;
   type: 'text' | 'textarea' | 'nested' | 'root_string_array' | 'object_array';
   fields?: FieldConfig[]; // for nested objects or object_array
-  defaultItem?: any; // for object_array
+  defaultItem?: Record<string, any>; // for object_array
 }
 
 interface ConfigEditorProps {
@@ -51,7 +51,7 @@ export function ConfigEditor({ configKey, title, fields }: ConfigEditorProps) {
     const value = path.reduce((obj, key) => (obj && obj[key] !== undefined) ? obj[key] : '', data) || '';
 
     if (field.type === 'object_array') {
-      const arr = (path.reduce((obj, key) => (obj && obj[key] !== undefined) ? obj[key] : null, data) || []) as any[];
+      const arr = (path.reduce((obj, key) => (obj && obj[key] !== undefined) ? obj[key] : null, data) || []) as Record<string, any>[];
       return (
         <div key={path.join('.')} className="flex flex-col gap-4 border-l-4 border-theme-yellow pl-4">
           <label className="font-label-bold text-sm uppercase opacity-80">{field.label}</label>

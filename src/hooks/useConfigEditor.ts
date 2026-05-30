@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 export function useConfigEditor(configKey: string) {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<Record<string, any> | any[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
@@ -55,9 +55,9 @@ export function useConfigEditor(configKey: string) {
   };
 
   const handleChange = (path: string[], value: string) => {
-    setData((prev: any) => {
-      const newData = { ...prev };
-      let current = newData;
+    setData((prev) => {
+      const newData = Array.isArray(prev) ? [...prev] : { ...prev } as Record<string, any>;
+      let current: any = newData;
       for (let i = 0; i < path.length - 1; i++) {
         if (!current[path[i]]) current[path[i]] = {};
         // Shallow clone arrays or objects to trigger re-render properly
@@ -69,10 +69,10 @@ export function useConfigEditor(configKey: string) {
     });
   };
 
-  const handleArrayAction = (path: string[], action: 'add' | 'remove', index?: number, defaultItem?: any) => {
-    setData((prev: any) => {
-      const newData = { ...prev };
-      let current = newData;
+  const handleArrayAction = (path: string[], action: 'add' | 'remove', index?: number, defaultItem?: Record<string, any>) => {
+    setData((prev) => {
+      const newData = Array.isArray(prev) ? [...prev] : { ...prev } as Record<string, any>;
+      let current: any = newData;
       for (let i = 0; i < path.length - 1; i++) {
         if (!current[path[i]]) current[path[i]] = {};
         current[path[i]] = Array.isArray(current[path[i]]) ? [...current[path[i]]] : { ...current[path[i]] };

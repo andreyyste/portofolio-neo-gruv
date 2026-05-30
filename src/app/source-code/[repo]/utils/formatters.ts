@@ -1,3 +1,5 @@
+import { GithubCommit } from '../../../../types/github';
+
 // Helpers to format file sizes
 export const formatSize = (bytes: number) => {
   if (bytes === 0) return '0 B';
@@ -8,7 +10,7 @@ export const formatSize = (bytes: number) => {
 };
 
 // Selects a commit from the repository commit list based on the file name consistently
-export const getCommitForFile = (fileName: string, commitsList: any[]) => {
+export const getCommitForFile = (fileName: string, commitsList: GithubCommit[]) => {
   if (!commitsList || commitsList.length === 0) {
     return { message: 'Refactor codebase structure for strict brutalist specs', age: '2 days ago' };
   }

@@ -5,16 +5,18 @@ import { InteractiveDemo } from './InteractiveDemo';
 import { getCommitForFile, getRelativeAge, formatSize } from '../utils/formatters';
 import { sanitizeMarkdownHtml, markdownComponents } from '../utils/markdown';
 
+import { GithubTreeItem, GithubFileContent, GithubRepoMetadata } from '../../../../types/github';
+
 interface CodeTabContentProps {
   repo: string;
   filePath: string;
   isDirectory: boolean;
-  treeData: any[] | null;
-  fileData: any | null;
+  treeData: GithubTreeItem[] | null;
+  fileData: GithubFileContent | null;
   readmeContent: string;
   highlightedHtml: string;
   parentPath: string;
-  repoMetadata: any;
+  repoMetadata: GithubRepoMetadata;
   repoLink: string;
 }
 

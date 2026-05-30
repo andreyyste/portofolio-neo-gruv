@@ -1,15 +1,17 @@
 import React from 'react';
 
+import { GithubRepoMetadata, GithubIssue } from '../../../../types/github';
+
 interface IssuesTabContentProps {
   repo: string;
-  repoMetadata: any;
+  repoMetadata: GithubRepoMetadata;
 }
 
 export const IssuesTabContent: React.FC<IssuesTabContentProps> = ({
   repo,
   repoMetadata,
 }) => {
-  const openIssuesCount = repoMetadata?.issues?.filter((i: any) => i.state === 'open').length ?? 5;
+  const openIssuesCount = repoMetadata?.issues?.filter((i: GithubIssue) => i.state === 'open').length ?? 5;
 
   return (
     <div className="relative border-[4px] border-on-surface bg-white shadow-[8px_8px_0px_0px_#1e1b19] overflow-hidden">
