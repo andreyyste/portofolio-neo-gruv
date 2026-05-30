@@ -38,6 +38,14 @@ export const WorkCarouselView: React.FC<WorkCarouselViewProps> = ({
    * Calculates the offset distance from the currently active card.
    * This creates an infinite loop illusion by picking the shortest path.
    * 
+   * Mathematical explanation:
+   * To achieve a smooth infinite cycling effect, we compute the distance between the
+   * current project card index and the active index. If this distance exceeds half of
+   * the total number of projects, it's shorter to loop around the end/start of the array.
+   * Subtracting or adding the total shifts the coordinate space so that transition offsets
+   * (e.g. from the last card to the first card) remain continuous and visual positioning
+   * is seamless.
+   * 
    * @param index - The index of the card to calculate the offset for.
    * @returns The offset from the active card: -1 = left, 0 = center, 1 = right, etc.
    */

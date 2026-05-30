@@ -67,6 +67,7 @@ export default async function SourceCodePage({ params, searchParams }: PageProps
   let fileData: GithubFileContent | null = null;
   let readmeContent = '';
   let highlightedHtml = '';
+  let hasError = false;
 
   if (activeTab === 'code') {
     try {
@@ -108,11 +109,16 @@ export default async function SourceCodePage({ params, searchParams }: PageProps
             highlightedHtml = `<pre class="bg-[#282828] text-[#ebdbb2] p-4 font-mono text-xs"><code>${fileData.content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>`;
           }
         } else {
-          notFound();
+          if (fileRes.status === 404) {
+            notFound();
+          } else {
+            hasError = true;
+          }
         }
       }
     } catch (e) {
-      notFound();
+      console.error('Error fetching data from API:', e);
+      hasError = true;
     }
   }
 
@@ -165,28 +171,47 @@ export default async function SourceCodePage({ params, searchParams }: PageProps
         {/* ================= TAB CONTENTS GRID ================= */}
         <section className="grid grid-cols-12 gap-8 items-start">
           <div className="col-span-12 lg:col-span-9 flex flex-col gap-8 min-w-0">
-            {activeTab === 'code' && (
-              <CodeTabContent
-                repo={repo}
-                filePath={filePath}
-                isDirectory={isDirectory}
-                treeData={treeData}
-                fileData={fileData}
-                readmeContent={readmeContent}
-                highlightedHtml={highlightedHtml}
-                parentPath={parentPath}
-                repoMetadata={repoMetadata}
-                repoLink={repoLink}
-              />
-            )}
-            {activeTab === 'issues' && (
-              <IssuesTabContent repo={repo} repoMetadata={repoMetadata} />
-            )}
-            {activeTab === 'pulls' && (
-              <PullsTabContent repo={repo} />
-            )}
-            {activeTab === 'actions' && (
-              <ActionsTabContent repo={repo} />
+            {hasError ? (
+              <div className="border-[4px] border-on-surface bg-white p-8 shadow-[8px_8px_0px_0px_#1e1b19] flex flex-col gap-4 text-center items-center">
+                <span className="material-symbols-outlined text-5xl text-theme-red">error</span>
+                <h4 className="font-display-2xl text-xl font-bold uppercase text-on-surface">Connection Timeout</h4>
+                <p className="text-xs font-bold text-on-surface-variant max-w-md leading-relaxed">
+                  Unable to retrieve repository files from the server. This may be due to temporary network issues or GitHub API rate limits. Please try again later.
+                </p>
+                <Link
+                  href={`/source-code/${repo}`}
+                  className="font-label-bold uppercase text-xs bg-theme-yellow text-on-surface px-6 py-2.5 border-[3px] border-on-surface shadow-[4px_4px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all inline-flex items-center gap-1"
+                >
+                  <span className="material-symbols-outlined text-base">refresh</span>
+                  Retry Connection
+                </Link>
+              </div>
+            ) : (
+              <>
+                {activeTab === 'code' && (
+                  <CodeTabContent
+                    repo={repo}
+                    filePath={filePath}
+                    isDirectory={isDirectory}
+                    treeData={treeData}
+                    fileData={fileData}
+                    readmeContent={readmeContent}
+                    highlightedHtml={highlightedHtml}
+                    parentPath={parentPath}
+                    repoMetadata={repoMetadata}
+                    repoLink={repoLink}
+                  />
+                )}
+                {activeTab === 'issues' && (
+                  <IssuesTabContent repo={repo} repoMetadata={repoMetadata} />
+                )}
+                {activeTab === 'pulls' && (
+                  <PullsTabContent repo={repo} />
+                )}
+                {activeTab === 'actions' && (
+                  <ActionsTabContent repo={repo} />
+                )}
+              </>
             )}
           </div>
 

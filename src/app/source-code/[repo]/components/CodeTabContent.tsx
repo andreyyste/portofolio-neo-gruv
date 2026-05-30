@@ -162,6 +162,13 @@ export const CodeTabContent: React.FC<CodeTabContentProps> = ({
 
           {/* Syntax Highlighted Code Viewer */}
           <div className="overflow-x-auto p-4 md:p-6 bg-[#282828]">
+            {/* 
+              SECURITY NOTE: 
+              Using dangerouslySetInnerHTML here is safe because:
+              1. The highlightedHtml is generated server-side by Shiki (syntax highlighter).
+              2. Shiki parses the code content and returns structured syntax-highlighted tokens wrapped in standard, safe HTML tags (e.g. span, pre).
+              3. The code content itself is sourced directly from verified files via GitHub API tree requests, and not from unescaped user inputs.
+            */}
             <div 
               dangerouslySetInnerHTML={{ __html: highlightedHtml }} 
               className="text-xs [&>pre]:!bg-[#282828] [&>pre]:overflow-x-auto [&>pre]:leading-relaxed"

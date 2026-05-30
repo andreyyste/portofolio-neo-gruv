@@ -32,6 +32,19 @@ export function ConfigEditor({ configKey, title, fields }: ConfigEditorProps) {
     handleArrayAction,
   } = useConfigEditor(configKey);
 
+  /**
+   * Recursively renders a configuration input field based on its dynamic type mapping.
+   * 
+   * Formats handled:
+   * 1. 'root_string_array' - A leaf element mapping arrays of strings directly to newline-separated textareas.
+   * 2. 'object_array' - A list of nested objects. This maps each item dynamically to sub-fields using index segments
+   *    in the path, allowing additions and deletions in place.
+   * 3. 'nested' - An object structure containing sub-fields. Calls renderField recursively for nested children.
+   * 4. Leaf fields ('text' | 'textarea') - Renders basic HTML Input/textarea elements mapping to string values.
+   * 
+   * @param field - The schema configurations of the target field.
+   * @param parentPath - The parent path segments in the nested state object.
+   */
   const renderField = (field: FieldConfig, parentPath: string[] = []) => {
     if (field.type === 'root_string_array') {
       const val = Array.isArray(data) ? data.join('\n') : '';
