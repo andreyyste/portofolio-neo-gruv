@@ -28,32 +28,52 @@ const formatSize = (bytes: number) => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
 };
 
-// Generates consistent mock commit messages based on file name
-const getCommitMessage = (fileName: string) => {
-  const name = fileName.toLowerCase();
-  if (name.includes('readme')) return 'Update README.md with design guidelines';
-  if (name.includes('package.json')) return 'Upgrade dependencies to NestJS v11 & React 19';
-  if (name.includes('eslint') || name.includes('prettier')) return 'Configure strict linting and formatting rules';
-  if (name.includes('tailwind')) return 'Update Light Gruvbox palette color tokens';
-  if (name.includes('tsconfig')) return 'Enable verbatimModuleSyntax compiler checks';
-  if (name.includes('prisma') || name.includes('schema')) return 'Migrate database schema for GITHUB source support';
-  if (name.includes('controller')) return 'Implement programmatic cache manager verification';
-  if (name.includes('service')) return 'Refactor repository sync and proxy tree fetches';
-  if (name.includes('dto')) return 'Add class-validator schemas for project payload';
-  if (name.includes('work') || name.includes('carousel')) return 'Implement Featured badge overlays and links';
-  if (name.includes('source') || name.includes('viewer')) return 'Build interactive codebase tree navigation';
-  if (name.includes('main') || name.includes('app')) return 'Initialize NestJS service setup and boot routing';
-  return 'Refactor codebase structure for strict brutalist specs';
+// Selects a commit from the repository commit list based on the file name consistently
+const getCommitForFile = (fileName: string, commitsList: any[]) => {
+  if (!commitsList || commitsList.length === 0) {
+    return { message: 'Refactor codebase structure for strict brutalist specs', age: '2 days ago' };
+  }
+  // Simple hash function to select a commit consistently based on file name
+  let hash = 0;
+  for (let i = 0; i < fileName.length; i++) {
+    hash = fileName.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % commitsList.length;
+  const c = commitsList[index];
+  
+  // Calculate relative age from date
+  const date = new Date(c.date);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
+  
+  let age = 'Just now';
+  if (diffDays > 0) age = diffDays === 1 ? '1 day ago' : `${diffDays} days ago`;
+  else if (diffHours > 0) age = diffHours === 1 ? '1 hour ago' : `${diffHours} hours ago`;
+  else if (diffMins > 0) age = diffMins === 1 ? '1 min ago' : `${diffMins} mins ago`;
+
+  return {
+    message: c.message.split('\n')[0],
+    age,
+  };
 };
 
-// Generates consistent mock ages based on file name length
-const getCommitAge = (fileName: string) => {
-  const len = fileName.length;
-  if (len % 5 === 0) return 'Just now';
-  if (len % 5 === 1) return '1 hour ago';
-  if (len % 5 === 2) return '2 hours ago';
-  if (len % 5 === 3) return '2 days ago';
-  return '1 week ago';
+// Formats UTC date strings into relative time-ago format
+const getRelativeAge = (dateStr: string) => {
+  if (!dateStr) return 'some time ago';
+  const date = new Date(dateStr);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
+  
+  if (diffDays > 0) return diffDays === 1 ? '1 day ago' : `${diffDays} days ago`;
+  if (diffHours > 0) return diffHours === 1 ? '1 hour ago' : `${diffHours} hours ago`;
+  if (diffMins > 0) return diffMins === 1 ? '1 min ago' : `${diffMins} mins ago`;
+  return 'Just now';
 };
 
 export default async function SourceCodePage({ params, searchParams }: PageProps) {
@@ -242,7 +262,9 @@ export default async function SourceCodePage({ params, searchParams }: PageProps
             }`}
           >
             <span className="material-symbols-outlined text-base leading-none">info</span>
-            Issues <span className="bg-theme-red text-white text-[9px] px-1.5 py-0.5 rounded-full ml-1">5</span>
+            Issues <span className="bg-theme-red text-white text-[9px] px-1.5 py-0.5 rounded-full ml-1">
+              {repoMetadata?.issues?.filter((i: any) => i.state === 'open').length ?? 5}
+            </span>
           </Link>
 
           <Link 
@@ -284,23 +306,50 @@ export default async function SourceCodePage({ params, searchParams }: PageProps
                   <div className="flex flex-col border-[4px] border-on-surface bg-white shadow-[8px_8px_0px_0px_#1e1b19]">
                     
                     {/* Commit Header Banner */}
-                    <div className="bg-[#e9e1de] p-4 border-b-[4px] border-on-surface flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-theme-yellow border-[2px] border-on-surface flex items-center justify-center font-bold text-sm">
-                          N
+                    {(() => {
+                      const latestCommit = repoMetadata?.commits?.[0];
+                      const totalC = repoMetadata?.totalCommits || 150;
+                      
+                      let commitMsg = 'Update structural reference implementation';
+                      let author = 'andreyyste';
+                      let avatarUrl = '';
+                      let commitHash = 'b7f9a2c';
+                      let relativeAge = '2 hours ago';
+                      
+                      if (latestCommit) {
+                        commitMsg = latestCommit.message.split('\n')[0];
+                        author = latestCommit.authorLogin;
+                        avatarUrl = latestCommit.avatarUrl;
+                        commitHash = latestCommit.sha.substring(0, 7);
+                        relativeAge = getRelativeAge(latestCommit.date);
+                      }
+                      
+                      return (
+                        <div className="bg-[#e9e1de] p-4 border-b-[4px] border-on-surface flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full bg-theme-yellow border-[2px] border-on-surface flex items-center justify-center font-bold text-sm overflow-hidden select-none shrink-0">
+                              {avatarUrl ? (
+                                <img src={avatarUrl} alt={author} className="w-full h-full object-cover" />
+                              ) : (
+                                author.substring(0, 1).toUpperCase()
+                              )}
+                            </div>
+                            <span className="font-label-bold text-xs uppercase text-on-surface font-extrabold">{author}</span>
+                            <span className="text-xs text-on-surface-variant font-bold truncate max-w-[200px] md:max-w-[400px]" title={commitMsg}>
+                              {commitMsg}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-3 text-xs text-on-surface-variant font-bold font-mono">
+                            <span className="bg-[#ebdbb2]/50 px-2 py-0.5 rounded border border-on-surface/20 text-on-surface">{commitHash}</span>
+                            <span>{relativeAge}</span>
+                            <span className="border-l-[2px] border-on-surface/20 pl-3 flex items-center gap-1">
+                              <span className="material-symbols-outlined text-base">history</span>
+                              {totalC} Commits
+                            </span>
+                          </div>
                         </div>
-                        <span className="font-label-bold text-xs uppercase text-on-surface font-extrabold">neo-impact</span>
-                        <span className="text-xs text-on-surface-variant font-bold">Update structural reference implementation</span>
-                      </div>
-                      <div className="flex items-center gap-3 text-xs text-on-surface-variant font-bold font-mono">
-                        <span className="bg-[#ebdbb2]/50 px-2 py-0.5 rounded border border-on-surface/20 text-on-surface">b7f9a2c</span>
-                        <span>2 hours ago</span>
-                        <span className="border-l-[2px] border-on-surface/20 pl-3 flex items-center gap-1">
-                          <span className="material-symbols-outlined text-base">history</span>
-                          156 Commits
-                        </span>
-                      </div>
-                    </div>
+                      );
+                    })()}
 
                     {/* Files List Table */}
                     <div className="flex flex-col w-full divide-y divide-on-surface/20">
@@ -319,6 +368,7 @@ export default async function SourceCodePage({ params, searchParams }: PageProps
                       {/* File Rows */}
                       {treeData.map((node) => {
                         const isDir = node.type === 'dir';
+                        const fileCommit = getCommitForFile(node.name, repoMetadata?.commits || []);
                         return (
                           <div 
                             key={node.path}
@@ -326,7 +376,7 @@ export default async function SourceCodePage({ params, searchParams }: PageProps
                           >
                             {/* File Name & Icon */}
                             <div className="flex items-center gap-3 min-w-0 md:w-1/3">
-                              <span className="material-symbols-outlined text-lg text-on-surface/75 select-none shrink-0">
+                              <span className={`material-symbols-outlined text-lg select-none shrink-0 ${isDir ? 'text-[#24686b]' : 'text-on-surface/65'}`}>
                                 {isDir ? 'folder' : 'description'}
                               </span>
                               <Link 
@@ -337,14 +387,14 @@ export default async function SourceCodePage({ params, searchParams }: PageProps
                               </Link>
                             </div>
 
-                            {/* Simulated Commit Message */}
+                            {/* Commit Message */}
                             <div className="text-on-surface-variant/80 truncate md:w-1/2">
-                              {getCommitMessage(node.name)}
+                              {fileCommit.message}
                             </div>
 
-                            {/* Simulated Commit Age */}
+                            {/* Commit Age */}
                             <div className="text-on-surface-variant/60 font-mono text-right shrink-0 md:w-1/6">
-                              {getCommitAge(node.name)}
+                              {fileCommit.age}
                             </div>
                           </div>
                         );
@@ -449,93 +499,125 @@ export default async function SourceCodePage({ params, searchParams }: PageProps
             {/* B. ISSUES TAB CONTENT */}
             {activeTab === 'issues' && (
               <div className="flex flex-col border-[4px] border-on-surface bg-white shadow-[8px_8px_0px_0px_#1e1b19] overflow-hidden">
-                <div className="bg-[#e9e1de] p-4 border-b-[4px] border-on-surface font-label-bold text-xs uppercase font-extrabold text-on-surface">
-                  Simulated Repository Issues (5 Open)
-                </div>
-                <div className="flex flex-col divide-y divide-on-surface/20">
-                  <div className="p-4 hover:bg-theme-grey/30 transition-colors flex flex-col gap-1 text-xs">
-                    <span className="text-theme-red font-extrabold uppercase">● Issue #08: Contrast ratio is too low on surface container</span>
-                    <span className="text-on-surface-variant font-semibold">Opened 1 day ago by design-cop • 2 comments</span>
-                  </div>
-                  <div className="p-4 hover:bg-theme-grey/30 transition-colors flex flex-col gap-1 text-xs">
-                    <span className="text-theme-red font-extrabold uppercase">● Issue #07: Rounded corners detected in mobile dialog layout</span>
-                    <span className="text-on-surface-variant font-semibold">Opened 3 days ago by brutalist-enforcer • 0 comments</span>
-                  </div>
-                  <div className="p-4 hover:bg-theme-grey/30 transition-colors flex flex-col gap-1 text-xs">
-                    <span className="text-on-surface-variant/50 line-through font-semibold">✓ Issue #06: Soft blur shadow found on primary hero CTA button</span>
-                    <span className="text-on-surface-variant font-semibold">Closed 1 week ago by andreyyste • resolved</span>
-                  </div>
-                  <div className="p-4 hover:bg-theme-grey/30 transition-colors flex flex-col gap-1 text-xs">
-                    <span className="text-theme-red font-extrabold uppercase">● Issue #05: Mouse trail particles need more friction & larger gravity</span>
-                    <span className="text-on-surface-variant font-semibold">Opened 2 weeks ago by ux-rebel • 5 comments</span>
-                  </div>
-                  <div className="p-4 hover:bg-theme-grey/30 transition-colors flex flex-col gap-1 text-xs">
-                    <span className="text-on-surface-variant/50 line-through font-semibold">✓ Issue #04: Next.js dev server hot reload latency on dynamic paths</span>
-                    <span className="text-on-surface-variant font-semibold">Closed 3 weeks ago by nest-nest • fixed</span>
-                  </div>
-                </div>
+                {(() => {
+                  const hasIssues = repoMetadata?.issues && repoMetadata.issues.length > 0;
+                  const activeIssues = hasIssues ? repoMetadata.issues : [
+                    { number: 8, title: "Contrast ratio is too low on surface container", state: "open", createdAt: new Date(Date.now() - 86400000).toISOString(), userLogin: "design-cop", comments: 2 },
+                    { number: 7, title: "Rounded corners detected in mobile dialog layout", state: "open", createdAt: new Date(Date.now() - 3 * 86400000).toISOString(), userLogin: "brutalist-enforcer", comments: 0 },
+                    { number: 6, title: "Soft blur shadow found on primary hero CTA button", state: "closed", createdAt: new Date(Date.now() - 7 * 86400000).toISOString(), userLogin: "andreyyste", comments: 1 },
+                    { number: 5, title: "Mouse trail particles need more friction & larger gravity", state: "open", createdAt: new Date(Date.now() - 14 * 86400000).toISOString(), userLogin: "ux-rebel", comments: 5 },
+                    { number: 4, title: "Next.js dev server hot reload latency on dynamic paths", state: "closed", createdAt: new Date(Date.now() - 21 * 86400000).toISOString(), userLogin: "nest-nest", comments: 3 }
+                  ];
+
+                  const openCount = activeIssues.filter((i: any) => i.state === 'open').length;
+
+                  return (
+                    <>
+                      <div className="bg-[#e9e1de] p-4 border-b-[4px] border-on-surface font-label-bold text-xs uppercase font-extrabold text-on-surface">
+                        Repository Issues ({openCount} Open)
+                      </div>
+                      <div className="flex flex-col divide-y divide-on-surface/20">
+                        {activeIssues.map((issue: any) => {
+                          const isOpen = issue.state === 'open';
+                          return (
+                            <div key={issue.number} className="p-4 hover:bg-theme-grey/30 transition-colors flex flex-col gap-1 text-xs">
+                              <span className={`font-extrabold uppercase ${isOpen ? 'text-theme-red' : 'text-on-surface-variant/50 line-through'}`}>
+                                {isOpen ? '●' : '✓'} Issue #{issue.number}: {issue.title}
+                              </span>
+                              <span className="text-on-surface-variant font-semibold">
+                                {isOpen ? 'Opened' : 'Closed'} {getRelativeAge(issue.createdAt)} by {issue.userLogin} • {issue.comments} comments
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
             )}
 
             {/* C. PULL REQUESTS TAB CONTENT */}
             {activeTab === 'pulls' && (
               <div className="flex flex-col border-[4px] border-on-surface bg-white shadow-[8px_8px_0px_0px_#1e1b19] overflow-hidden">
-                <div className="bg-[#e9e1de] p-4 border-b-[4px] border-on-surface font-label-bold text-xs uppercase font-extrabold text-on-surface">
-                  Simulated Pull Requests (2 Active)
-                </div>
-                <div className="flex flex-col divide-y divide-on-surface/20">
-                  <div className="p-4 hover:bg-theme-grey/30 transition-colors flex flex-col gap-1 text-xs">
-                    <span className="text-theme-blue font-extrabold uppercase">⇄ PR #12: Replace soft gradients with heavy black borders</span>
-                    <span className="text-on-surface-variant font-semibold">Merged 2 days ago by andreyyste • 14 commits</span>
-                  </div>
-                  <div className="p-4 hover:bg-theme-grey/30 transition-colors flex flex-col gap-1 text-xs">
-                    <span className="text-theme-blue font-extrabold uppercase">⇄ PR #11: Implement strict sharp 0px border-radius rule for elements</span>
-                    <span className="text-on-surface-variant font-semibold">Opened 4 days ago by brutalist-bot • Draft</span>
-                  </div>
-                  <div className="p-4 hover:bg-theme-grey/30 transition-colors flex flex-col gap-1 text-xs">
-                    <span className="text-on-surface-variant/50 line-through font-semibold">✗ PR #10: Try using Tailwind default utility blue colors instead of HSL theme</span>
-                    <span className="text-on-surface-variant font-semibold">Closed 2 weeks ago by moderator-classic • Rejected (Generic colors forbidden)</span>
-                  </div>
-                </div>
+                {(() => {
+                  const hasPulls = repoMetadata?.pulls && repoMetadata.pulls.length > 0;
+                  const activePulls = hasPulls ? repoMetadata.pulls : [
+                    { number: 12, title: "Replace soft gradients with heavy black borders", state: "closed", mergedAt: new Date(Date.now() - 2 * 86400000).toISOString(), createdAt: new Date(Date.now() - 3 * 86400000).toISOString(), userLogin: "andreyyste" },
+                    { number: 11, title: "Implement strict sharp 0px border-radius rule for elements", state: "open", mergedAt: null, createdAt: new Date(Date.now() - 4 * 86400000).toISOString(), userLogin: "brutalist-bot" },
+                    { number: 10, title: "Try using Tailwind default utility blue colors instead of HSL theme", state: "closed", mergedAt: null, createdAt: new Date(Date.now() - 14 * 86400000).toISOString(), userLogin: "moderator-classic" }
+                  ];
+
+                  const openCount = activePulls.filter((p: any) => p.state === 'open').length;
+
+                  return (
+                    <>
+                      <div className="bg-[#e9e1de] p-4 border-b-[4px] border-on-surface font-label-bold text-xs uppercase font-extrabold text-on-surface">
+                        Repository Pull Requests ({openCount} Active)
+                      </div>
+                      <div className="flex flex-col divide-y divide-on-surface/20">
+                        {activePulls.map((pull: any) => {
+                          const isOpen = pull.state === 'open';
+                          const isMerged = pull.mergedAt !== null;
+                          return (
+                            <div key={pull.number} className="p-4 hover:bg-theme-grey/30 transition-colors flex flex-col gap-1 text-xs">
+                              <span className={`font-extrabold uppercase ${isOpen ? 'text-theme-blue' : isMerged ? 'text-theme-green' : 'text-on-surface-variant/50 line-through'}`}>
+                                ⇄ PR #{pull.number}: {pull.title}
+                              </span>
+                              <span className="text-on-surface-variant font-semibold">
+                                {isOpen ? 'Opened' : isMerged ? 'Merged' : 'Closed'} {getRelativeAge(isMerged ? pull.mergedAt : pull.createdAt)} by {pull.userLogin}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
             )}
 
             {/* D. ACTIONS TAB CONTENT */}
             {activeTab === 'actions' && (
               <div className="flex flex-col border-[4px] border-on-surface bg-white shadow-[8px_8px_0px_0px_#1e1b19] overflow-hidden">
-                <div className="bg-[#e9e1de] p-4 border-b-[4px] border-on-surface font-label-bold text-xs uppercase font-extrabold text-on-surface">
-                  CI/CD Build Pipeline Runs
-                </div>
-                <div className="flex flex-col divide-y divide-on-surface/20">
-                  <div className="p-4 hover:bg-theme-grey/30 transition-colors flex items-center justify-between text-xs">
-                    <div className="flex flex-col gap-1">
-                      <span className="text-theme-green font-extrabold">✓ lint-and-check-validity-of-types</span>
-                      <span className="text-on-surface-variant font-semibold">Passed • Commit b7f9a2c • event: push by andreyyste</span>
-                    </div>
-                    <span className="text-on-surface-variant font-mono">2 hours ago</span>
-                  </div>
-                  <div className="p-4 hover:bg-theme-grey/30 transition-colors flex items-center justify-between text-xs">
-                    <div className="flex flex-col gap-1">
-                      <span className="text-theme-green font-extrabold">✓ deploy-production-bundle-to-vercel</span>
-                      <span className="text-on-surface-variant font-semibold">Passed • Commit b7f9a2c • event: push</span>
-                    </div>
-                    <span className="text-on-surface-variant font-mono">2 hours ago</span>
-                  </div>
-                  <div className="p-4 hover:bg-theme-grey/30 transition-colors flex items-center justify-between text-xs">
-                    <div className="flex flex-col gap-1">
-                      <span className="text-theme-red font-extrabold">✗ try-tailwindcss-v4-alpha-compat</span>
-                      <span className="text-on-surface-variant font-semibold">Failed • Commit fe881c2 • event: pull_request</span>
-                    </div>
-                    <span className="text-on-surface-variant font-mono">1 week ago</span>
-                  </div>
-                  <div className="p-4 hover:bg-theme-grey/30 transition-colors flex items-center justify-between text-xs">
-                    <div className="flex flex-col gap-1">
-                      <span className="text-theme-green font-extrabold">✓ database-migration-supabase-production</span>
-                      <span className="text-on-surface-variant font-semibold">Passed • Commit d944e82 • event: push</span>
-                    </div>
-                    <span className="text-on-surface-variant font-mono">2 weeks ago</span>
-                  </div>
-                </div>
+                {(() => {
+                  const hasRuns = repoMetadata?.workflowRuns && repoMetadata.workflowRuns.length > 0;
+                  const activeRuns = hasRuns ? repoMetadata.workflowRuns : [
+                    { name: "lint-and-check-validity-of-types", status: "completed", conclusion: "success", branch: "main", commitMessage: "Update structural reference implementation", commitSha: "b7f9a2c", actorLogin: "andreyyste", createdAt: new Date(Date.now() - 2 * 3600000).toISOString() },
+                    { name: "deploy-production-bundle-to-vercel", status: "completed", conclusion: "success", branch: "main", commitMessage: "Update structural reference implementation", commitSha: "b7f9a2c", actorLogin: "andreyyste", createdAt: new Date(Date.now() - 2 * 3600000).toISOString() },
+                    { name: "try-tailwindcss-v4-alpha-compat", status: "completed", conclusion: "failure", branch: "feature/tw4", commitMessage: "Try tailwindcss beta release", commitSha: "fe881c2", actorLogin: "andreyyste", createdAt: new Date(Date.now() - 7 * 86400000).toISOString() },
+                    { name: "database-migration-supabase-production", status: "completed", conclusion: "success", branch: "main", commitMessage: "Add project soft delete hidden flags", commitSha: "d944e82", actorLogin: "andreyyste", createdAt: new Date(Date.now() - 14 * 86400000).toISOString() }
+                  ];
+
+                  return (
+                    <>
+                      <div className="bg-[#e9e1de] p-4 border-b-[4px] border-on-surface font-label-bold text-xs uppercase font-extrabold text-on-surface">
+                        CI/CD Build Pipeline Runs
+                      </div>
+                      <div className="flex flex-col divide-y divide-on-surface/20">
+                        {activeRuns.map((run: any, idx: number) => {
+                          const isSuccess = run.conclusion === 'success';
+                          const isFailure = run.conclusion === 'failure';
+                          return (
+                            <div key={idx} className="p-4 hover:bg-theme-grey/30 transition-colors flex items-center justify-between text-xs">
+                              <div className="flex flex-col gap-1 min-w-0 pr-4">
+                                <span className={`font-extrabold truncate ${isSuccess ? 'text-theme-green' : isFailure ? 'text-theme-red' : 'text-[#fabd2f]'}`}>
+                                  {isSuccess ? '✓' : isFailure ? '✗' : '⚡'} {run.name}
+                                </span>
+                                <span className="text-on-surface-variant font-semibold truncate">
+                                  {run.status === 'completed' ? 'Passed' : 'Running'} • Commit {run.commitSha.substring(0, 7)} ({run.commitMessage.split('\n')[0]}) • event: push by {run.actorLogin} on {run.branch}
+                                </span>
+                              </div>
+                              <span className="text-on-surface-variant font-mono shrink-0">
+                                {getRelativeAge(run.createdAt)}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
             )}
           </div>
