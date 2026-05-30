@@ -41,6 +41,27 @@ Beneath its chaotic exterior lies a meticulously engineered architecture adherin
 
 ---
 
+## Detailed Feature Breakdown
+
+### 📂 Interactive Codebase Explorer
+* **Virtual Directory Tree:** Leverages Next.js server-side fetches and NestJS APIs to retrieve GitHub repository structures dynamically. Features lazy-loading folder nodes and persistent folder expanded states.
+* **Shiki Syntax Highlighting:** Renders files in real-time in the browser using the Shiki highlighting engine. Supports theme-accurate color tokens (matching the Gruvbox styling) and handles large file rendering without UI freezes.
+* **Custom Code Header & Tabs:** Hides default header links while viewing code layouts, showing only "Back to Portfolio" and "Open on GitHub" CTA buttons.
+
+### 🔒 Secure CMS & Proxy Gateway
+* **Dynamic Form Rendering:** The CMS Configuration Editor dynamically adapts its form field layouts based on structural types (`text`, `textarea`, `nested` fields, `root_string_array`, or `object_array`). This allows editing nested structures like Nav Links, Socials, or Manifesto Rules directly.
+* **API Proxy Layer:** A custom Route Handler (`/api/proxy/[...path]`) acts as a secure reverse proxy, appending JWT tokens to incoming request headers and filtering empty request payloads (fixing issues with parameterless calls like `DELETE`).
+* **Session Deadlock Resolution:**
+  * **Edge JWT Parsing:** Middleware inspects the client's `jwt_token` cookie, base64-decodes the payload, and validates the `exp` (expiration) claim entirely at the Edge. If expired, it deletes the cookie and forces a redirect to `/nre-masuk`.
+  * **401 Eviction:** If the backend returns `401 Unauthorized` (e.g. database force-reset invalidating the user ID), the API proxy intercepts the response and strips the stale `jwt_token` cookie to clear the session immediately.
+
+### 🌀 Gamified & Disruptive Visuals
+* **Phaser 3 Game Sandbox Integration:** Supports dynamic, canvas-based game modules (like Phaser 3 physics-based engines) overlaying React nodes.
+* **Brutalist Project Cards:** Redesigned to support conditional rendering (completely collapsing image containers when no cover image is provided), inline custom red featured tags, and optimized typography sizing.
+* **Hover State Safelisting:** Explicit Tailwind safelisting for dynamic theme color hover and border styling (`hover:text-theme-*`, `hover:border-theme-*`), preserving style customizability configured inside the CMS.
+
+---
+
 ## Tech Stack
 
 | Category | Technology |
