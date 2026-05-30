@@ -76,10 +76,27 @@ export default async function SourceCodePage({ params, searchParams }: PageProps
     console.error('Error fetching repo info:', error);
   }
 
+  // 1b. Fetch dynamic metadata from the backend (stars, forks, watchers, releases, contributors)
+  let repoMetadata: any = null;
+  try {
+    const metaRes = await fetch(`${baseUrl}/github/repos/${repo}/metadata`, { cache: 'no-store' });
+    if (metaRes.ok) {
+      repoMetadata = await metaRes.json();
+    }
+  } catch (error) {
+    console.error('Error fetching repo metadata:', error);
+  }
+
   const repoTitle = repoDetail?.title || repo;
-  const repoDesc = repoDetail?.description || 'Explore the codebase in retro Neo-Brutalist fashion.';
-  const repoTags = repoDetail?.tags || ['TypeScript', 'NestJS', 'React', 'Tailwind'];
-  const repoLink = repoDetail?.liveUrl || 'https://nre.codes';
+  const repoDesc = repoMetadata?.description || repoDetail?.description || 'Explore the codebase in retro Neo-Brutalist fashion.';
+  const repoTags = (repoMetadata?.topics && repoMetadata.topics.length > 0) ? repoMetadata.topics : (repoDetail?.tags || ['TypeScript', 'NestJS', 'React', 'Tailwind']);
+  const repoLink = repoMetadata?.homepage || repoDetail?.liveUrl || 'https://nre.codes';
+
+  const starsCount = repoMetadata?.stars ?? 1200;
+  const forksCount = repoMetadata?.forks ?? 250;
+  const watchersCount = repoMetadata?.watchers ?? 42;
+  const releasesList = repoMetadata?.releases ?? [];
+  const contributorsList = repoMetadata?.contributors ?? [];
 
   // 2. Fetch Directory Tree or File Contents if Tab is 'Code'
   let isDirectory = false;
@@ -199,7 +216,7 @@ export default async function SourceCodePage({ params, searchParams }: PageProps
           </div>
 
           {/* Social interaction buttons */}
-          <RepoHeaderWidgets />
+          <RepoHeaderWidgets key={repo} initialWatch={watchersCount} initialStar={starsCount} initialFork={forksCount} />
         </section>
 
         {/* ================= TABS BAR ================= */}
@@ -557,10 +574,10 @@ export default async function SourceCodePage({ params, searchParams }: PageProps
             </div>
 
             {/* 2. Releases Card */}
-            <ReleasesWidget />
+            <ReleasesWidget releases={releasesList} />
 
             {/* 3. Contributors Card */}
-            <ContributorsWidget />
+            <ContributorsWidget contributors={contributorsList} />
           </div>
         </section>
       </main>
