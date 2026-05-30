@@ -20,6 +20,25 @@ export const Work: React.FC = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
     const [showAll, setShowAll] = useState(false);
+    const [isSectionVisible, setIsSectionVisible] = useState(false);
+
+    const sectionRef = React.useRef<HTMLDivElement>(null);
+
+    React.useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsSectionVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.15 }
+        );
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current);
+        }
+        return () => observer.disconnect();
+    }, []);
 
     /**
      * Navigates to the next project in the carousel loop.
@@ -53,7 +72,7 @@ export const Work: React.FC = () => {
     const expandedProject = expandedIndex !== null ? projectsData[expandedIndex] : null;
 
     return (
-        <section className="py-24 px-gutter bg-surface neo-section-divider w-full overflow-hidden" id="work">
+        <section ref={sectionRef} className="py-24 px-gutter bg-surface neo-section-divider w-full overflow-hidden" id="work">
             <div className="max-w-container-max mx-auto">
                 {/* Header */}
                 <div className="flex justify-between items-end mb-16 border-b-[8px] border-on-surface pb-4">
@@ -87,7 +106,19 @@ export const Work: React.FC = () => {
                     >
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 py-8">
                             {projectsData.map((project, index) => (
-                                <div key={index} className="group relative w-full">
+                                <div 
+                                    key={index} 
+                                    className={[
+                                        'group relative w-full',
+                                        index % 3 === 0 ? 'reveal-left' :
+                                        index % 3 === 2 ? 'reveal-right' :
+                                        'reveal-bottom',
+                                        isSectionVisible ? 'reveal-visible' : ''
+                                    ].join(' ')}
+                                    style={{
+                                        transitionDelay: `${(index % 3) * 0.15}s`
+                                    }}
+                                >
                                     <div className="absolute inset-0 bg-theme-yellow neo-border-heavy translate-x-3 translate-y-3 z-0" />
                                     <div className="relative z-10 neo-border-heavy overflow-hidden flex flex-col border-[6px] bg-surface min-h-[500px]">
                                         {/* Image */}
@@ -165,6 +196,7 @@ export const Work: React.FC = () => {
                                             isActive={isActive}
                                             isVisible={isVisible}
                                             offset={offset}
+                                            isRevealed={isSectionVisible}
                                             onExpand={() => setExpandedIndex(index)}
                                         />
                                     );

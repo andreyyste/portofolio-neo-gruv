@@ -14,6 +14,7 @@ interface ProjectCardProps {
     isActive: boolean;
     isVisible: boolean;
     offset: number;
+    isRevealed?: boolean;
     onExpand: () => void;
 }
 
@@ -23,6 +24,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     isActive,
     isVisible,
     offset,
+    isRevealed = true,
     onExpand,
 }) => {
     // Pseudo-3D mapping for carousel slots (-2, -1, 0, 1, 2)
@@ -43,7 +45,22 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         }
     };
 
+    const getRevealClass = (off: number) => {
+        if (off < 0) return 'reveal-left';
+        if (off > 0) return 'reveal-right';
+        return 'reveal-bottom';
+    };
+
+    const getRevealDelay = (off: number) => {
+        const abs = Math.abs(off);
+        if (abs === 0) return '0.1s';
+        if (abs === 1) return '0.25s';
+        return '0.4s';
+    };
+
     const layout = getCardLayout(offset);
+    const revealClass = getRevealClass(offset);
+    const revealDelay = getRevealDelay(offset);
 
     return (
         <div
@@ -56,7 +73,14 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 pointerEvents: isActive ? 'auto' : 'none',
             }}
         >
-            <div className="group relative">
+            <div 
+                className={[
+                    'group relative',
+                    revealClass,
+                    isRevealed ? 'reveal-visible' : ''
+                ].join(' ')}
+                style={{ transitionDelay: revealDelay }}
+            >
                 {/* Neo shadow behind card */}
                 <div
                     className={[
