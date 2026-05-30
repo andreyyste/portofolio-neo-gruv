@@ -4,6 +4,16 @@ export default {
   content: [
     './src/**/*.{js,ts,jsx,tsx}',
   ],
+  safelist: [
+    'hover:text-theme-red',
+    'hover:border-theme-red',
+    'hover:text-theme-blue',
+    'hover:border-theme-blue',
+    'hover:text-theme-green',
+    'hover:border-theme-green',
+    'hover:text-theme-yellow',
+    'hover:border-theme-yellow',
+  ],
   theme: {
     extend: {
       colors: {
