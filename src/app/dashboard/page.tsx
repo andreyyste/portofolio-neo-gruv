@@ -1,9 +1,12 @@
 import React from 'react';
 import { ConfigEditor } from './components/ConfigEditor';
+import { GithubSyncButton } from './components/GithubSyncButton';
 
 export default function DashboardPage() {
   return (
     <div className="max-w-5xl mx-auto flex flex-col gap-4">
+      <GithubSyncButton />
+
       <ConfigEditor 
         configKey="hero"
         title="Hero Section"
