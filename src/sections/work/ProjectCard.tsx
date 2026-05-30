@@ -25,23 +25,35 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     offset,
     onExpand,
 }) => {
-    // Position: center card at 0%, side cards offset by ±105%
-    const translateX = offset * 105;
-    // Scale: center = 1, sides = 0.85
-    const scale = isActive ? 1 : 0.85;
-    // Opacity: visible cards only
-    const opacity = isVisible ? 1 : 0;
-    // Z-index: center on top
-    const zIndex = isActive ? 20 : 10;
+    // Pseudo-3D mapping for carousel slots (-2, -1, 0, 1, 2)
+    const getCardLayout = (off: number) => {
+        switch (off) {
+            case 0:
+                return { x: 0, scale: 1, zIndex: 30, opacity: 1, blur: 'none' };
+            case 1:
+                return { x: 105, scale: 0.85, zIndex: 20, opacity: 0.65, blur: 'blur(1px)' };
+            case -1:
+                return { x: -105, scale: 0.85, zIndex: 20, opacity: 0.65, blur: 'blur(1px)' };
+            case 2:
+                return { x: 185, scale: 0.72, zIndex: 10, opacity: 0.28, blur: 'blur(3px)' };
+            case -2:
+                return { x: -185, scale: 0.72, zIndex: 10, opacity: 0.28, blur: 'blur(3px)' };
+            default:
+                return { x: off > 0 ? 250 : -250, scale: 0.5, zIndex: 5, opacity: 0, blur: 'blur(5px)' };
+        }
+    };
+
+    const layout = getCardLayout(offset);
 
     return (
         <div
             className="absolute w-full max-w-[420px] transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)]"
             style={{
-                transform: `translateX(${translateX}%) scale(${scale})`,
-                opacity,
-                zIndex,
-                pointerEvents: isVisible ? 'auto' : 'none',
+                transform: `translateX(${layout.x}%) scale(${layout.scale})`,
+                opacity: isVisible ? layout.opacity : 0,
+                zIndex: layout.zIndex,
+                filter: layout.blur === 'none' ? 'none' : layout.blur,
+                pointerEvents: isActive ? 'auto' : 'none',
             }}
         >
             <div className="group relative">
@@ -83,6 +95,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                         className={[
                             'p-6 flex-grow flex flex-col justify-between transition-all duration-500',
                             isActive ? 'bg-surface' : 'bg-surface-dim',
+                            Math.abs(offset) > 1 ? 'opacity-0 pointer-events-none' : 'opacity-100'
                         ].join(' ')}
                     >
                         <div>

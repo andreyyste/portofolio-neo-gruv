@@ -143,7 +143,7 @@ export const Work: React.FC = () => {
                                 {projectsData.map((project, index) => {
                                     const offset = getOffset(index);
                                     const isActive = offset === 0;
-                                    const isVisible = Math.abs(offset) <= 1;
+                                    const isVisible = Math.abs(offset) <= 2;
 
                                     return (
                                         <ProjectCard
