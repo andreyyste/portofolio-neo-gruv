@@ -7,8 +7,8 @@ const BUTTON_COLORS = ['bg-[#1a4a4f]', 'bg-[#cc2929]', 'bg-[#7b8c47]'];
 export const WorkMobile: React.FC = () => {
     const { projectsData } = useData();
     return (
-        <section id="work" className="w-full bg-[#eeeae3] px-4 py-16 flex flex-col">
-            <h2 className="font-display-2xl text-[48px] leading-[0.9] uppercase tracking-tighter text-on-surface mb-12 font-extrabold flex flex-col items-start gap-2">
+        <section id="work" className="w-full bg-[#eeeae3] px-4 py-16 flex flex-col overflow-hidden">
+            <h2 className="font-display-2xl text-[48px] leading-[0.9] uppercase tracking-tighter text-on-surface mb-12 font-extrabold flex flex-col items-start gap-2 reveal-left">
                 {projectsSectionData.mobileHeadline.prefix}
                 <span className="inline-block bg-[#1a4a4f] text-[#f4f1ea] px-3 py-1 rounded-[4px] border-[3px] border-on-surface neo-shadow-sm -rotate-2">
                     {projectsSectionData.mobileHeadline.highlight}
@@ -18,8 +18,9 @@ export const WorkMobile: React.FC = () => {
             <div className="flex flex-col gap-12 w-full">
                 {projectsData.map((project, index) => {
                     const btnColor = BUTTON_COLORS[index % BUTTON_COLORS.length];
+                    const revealClass = index % 3 === 0 ? 'reveal-left' : index % 3 === 1 ? 'reveal-bottom' : 'reveal-right';
                     return (
-                        <div key={index} className="w-full flex flex-col">
+                        <div key={index} className={`w-full flex flex-col ${revealClass}`}>
                             <div className="w-full aspect-[4/3] border-[5px] border-on-surface shadow-[8px_8px_0px_0px_#1e1b19] mb-4 flex items-center justify-center bg-gray-400 overflow-hidden relative">
                                 {project.image.src ? (
                                     <img src={project.image.src} alt={project.image.alt} className="w-full h-full object-cover" />

@@ -12,9 +12,9 @@ export const ExperienceMobile: React.FC = () => {
     const { experiencesData } = useData();
 
     return (
-        <section id="experience" className="w-full bg-[#f4f1ea] px-4 py-16 flex flex-col relative border-t-[6px] border-on-surface">
+        <section id="experience" className="w-full bg-[#f4f1ea] px-4 py-16 flex flex-col relative border-t-[6px] border-on-surface overflow-hidden">
             {/* Section Header */}
-            <h2 className="font-display-2xl text-[48px] leading-[0.9] uppercase tracking-tighter text-on-surface mb-12 font-extrabold flex flex-col items-start">
+            <h2 className="font-display-2xl text-[48px] leading-[0.9] uppercase tracking-tighter text-on-surface mb-12 font-extrabold flex flex-col items-start reveal-left">
                 THE
                 <span className="inline-block bg-theme-blue text-white px-3 py-1 rounded-[4px] border-[3px] border-on-surface shadow-[4px_4px_0px_0px_#1e1b19] mt-2">
                     GRIND
@@ -28,8 +28,10 @@ export const ExperienceMobile: React.FC = () => {
 
                 {/* Timeline Items */}
                 <div className="flex flex-col gap-10 relative z-10">
-                    {experiencesData.map((exp, index) => (
-                        <div key={index} className="relative flex flex-col w-full">
+                    {experiencesData.map((exp, index) => {
+                        const revealClass = index % 2 === 0 ? 'reveal-left' : 'reveal-right';
+                        return (
+                            <div key={index} className={`relative flex flex-col w-full ${revealClass}`}>
                             {/* Dot Indicator */}
                             <div className="absolute -left-[30px] top-2 w-4 h-4 rounded-full border-[3px] border-on-surface bg-theme-yellow shadow-[1px_1px_0px_0px_#1e1b19] z-20" />
 
@@ -69,7 +71,8 @@ export const ExperienceMobile: React.FC = () => {
                                 </div>
                             </div>
                         </div>
-                    ))}
+                    );
+                })}
                 </div>
             </div>
         </section>
