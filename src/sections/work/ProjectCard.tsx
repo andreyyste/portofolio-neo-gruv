@@ -35,11 +35,11 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             case -1:
                 return { x: -105, scale: 0.85, zIndex: 20, opacity: 0.65, blur: 'blur(1px)' };
             case 2:
-                return { x: 185, scale: 0.72, zIndex: 10, opacity: 0.28, blur: 'blur(3px)' };
+                return { x: 52.5, scale: 0.72, zIndex: 10, opacity: 0.28, blur: 'blur(3px)' };
             case -2:
-                return { x: -185, scale: 0.72, zIndex: 10, opacity: 0.28, blur: 'blur(3px)' };
+                return { x: -52.5, scale: 0.72, zIndex: 10, opacity: 0.28, blur: 'blur(3px)' };
             default:
-                return { x: off > 0 ? 250 : -250, scale: 0.5, zIndex: 5, opacity: 0, blur: 'blur(5px)' };
+                return { x: off > 0 ? 120 : -120, scale: 0.5, zIndex: 5, opacity: 0, blur: 'blur(5px)' };
         }
     };
 
