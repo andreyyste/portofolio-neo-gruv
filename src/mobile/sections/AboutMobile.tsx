@@ -1,5 +1,6 @@
 import React from 'react';
 import { useData } from '../../context/DataContext';
+import { isImageUrl, formatImageUrl } from '../../utils/image';
 
 export const AboutMobile: React.FC = () => {
     const { aboutData } = useData();
@@ -14,8 +15,8 @@ export const AboutMobile: React.FC = () => {
             </h2>
 
             <div className="w-full aspect-square border-[6px] border-on-surface bg-gray-400 mb-8 flex items-center justify-center neo-shadow overflow-hidden reveal-right">
-                {aboutData.portraitPlaceholder.startsWith('http') || aboutData.portraitPlaceholder.startsWith('/') ? (
-                    <img src={aboutData.portraitPlaceholder} alt={aboutData.portraitLabel} className="w-full h-full object-cover filter grayscale contrast-125" />
+                {isImageUrl(aboutData.portraitPlaceholder) ? (
+                    <img src={formatImageUrl(aboutData.portraitPlaceholder)} alt={aboutData.portraitLabel} className="w-full h-full object-cover filter grayscale contrast-125" />
                 ) : (
                     <span className="font-display-2xl text-[48px] text-on-surface opacity-50">{aboutData.portraitPlaceholder}</span>
                 )}
@@ -27,8 +28,8 @@ export const AboutMobile: React.FC = () => {
 
             <div className="w-full relative border-[6px] border-on-surface bg-white shadow-[8px_8px_0px_0px_#1e1b19] flex flex-col reveal-bottom" style={{ transitionDelay: '100ms' }}>
                 <div className="w-full aspect-square bg-gray-300 flex items-center justify-center overflow-hidden">
-                    {aboutData.groupImagePlaceholder.startsWith('http') || aboutData.groupImagePlaceholder.startsWith('/') ? (
-                        <img src={aboutData.groupImagePlaceholder} alt="Group" className="w-full h-full object-cover filter grayscale contrast-125" />
+                    {isImageUrl(aboutData.groupImagePlaceholder) ? (
+                        <img src={formatImageUrl(aboutData.groupImagePlaceholder)} alt="Group" className="w-full h-full object-cover filter grayscale contrast-125" />
                     ) : (
                         <span className="font-display-2xl text-[40px] text-on-surface opacity-50 text-center whitespace-pre-line">{aboutData.groupImagePlaceholder.replace(' ', '\n')}</span>
                     )}

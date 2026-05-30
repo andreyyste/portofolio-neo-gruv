@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useData } from '../../context/DataContext';
+import { formatImageUrl } from '../../utils/image';
 const projectsSectionData = { headline: { prefix: 'SELECTED', highlight: 'WORKS' }, buttonText: 'ALL PROJECTS', mobileHeadline: { prefix: 'COLLECTION', highlight: 'ARCHIVES' } };
 
 const BUTTON_COLORS = ['bg-[#1a4a4f]', 'bg-[#cc2929]', 'bg-[#7b8c47]'];
@@ -20,7 +21,7 @@ export const WorkMobile: React.FC = () => {
                 {projectsData.map((project, index) => {
                     const btnColor = BUTTON_COLORS[index % BUTTON_COLORS.length];
                     const revealClass = index % 3 === 0 ? 'reveal-left' : index % 3 === 1 ? 'reveal-bottom' : 'reveal-right';
-                    const imageSrc = project.coverImage || project.image?.src || '';
+                    const imageSrc = formatImageUrl(project.coverImage || project.image?.src || '');
                     return (
                         <div key={index} className={`w-full flex flex-col ${revealClass}`}>
                             <div className="w-full aspect-[4/3] border-[5px] border-on-surface shadow-[8px_8px_0px_0px_#1e1b19] mb-4 flex items-center justify-center bg-gray-400 overflow-hidden relative">

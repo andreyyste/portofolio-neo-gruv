@@ -1,6 +1,7 @@
 import React from 'react';
 import { useData } from '../context/DataContext';
 import { Badge } from '../ui/Badge';
+import { isImageUrl, formatImageUrl } from '../utils/image';
 
 export const About: React.FC = () => {
     const { aboutData } = useData();
@@ -15,8 +16,8 @@ export const About: React.FC = () => {
                             <div className="absolute inset-0 bg-on-surface neo-border translate-x-4 translate-y-4 z-0"></div>
                             <div className="relative z-10 w-full aspect-square bg-surface overflow-hidden neo-border border-[8px] hover:scale-105 transition-transform duration-500">
                                 <div className="w-full h-full bg-surface-variant flex items-center justify-center filter grayscale contrast-125">
-                                    {aboutData.portraitPlaceholder.startsWith('http') || aboutData.portraitPlaceholder.startsWith('/') ? (
-                                        <img src={aboutData.portraitPlaceholder} alt={portraitLabel} className="w-full h-full object-cover" />
+                                    {isImageUrl(aboutData.portraitPlaceholder) ? (
+                                        <img src={formatImageUrl(aboutData.portraitPlaceholder)} alt={portraitLabel} className="w-full h-full object-cover" />
                                     ) : (
                                         <span className="font-display-2xl text-[72px] md:text-[120px] opacity-20">{aboutData.portraitPlaceholder}</span>
                                     )}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useData } from '../../context/DataContext';
+import { formatImageUrl } from '../../utils/image';
 
 export const HeroMobile: React.FC = () => {
     const { heroData } = useData();
@@ -19,7 +20,7 @@ export const HeroMobile: React.FC = () => {
 
             <div className="relative w-full aspect-square border-[6px] border-on-surface bg-[#1a4a4f] z-10 overflow-hidden flex items-center justify-center reveal-bottom" style={{ transitionDelay: '200ms' }}>
                 {heroData.heroImage.src ? (
-                    <img src={heroData.heroImage.src} alt={heroData.heroImage.alt} className="w-full h-full object-cover opacity-80" />
+                    <img src={formatImageUrl(heroData.heroImage.src)} alt={heroData.heroImage.alt} className="w-full h-full object-cover opacity-80" />
                 ) : (
                     <span className="font-display-2xl text-[48px] text-surface-container-lowest opacity-30">[ROBOT IMAGE]</span>
                 )}

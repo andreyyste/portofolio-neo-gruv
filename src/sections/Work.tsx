@@ -4,6 +4,7 @@ import { Button } from '../ui/Button';
 import { Title } from '../ui/Title';
 import { IconButton } from '../ui/IconButton';
 import { useData } from '../context/DataContext';
+import { formatImageUrl } from '../utils/image';
 const projectsSectionData = { headline: { prefix: 'SELECTED', highlight: 'WORKS' }, buttonText: 'ALL PROJECTS', mobileHeadline: { prefix: 'COLLECTION', highlight: 'ARCHIVES' } };
 import { ProjectCard } from './work/ProjectCard';
 import { ProjectExpanded } from './work/ProjectExpanded';
@@ -125,7 +126,7 @@ export const Work: React.FC = () => {
                                         {/* Image */}
                                         {(project.coverImage || project.image?.src) && (
                                             <div className="h-48 overflow-hidden border-b-[6px] border-on-surface relative">
-                                                <img alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src={project.coverImage || project.image?.src || ''}/>
+                                                <img alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src={formatImageUrl(project.coverImage || project.image?.src || '')}/>
                                             </div>
                                         )}
                                         {/* Content */}

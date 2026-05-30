@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import type { Project } from '../../types';
+import { formatImageUrl } from '../../utils/image';
 
 const TAG_COLORS = [
     'bg-theme-red text-surface-container-lowest',
@@ -22,7 +23,7 @@ export const ProjectExpanded: React.FC<ProjectExpandedProps> = ({
     total,
     onClose,
 }) => {
-    const imageSrc = project.coverImage || project.image?.src || '';
+    const imageSrc = formatImageUrl(project.coverImage || project.image?.src || '');
     return (
         <div className="animate-[expandCardIn_0.6s_cubic-bezier(0.16,1,0.3,1)_both]">
             <div className="relative">

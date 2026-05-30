@@ -3,6 +3,7 @@ import { Button } from '../ui/Button';
 import { Marquee } from '../ui/Marquee';
 import { Title } from '../ui/Title';
 import { useData } from '../context/DataContext';
+import { formatImageUrl } from '../utils/image';
 
 export const Hero: React.FC = () => {
     const { heroData } = useData();
@@ -37,7 +38,7 @@ export const Hero: React.FC = () => {
                 </div>
                 <div className="md:col-span-4 relative -top-12 md:top-0 right-0 md:-right-12 z-0 opacity-80 md:opacity-100 reveal-right" style={{ transitionDelay: '0.2s' }}>
                     <div className="w-full aspect-[3/4] bg-surface-dim neo-border neo-shadow overflow-hidden relative rotate-3 animate-float" style={{ animationDelay: '1s' }}>
-                        <img alt={heroImage.alt} className="w-full h-full object-cover filter grayscale contrast-125 hover:grayscale-0 transition-all duration-1000" src={heroImage.src}/>
+                        <img alt={heroImage.alt} className="w-full h-full object-cover filter grayscale contrast-125 hover:grayscale-0 transition-all duration-1000" src={formatImageUrl(heroImage.src)}/>
                     </div>
                 </div>
             </div>

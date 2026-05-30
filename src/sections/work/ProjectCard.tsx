@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import type { Project } from '../../types';
+import { formatImageUrl } from '../../utils/image';
 
 const TAG_COLORS = [
     'bg-theme-red text-surface-container-lowest',
@@ -62,7 +63,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     const layout = getCardLayout(offset);
     const revealClass = getRevealClass(offset);
     const revealDelay = getRevealDelay(offset);
-    const imageSrc = project.coverImage || project.image?.src || '';
+    const imageSrc = formatImageUrl(project.coverImage || project.image?.src || '');
 
     return (
         <div
