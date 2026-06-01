@@ -261,3 +261,12 @@
 .animate-brutalist-vertical {
   animation: brutalistVerticalFloat 6s ease-in-out infinite;
 }
+
+/* Hide scrollbar for Chrome, Safari, Opera, Firefox and Edge */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

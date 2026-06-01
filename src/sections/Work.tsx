@@ -5,6 +5,8 @@ import { useData } from '../context/DataContext';
 import { ProjectExpanded } from './work/ProjectExpanded';
 import { WorkGridView } from './work/WorkGridView';
 import { WorkCarouselView } from './work/WorkCarouselView';
+import { useMediaQuery } from '../hooks/useMediaQuery';
+import { WorkSwipeView } from './work/WorkSwipeView';
 
 const projectsSectionData = {
   headline: { prefix: 'SELECTED', highlight: 'WORKS' },
@@ -22,6 +24,7 @@ const TAG_COLORS = [
 export const Work: React.FC = () => {
   const { projectsData } = useData();
   const total = projectsData.length;
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [showAll, setShowAll] = useState(false);
   const [isSectionVisible, setIsSectionVisible] = useState(false);
@@ -80,14 +83,24 @@ export const Work: React.FC = () => {
             tagColors={TAG_COLORS}
           />
 
-          {/* Carousel View */}
-          <WorkCarouselView
-            projectsData={projectsData}
-            isSectionVisible={isSectionVisible}
-            showAll={showAll}
-            expandedIndex={expandedIndex}
-            setExpandedIndex={setExpandedIndex}
-          />
+          {/* Carousel / Swipe View */}
+          {isMobile ? (
+            <WorkSwipeView
+              projectsData={projectsData}
+              isSectionVisible={isSectionVisible}
+              showAll={showAll}
+              expandedIndex={expandedIndex}
+              setExpandedIndex={setExpandedIndex}
+            />
+          ) : (
+            <WorkCarouselView
+              projectsData={projectsData}
+              isSectionVisible={isSectionVisible}
+              showAll={showAll}
+              expandedIndex={expandedIndex}
+              setExpandedIndex={setExpandedIndex}
+            />
+          )}
         </div>
 
         {/* Expanded Single Project View */}
