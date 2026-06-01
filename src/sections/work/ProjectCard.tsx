@@ -64,6 +64,68 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     const revealClass = getRevealClass(offset);
     const revealDelay = getRevealDelay(offset);
     const imageSrc = formatImageUrl(project.coverImage || project.image?.src || '');
+ 
+    if (project.isAllProjectsCard) {
+        return (
+            <div
+                className="absolute w-full max-w-[420px] transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)]"
+                style={{
+                    transform: `translateX(${layout.x}%) scale(${layout.scale})`,
+                    opacity: isVisible ? layout.opacity : 0,
+                    zIndex: layout.zIndex,
+                    filter: layout.blur === 'none' ? 'none' : layout.blur,
+                    pointerEvents: isActive ? 'auto' : 'none',
+                }}
+            >
+                <div 
+                    className={[
+                        'group relative',
+                        revealClass,
+                        isRevealed ? 'reveal-visible' : ''
+                    ].join(' ')}
+                    style={{ transitionDelay: revealDelay }}
+                >
+                    {/* Neo shadow behind card */}
+                    <div
+                        className={[
+                            'absolute inset-0 neo-border-heavy translate-x-3 translate-y-3 z-0 transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)]',
+                            isActive
+                                ? 'bg-theme-yellow'
+                                : 'bg-on-surface/30',
+                        ].join(' ')}
+                    />
+                    {/* Card Body */}
+                    <div
+                        className={[
+                            'relative z-10 neo-border-heavy overflow-hidden flex flex-col transition-all duration-500 h-[380px]',
+                            isActive
+                                ? 'bg-theme-blue text-surface-container-lowest animate-float-vertical'
+                                : 'bg-surface-dim text-on-surface/50',
+                        ].join(' ')}
+                        style={isActive ? { animationDelay: `${index * 0.4}s` } : {}}
+                    >
+                        <div className="flex-grow flex flex-col justify-center items-center p-8 text-center">
+                            <span className="material-symbols-outlined text-[64px] mb-4 animate-float text-theme-yellow">folder_open</span>
+                            <h3 className="font-display-2xl text-[28px] uppercase font-bold tracking-tighter mb-2">
+                                ALL PROJECTS
+                            </h3>
+                            <p className="font-body-md font-bold mb-6 text-sm max-w-[280px]">
+                                Explore the complete vault of web breakings, custom APIs, and source repositories.
+                            </p>
+                            {isActive && (
+                                <button
+                                    onClick={onExpand}
+                                    className="bg-theme-yellow text-on-surface font-label-bold uppercase px-6 py-3 neo-border border-[3px] shadow-[4px_4px_0px_0px_#1e1b19] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200"
+                                >
+                                    SHOW ALL
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div
