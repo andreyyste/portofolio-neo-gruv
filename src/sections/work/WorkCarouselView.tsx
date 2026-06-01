@@ -1,53 +1,60 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { IconButton } from '../../ui/IconButton';
 import { ProjectCard } from './ProjectCard';
-
+ 
 interface WorkCarouselViewProps {
   projectsData: any[];
   isSectionVisible: boolean;
   showAll: boolean;
   expandedIndex: number | null;
   setExpandedIndex: (index: number | null) => void;
+  onShowAll: () => void;
 }
-
+ 
 export const WorkCarouselView: React.FC<WorkCarouselViewProps> = ({
   projectsData,
   isSectionVisible,
   showAll,
   expandedIndex,
   setExpandedIndex,
+  onShowAll,
 }) => {
-  const total = projectsData.length;
   const [activeIndex, setActiveIndex] = useState(0);
-
+ 
+  // Limit to 4 projects and append the special "All Projects" card
+  const carouselItems = useMemo(() => {
+    const displayProjects = projectsData.slice(0, 4);
+    return [
+      ...displayProjects,
+      {
+        isAllProjectsCard: true,
+        id: 'all-projects',
+        title: 'All Projects',
+        tags: [],
+        brief: 'Explore the complete vault of web breakings, custom APIs, and source repositories.',
+      },
+    ];
+  }, [projectsData]);
+ 
+  const total = carouselItems.length;
+ 
   /**
    * Navigates to the next project in the carousel loop.
    */
   const goNext = useCallback(() => {
     setActiveIndex((prev) => (prev + 1) % total);
   }, [total]);
-
+ 
   /**
    * Navigates to the previous project in the carousel loop.
    */
   const goPrev = useCallback(() => {
     setActiveIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
-
+ 
   /** 
    * Calculates the offset distance from the currently active card.
    * This creates an infinite loop illusion by picking the shortest path.
-   * 
-   * Mathematical explanation:
-   * To achieve a smooth infinite cycling effect, we compute the distance between the
-   * current project card index and the active index. If this distance exceeds half of
-   * the total number of projects, it's shorter to loop around the end/start of the array.
-   * Subtracting or adding the total shifts the coordinate space so that transition offsets
-   * (e.g. from the last card to the first card) remain continuous and visual positioning
-   * is seamless.
-   * 
-   * @param index - The index of the card to calculate the offset for.
-   * @returns The offset from the active card: -1 = left, 0 = center, 1 = right, etc.
    */
   const getOffset = (index: number): number => {
     let diff = index - activeIndex;
@@ -56,7 +63,7 @@ export const WorkCarouselView: React.FC<WorkCarouselViewProps> = ({
     if (diff < -total / 2) diff += total;
     return diff;
   };
-
+ 
   return (
     <div
       className={[
@@ -73,39 +80,39 @@ export const WorkCarouselView: React.FC<WorkCarouselViewProps> = ({
           directionClass="left-0 md:-left-4 hover:-translate-x-1"
           icon="arrow_back"
         />
-
+ 
         {/* Arrow Right */}
         <IconButton
           onClick={goNext}
           directionClass="right-0 md:-right-4 hover:translate-x-1"
           icon="arrow_forward"
         />
-
+ 
         {/* Cards track */}
         <div className="flex items-center justify-center py-8 min-h-[520px] relative">
-          {projectsData.map((project, index) => {
+          {carouselItems.map((project, index) => {
             const offset = getOffset(index);
             const isActive = offset === 0;
             const isVisible = Math.abs(offset) <= 2;
-
+ 
             return (
               <ProjectCard
-                key={index}
+                key={project.id || index}
                 project={project}
                 index={index}
                 isActive={isActive}
                 isVisible={isVisible}
                 offset={offset}
                 isRevealed={isSectionVisible}
-                onExpand={() => setExpandedIndex(index)}
+                onExpand={project.isAllProjectsCard ? onShowAll : () => setExpandedIndex(index)}
               />
             );
           })}
         </div>
-
+ 
         {/* Dot indicators */}
         <div className="flex justify-center gap-3 mt-12 relative z-30">
-          {projectsData.map((_, index) => (
+          {carouselItems.map((_, index) => (
             <button
               key={index}
               onClick={() => setActiveIndex(index)}
