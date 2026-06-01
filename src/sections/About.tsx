@@ -8,10 +8,10 @@ export const About: React.FC = () => {
     const { badge, portraitLabel, headline, manifesto, rules } = aboutData;
 
     return (
-        <section className="py-12 md:py-24 px-gutter bg-theme-red neo-section-divider relative w-full overflow-hidden" id="about">
+        <section className="py-16 md:py-24 px-gutter bg-theme-red neo-section-divider relative w-full overflow-hidden" id="about">
             <div className="max-w-container-max mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
-                    <div className="order-2 md:order-1 relative reveal-left">
+                    <div className="relative reveal-left">
                         <div className="relative animate-float">
                             <div className="absolute inset-0 bg-on-surface neo-border translate-x-4 translate-y-4 z-0"></div>
                             <div className="relative z-10 w-full aspect-square bg-surface overflow-hidden neo-border border-[8px] hover:scale-105 transition-transform duration-500">
@@ -28,13 +28,13 @@ export const About: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="order-1 md:order-2">
+                    <div>
                         <div className="reveal-top">
                             <Badge as="span" className="inline-block bg-on-surface text-surface-container-lowest mb-6 animate-float" style={{ animationDelay: '0.5s' }}>
                                 {badge}
                             </Badge>
                         </div>
-                        <h2 className="font-display-2xl text-[48px] md:text-[64px] lg:text-[96px] leading-none uppercase mb-8 text-on-surface tracking-tighter reveal-right">
+                        <h2 className="font-display-2xl text-[36px] sm:text-[48px] md:text-[64px] lg:text-[96px] leading-none uppercase mb-8 text-on-surface tracking-tighter reveal-right">
                             {headline.line1}<br/>{headline.line2}<br/><span className="bg-theme-blue text-surface-container-lowest px-4 neo-border inline-block rotate-2 animate-float">{headline.highlight}</span>
                         </h2>
                         <div className="flex flex-col gap-6 text-on-surface">
