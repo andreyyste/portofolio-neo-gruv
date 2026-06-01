@@ -14,29 +14,30 @@ import { Resume } from '../sections/Resume';
 import { Contact } from '../sections/Contact';
 import { MobileApp } from '../mobile/MobileApp';
 
-const DesktopApp: React.FC = () => {
-    return (
-        <Layout>
-            <MouseTrail /> 
-            <Hero />
-            <About />
-            <Work />
-            <Experience />
-            <Skills />
-            <Resume />
-            <Contact />
-        </Layout>
-    );
-};
-
 export const ClientEntry: React.FC = () => {
     const isMobile = useMediaQuery('(max-width: 768px)');
-    const [mounted, setMounted] = React.useState(false);
     
-    React.useEffect(() => setMounted(true), []);
-    useReveal(mounted);
+    // useReveal langsung dipanggil tanpa syarat mounted
+    useReveal(true);
 
-    if (!mounted) return null; // Avoid hydration mismatch
-
-    return isMobile ? <MobileApp /> : <DesktopApp />;
+    // Render desktop layout sebagai default (SSR-friendly),
+    // baru swap ke mobile setelah hydration kalau memang mobile
+    return (
+        <>
+            {isMobile ? (
+                <MobileApp />
+            ) : (
+                <Layout>
+                    <MouseTrail />
+                    <Hero />
+                    <About />
+                    <Work />
+                    <Experience />
+                    <Skills />
+                    <Resume />
+                    <Contact />
+                </Layout>
+            )}
+        </>
+    );
 };
