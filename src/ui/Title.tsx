@@ -14,7 +14,7 @@ export const Title: React.FC<TitleProps> = ({
     highlight,
     highlightColorClass,
     highlightRotateClass = 'rotate-2',
-    className = 'font-display-2xl text-[64px] md:text-[96px] uppercase tracking-tighter text-on-surface leading-none',
+    className = 'font-display-2xl text-[36px] sm:text-[48px] md:text-[96px] uppercase tracking-tighter text-on-surface leading-none',
     as: Tag = 'h2'
 }) => {
     return (
