@@ -8,7 +8,7 @@ export const Footer: React.FC = () => {
     const { brandName, socials, copyright } = footerData;
 
     return (
-        <footer className="bg-on-surface text-surface w-full px-gutter py-12">
+        <footer className="bg-on-surface text-surface w-full px-4 md:px-gutter py-8 md:py-12">
             <div className="flex flex-col md:flex-row justify-between items-center w-full gap-8 reveal-section">
                 <div className="font-display-2xl text-[64px] md:text-display-2xl text-theme-yellow leading-none tracking-tighter uppercase hover:scale-105 transition-transform duration-300 cursor-pointer">
                     {brandName}
