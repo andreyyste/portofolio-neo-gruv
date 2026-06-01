@@ -53,7 +53,7 @@ export const Work: React.FC = () => {
     <section ref={sectionRef} className="py-16 md:py-24 px-gutter bg-surface neo-section-divider w-full overflow-hidden" id="work">
       <div className="max-w-container-max mx-auto">
         {/* Header */}
-        <div className="flex justify-between items-end mb-16 border-b-[8px] border-on-surface pb-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-16 border-b-[8px] border-on-surface pb-4 gap-6">
           <div className="reveal-left">
             <Title 
               prefix={<>{projectsSectionData.headline.prefix}<br/></>}
@@ -61,10 +61,10 @@ export const Work: React.FC = () => {
               highlightColorClass="bg-theme-green text-surface-container-lowest"
             />
           </div>
-          <div className="reveal-right">
+          <div className="reveal-right self-stretch sm:self-auto flex sm:block justify-end">
             <Button 
               onClick={() => setShowAll(!showAll)}
-              className="bg-on-surface text-surface px-6 py-4 neo-border-heavy neo-shadow-sm hover:bg-theme-blue hover:text-surface-container-lowest hover:scale-105 hover:-translate-y-1 duration-300 mb-2"
+              className="bg-on-surface text-surface px-6 py-4 neo-border-heavy neo-shadow-sm hover:bg-theme-blue hover:text-surface-container-lowest hover:scale-105 hover:-translate-y-1 duration-300 mb-2 w-full sm:w-auto"
             >
               {showAll ? 'BACK TO SLIDES' : projectsSectionData.buttonText}
             </Button>
