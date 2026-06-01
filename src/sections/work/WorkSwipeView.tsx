@@ -1,17 +1,17 @@
 "use client";
-
+ 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import type { Project } from '../../types';
 import { formatImageUrl } from '../../utils/image';
-
+ 
 const TAG_COLORS = [
     'bg-theme-red text-surface-container-lowest',
     'bg-theme-blue text-surface-container-lowest',
     'bg-theme-green text-on-surface',
     'bg-theme-yellow text-on-surface'
 ];
-
+ 
 interface WorkSwipeViewProps {
     projectsData: Project[];
     isSectionVisible: boolean;
@@ -19,7 +19,7 @@ interface WorkSwipeViewProps {
     expandedIndex: number | null;
     setExpandedIndex: (index: number | null) => void;
 }
-
+ 
 export const WorkSwipeView: React.FC<WorkSwipeViewProps> = ({
     projectsData,
     isSectionVisible,
@@ -27,84 +27,185 @@ export const WorkSwipeView: React.FC<WorkSwipeViewProps> = ({
     expandedIndex,
     setExpandedIndex,
 }) => {
-    const scrollRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
     const [activeIndex, setActiveIndex] = useState(0);
-
-    // Track active card with IntersectionObserver
+ 
+    // Touch/Mouse drag state
+    const [startX, setStartX] = useState(0);
+    const [currentX, setCurrentX] = useState(0);
+    const [dragOffset, setDragOffset] = useState(0);
+    const [isDragging, setIsDragging] = useState(false);
+    const wasDraggingRef = useRef(false);
+ 
+    // Measured dimensions for precise translation centering
+    const [dimensions, setDimensions] = useState({ containerWidth: 0, cardWidth: 0 });
+ 
     useEffect(() => {
-        const container = scrollRef.current;
-        if (!container) return;
-
-        const cards = container.querySelectorAll('[data-card-index]');
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        const idx = Number((entry.target as HTMLElement).dataset.cardIndex);
-                        setActiveIndex(idx);
-                    }
-                });
-            },
-            {
-                root: container,
-                threshold: 0.6, // card active if >60% visible
+        const handleResize = () => {
+            if (containerRef.current) {
+                const containerWidth = containerRef.current.offsetWidth;
+                const firstCard = containerRef.current.firstElementChild as HTMLElement;
+                const cardWidth = firstCard ? firstCard.offsetWidth : 0;
+                setDimensions({ containerWidth, cardWidth });
             }
-        );
-
-        cards.forEach((card) => observer.observe(card));
-        return () => observer.disconnect();
-    }, [projectsData.length]);
-
-    // Scroll to index for dot tap
-    const scrollToIndex = useCallback((index: number) => {
-        const container = scrollRef.current;
-        if (!container) return;
-        const card = container.querySelector(`[data-card-index="${index}"]`) as HTMLElement;
-        if (card) {
-            card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        };
+ 
+        // Run after component mount/render
+        const timer = setTimeout(handleResize, 150);
+        window.addEventListener('resize', handleResize);
+        return () => {
+            clearTimeout(timer);
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [projectsData.length, showAll]);
+ 
+    const handleTouchStart = (e: React.TouchEvent) => {
+        setStartX(e.touches[0].clientX);
+        setCurrentX(e.touches[0].clientX);
+        setIsDragging(true);
+        wasDraggingRef.current = false;
+    };
+ 
+    const handleTouchMove = (e: React.TouchEvent) => {
+        if (!isDragging) return;
+        const current = e.touches[0].clientX;
+        setCurrentX(current);
+        const diff = current - startX;
+        
+        if (Math.abs(diff) > 8) {
+            wasDraggingRef.current = true;
         }
-    }, []);
-
+ 
+        // Apply rubber-banding at boundaries
+        let finalDiff = diff;
+        if (activeIndex === 0 && diff > 0) {
+            finalDiff = diff * 0.35;
+        } else if (activeIndex === projectsData.length - 1 && diff < 0) {
+            finalDiff = diff * 0.35;
+        }
+        setDragOffset(finalDiff);
+    };
+ 
+    const handleTouchEnd = () => {
+        if (!isDragging) return;
+        setIsDragging(false);
+ 
+        const diff = currentX - startX;
+        const threshold = 40; // minimum drag distance to switch cards
+ 
+        if (diff < -threshold && activeIndex < projectsData.length - 1) {
+            setActiveIndex(prev => prev + 1);
+        } else if (diff > threshold && activeIndex > 0) {
+            setActiveIndex(prev => prev - 1);
+        }
+ 
+        setDragOffset(0);
+    };
+ 
+    const handleMouseDown = (e: React.MouseEvent) => {
+        if (e.button !== 0) return; // only left click drag
+        setStartX(e.clientX);
+        setCurrentX(e.clientX);
+        setIsDragging(true);
+        wasDraggingRef.current = false;
+    };
+ 
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!isDragging) return;
+        const current = e.clientX;
+        setCurrentX(current);
+        const diff = current - startX;
+ 
+        if (Math.abs(diff) > 8) {
+            wasDraggingRef.current = true;
+        }
+ 
+        let finalDiff = diff;
+        if (activeIndex === 0 && diff > 0) {
+            finalDiff = diff * 0.35;
+        } else if (activeIndex === projectsData.length - 1 && diff < 0) {
+            finalDiff = diff * 0.35;
+        }
+        setDragOffset(finalDiff);
+    };
+ 
+    const handleMouseUp = () => {
+        if (!isDragging) return;
+        setIsDragging(false);
+ 
+        const diff = currentX - startX;
+        const threshold = 40;
+ 
+        if (diff < -threshold && activeIndex < projectsData.length - 1) {
+            setActiveIndex(prev => prev + 1);
+        } else if (diff > threshold && activeIndex > 0) {
+            setActiveIndex(prev => prev - 1);
+        }
+ 
+        setDragOffset(0);
+    };
+ 
+    const handleCardAction = (e: React.MouseEvent, action: () => void) => {
+        if (wasDraggingRef.current) {
+            e.preventDefault();
+            e.stopPropagation();
+            return;
+        }
+        action();
+    };
+ 
+    const { containerWidth, cardWidth } = dimensions;
+    const gap = 16; // gap-4 spacing is 16px
+    const centerOffset = containerWidth && cardWidth ? (containerWidth - cardWidth) / 2 : 24;
+    const translateX = centerOffset - activeIndex * (cardWidth + gap) + dragOffset;
+ 
     return (
         <div
             className={[
-                'transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform w-full',
+                'transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform w-full overflow-hidden',
                 !showAll && expandedIndex === null
                     ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto relative z-10'
                     : 'opacity-0 translate-y-8 scale-95 pointer-events-none absolute inset-x-0 top-0 z-0 invisible'
             ].join(' ')}
         >
-            {/* Scroll container */}
-            <div 
-                ref={scrollRef} 
-                className="flex overflow-x-auto gap-4 py-8 no-scrollbar w-full"
-                style={{ 
-                    scrollSnapType: 'x mandatory',
-                    scrollPaddingLeft: '7.5%',
-                    scrollPaddingRight: '7.5%',
-                    paddingLeft: '7.5%',
-                    paddingRight: '7.5%',
-                    WebkitOverflowScrolling: 'touch',
-                }}
-            >
-                {projectsData.map((project, index) => (
-                    <SwipeCard 
-                        key={index}
-                        project={project}
-                        index={index}
-                        isActive={index === activeIndex}
-                        isSectionVisible={isSectionVisible}
-                        onExpand={() => setExpandedIndex(index)}
-                    />
-                ))}
+            {/* Scroll container track */}
+            <div className="w-full overflow-hidden select-none touch-pan-y">
+                <div
+                    ref={containerRef}
+                    className={`flex gap-4 py-8 w-full cursor-grab active:cursor-grabbing ${
+                        isDragging ? 'transition-none' : 'transition-transform duration-300 ease-[cubic-bezier(0.25,1,0.5,1)]'
+                    }`}
+                    style={{
+                        transform: `translateX(${translateX}px)`,
+                    }}
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
+                    onMouseDown={handleMouseDown}
+                    onMouseMove={handleMouseMove}
+                    onMouseUp={handleMouseUp}
+                    onMouseLeave={handleMouseUp}
+                >
+                    {projectsData.map((project, index) => (
+                        <SwipeCard
+                            key={index}
+                            project={project}
+                            index={index}
+                            isActive={index === activeIndex}
+                            isSectionVisible={isSectionVisible}
+                            onExpand={(e) => handleCardAction(e, () => setExpandedIndex(index))}
+                            onAction={handleCardAction}
+                        />
+                    ))}
+                </div>
             </div>
-
+ 
             {/* Dot indicators */}
             <div className="flex justify-center gap-3 mt-4 relative z-30">
                 {projectsData.map((_, index) => (
                     <button
                         key={index}
-                        onClick={() => scrollToIndex(index)}
+                        onClick={() => setActiveIndex(index)}
                         className={[
                             'w-4 h-4 neo-border border-[3px] transition-all duration-300',
                             index === activeIndex
@@ -117,34 +218,32 @@ export const WorkSwipeView: React.FC<WorkSwipeViewProps> = ({
         </div>
     );
 };
-
+ 
 interface SwipeCardProps {
     project: Project;
     index: number;
     isActive: boolean;
     isSectionVisible: boolean;
-    onExpand: () => void;
+    onExpand: (e: React.MouseEvent) => void;
+    onAction: (e: React.MouseEvent, action: () => void) => void;
 }
-
+ 
 const SwipeCard: React.FC<SwipeCardProps> = ({
     project,
     index,
     isActive,
     isSectionVisible,
     onExpand,
+    onAction,
 }) => {
     const imageSrc = formatImageUrl(project.coverImage || project.image?.src || '');
-
+ 
     return (
         <div
             data-card-index={index}
-            className="flex-shrink-0 w-[85vw] max-w-[340px] relative transition-transform duration-300 snap-center snap-always"
-            style={{
-                scrollSnapAlign: 'center',
-                scrollSnapStop: 'always',
-            }}
+            className="flex-shrink-0 w-[85vw] max-w-[340px] relative transition-transform duration-300"
         >
-            <div className="group relative w-full">
+            <div className="group relative w-full pointer-events-auto">
                 {/* Neo shadow behind card */}
                 <div
                     className={[
@@ -166,11 +265,12 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                     )}
                     {/* Image */}
                     {imageSrc && (
-                        <div className="h-40 overflow-hidden border-b-[4px] border-on-surface relative">
+                        <div className="h-40 overflow-hidden border-b-[4px] border-on-surface relative pointer-events-none">
                             <img
                                 alt={project.title}
                                 className="w-full h-full object-cover transition-all duration-700"
                                 src={imageSrc}
+                                draggable="false"
                             />
                         </div>
                     )}
@@ -225,7 +325,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                 {project.brief}
                             </p>
                         </div>
-
+ 
                         {/* Action buttons (only active card) */}
                         {isActive && (
                             <div className="flex gap-2 mt-4">
@@ -242,11 +342,12 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                         href={`/source-code/${project.githubRepo}`}
                                         className="h-10 w-10 flex-shrink-0 bg-on-surface text-surface neo-border flex items-center justify-center shadow-[2px_2px_0px_0px_#1e1b19] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all duration-100"
                                         title="Source Code"
+                                        onClick={(e) => onAction(e, () => {})}
                                     >
                                         <span className="material-symbols-outlined text-base">code</span>
                                     </Link>
                                 )}
-
+ 
                                 {project.liveUrl && (
                                     <a
                                         href={project.liveUrl}
@@ -254,6 +355,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                         rel="noopener noreferrer"
                                         className="h-10 flex-1 font-label-bold uppercase text-[10px] bg-theme-blue text-surface px-2 neo-border shadow-[2px_2px_0px_0px_#1e1b19] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all duration-100 inline-flex items-center justify-center gap-1"
                                         title="Live Demo"
+                                        onClick={(e) => onAction(e, () => {})}
                                     >
                                         <span className="material-symbols-outlined text-sm">public</span>
                                         Demo
