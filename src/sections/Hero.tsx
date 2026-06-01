@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button } from '../ui/Button';
-import { Marquee } from '../ui/Marquee';
 import { Title } from '../ui/Title';
 import { useData } from '../context/DataContext';
 import { formatImageUrl } from '../utils/image';
@@ -41,9 +40,6 @@ export const Hero: React.FC = () => {
                         <img alt={heroImage.alt} className="w-full h-full object-cover filter grayscale contrast-125 hover:grayscale-0 transition-all duration-1000" src={formatImageUrl(heroImage.src)}/>
                     </div>
                 </div>
-            </div>
-            <div className="reveal-bottom" style={{ transitionDelay: '0.4s' }}>
-                <Marquee />
             </div>
         </section>
     );
