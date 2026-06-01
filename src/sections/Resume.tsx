@@ -8,15 +8,15 @@ export const Resume: React.FC = () => {
     const { versionLabel, headline, ctaText } = resumeData;
 
     return (
-        <section className="py-32 px-gutter bg-theme-green neo-section-divider flex items-center justify-center w-full" id="resume">
+        <section className="py-16 md:py-32 px-gutter bg-theme-green neo-section-divider flex items-center justify-center w-full" id="resume">
             <div className="w-full max-w-4xl mx-auto text-center relative animate-float">
                 <Badge 
-                    className="absolute -top-12 left-10 bg-on-surface text-theme-green rotate-[-10deg] z-10 hover:rotate-0 transition-transform duration-300 reveal-top"
+                    className="absolute -top-12 left-4 sm:left-10 bg-on-surface text-theme-green rotate-[-10deg] z-10 hover:rotate-0 transition-transform duration-300 reveal-top"
                     style={{ transitionDelay: '0.1s' }}
                 >
                     {versionLabel}
                 </Badge>
-                <div className="bg-surface p-12 md:p-24 neo-border-heavy neo-shadow transform rotate-1 hover:rotate-0 hover:scale-105 transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] relative group reveal-bottom">
+                <div className="bg-surface p-6 sm:p-12 md:p-24 neo-border-heavy neo-shadow transform rotate-1 hover:rotate-0 hover:scale-105 transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] relative group reveal-bottom">
                     <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,#1e1b19_10px,#1e1b19_12px)] opacity-5 z-0 pointer-events-none group-hover:opacity-10 transition-opacity"></div>
                     <div className="relative z-10 flex flex-col items-center">
                         <div className="reveal-left" style={{ transitionDelay: '0.2s' }}>
