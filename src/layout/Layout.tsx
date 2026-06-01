@@ -8,7 +8,7 @@ interface LayoutProps {
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
-        <div className="bg-background text-on-background font-body-md min-h-screen flex flex-col relative w-full">
+        <div className="bg-background text-on-background font-body-md min-h-screen flex flex-col relative w-full overflow-x-hidden">
             <Navbar />
             <main className="flex-grow w-full mx-auto flex flex-col">
                 {children}
