@@ -1,34 +1,19 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { jwtVerify } from 'jose';
 
-function parseJwt(token: string) {
+async function isTokenValid(token: string): Promise<boolean> {
   try {
-    const parts = token.split('.');
-    if (parts.length !== 3) return null;
-    const base64Url = parts[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split('')
-        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-        .join('')
-    );
-    return JSON.parse(jsonPayload);
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+    await jwtVerify(token, secret);
+    return true;
   } catch {
-    return null;
+    // Token invalid, expired, atau signature tidak cocok
+    return false;
   }
 }
 
-function isTokenExpired(token: string): boolean {
-  const payload = parseJwt(token);
-  if (!payload) return true;
-  if (payload.exp && typeof payload.exp === 'number') {
-    return payload.exp < Math.floor(Date.now() / 1000);
-  }
-  return false;
-}
-
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const tokenCookie = request.cookies.get('jwt_token');
   const token = tokenCookie?.value;
 
@@ -36,7 +21,7 @@ export function middleware(request: NextRequest) {
   const isLogin = request.nextUrl.pathname.startsWith('/nre-masuk');
 
   if (isDashboard) {
-    if (!token || isTokenExpired(token)) {
+    if (!token || !(await isTokenValid(token))) {
       const response = NextResponse.redirect(new URL('/nre-masuk', request.url));
       response.cookies.delete('jwt_token');
       return response;
@@ -44,7 +29,7 @@ export function middleware(request: NextRequest) {
   }
 
   if (isLogin) {
-    if (token && !isTokenExpired(token)) {
+    if (token && (await isTokenValid(token))) {
       return NextResponse.redirect(new URL('/dashboard', request.url));
     } else if (token) {
       const response = NextResponse.next();
@@ -59,4 +44,3 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: ['/dashboard/:path*', '/nre-masuk'],
 };
-
