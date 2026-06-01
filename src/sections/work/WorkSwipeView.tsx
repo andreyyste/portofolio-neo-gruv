@@ -138,9 +138,10 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
     return (
         <div
             data-card-index={index}
-            className="flex-shrink-0 w-[85vw] max-w-[340px] relative transition-transform duration-300"
+            className="flex-shrink-0 w-[85vw] max-w-[340px] relative transition-transform duration-300 snap-center snap-always"
             style={{
                 scrollSnapAlign: 'center',
+                scrollSnapStop: 'always',
             }}
         >
             <div className="group relative w-full">
