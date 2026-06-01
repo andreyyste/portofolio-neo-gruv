@@ -8,7 +8,7 @@ export const Resume: React.FC = () => {
     const { versionLabel, headline, ctaText } = resumeData;
 
     return (
-        <section className="py-16 md:py-32 px-gutter bg-theme-green neo-section-divider flex items-center justify-center w-full" id="resume">
+        <section className="py-16 md:py-32 px-gutter bg-theme-green neo-section-divider flex items-center justify-center w-full overflow-hidden" id="resume">
             <div className="w-full max-w-4xl mx-auto text-center relative animate-float">
                 <Badge 
                     className="absolute -top-12 left-4 sm:left-10 bg-on-surface text-theme-green rotate-[-10deg] z-10 hover:rotate-0 transition-transform duration-300 reveal-top"
@@ -20,14 +20,14 @@ export const Resume: React.FC = () => {
                     <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,#1e1b19_10px,#1e1b19_12px)] opacity-5 z-0 pointer-events-none group-hover:opacity-10 transition-opacity"></div>
                     <div className="relative z-10 flex flex-col items-center">
                         <div className="reveal-left" style={{ transitionDelay: '0.2s' }}>
-                            <h2 className="font-display-2xl text-[48px] md:text-[80px] leading-none uppercase mb-12 text-on-surface tracking-tighter">
+                            <h2 className="font-display-2xl text-[32px] sm:text-[48px] md:text-[80px] leading-none uppercase mb-12 text-on-surface tracking-tighter">
                                 {headline.prefix} <span className="bg-theme-yellow px-4 neo-border inline-block rotate-2 animate-float">{headline.highlight}</span>
                             </h2>
                         </div>
                         <div className="reveal-bottom" style={{ transitionDelay: '0.35s' }}>
                             <a href={resumeData.downloadUrl} download className="block">
-                                <Button className="bg-on-surface text-theme-green neo-border-heavy px-6 md:px-12 py-8 font-display-2xl text-[5vw] sm:text-[32px] md:text-[48px] hover:-translate-y-2 hover:shadow-[16px_16px_0px_0px_#b8bb26] hover:bg-surface hover:text-on-surface shadow-[8px_8px_0px_0px_#b8bb26] duration-300 gap-4 active:translate-y-2 active:shadow-[0px_0px_0px_0px_#b8bb26]">
-                                    <span className="material-symbols-outlined text-[5vw] sm:text-[32px] md:text-[48px] group-hover:animate-bounce flex-shrink-0">download</span>
+                                <Button className="bg-on-surface text-theme-green neo-border-heavy px-6 md:px-12 py-4 md:py-8 font-display-2xl text-[24px] sm:text-[32px] md:text-[48px] hover:-translate-y-2 hover:shadow-[16px_16px_0px_0px_#b8bb26] hover:bg-surface hover:text-on-surface shadow-[8px_8px_0px_0px_#b8bb26] duration-300 gap-4 active:translate-y-2 active:shadow-[0px_0px_0px_0px_#b8bb26]">
+                                    <span className="material-symbols-outlined text-[24px] sm:text-[32px] md:text-[48px] group-hover:animate-bounce flex-shrink-0">download</span>
                                     {ctaText}
                                 </Button>
                             </a>
