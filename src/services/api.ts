@@ -24,8 +24,10 @@ export class APIError extends Error {
 /**
  * Generic fetcher with basic error handling
  */
-async function fetchWithError<T>(url: string): Promise<T> {
-    const response = await fetch(url, { cache: 'no-store' });
+async function fetchWithError<T>(url: string, revalidate: number = 3600): Promise<T> {
+    const response = await fetch(url, {
+        next: { revalidate } // ISR: cache N detik, lalu revalidate di background
+    });
     if (!response.ok) {
         throw new APIError(response.status, `Failed to fetch from ${url}: ${response.statusText}`);
     }
@@ -86,16 +88,16 @@ export async function fetchSiteData(baseUrl: string): Promise<SiteData> {
         experiencesDataRaw,
         skillsData
     ] = await Promise.all([
-        fetchWithError<HeroData>(endpoints.hero),
-        fetchWithError<AboutData>(endpoints.about),
-        fetchWithError<ContactData>(endpoints.contact),
-        fetchWithError<string[]>(endpoints.marquee),
-        fetchWithError<NavigationData>(endpoints.navigation),
-        fetchWithError<FooterData>(endpoints.footer),
-        fetchWithError<ResumeData>(endpoints.resume),
-        fetchWithError<ProjectRaw[]>(endpoints.projects),
-        fetchWithError<ExperienceRaw[]>(endpoints.experiences),
-        fetchWithError<SkillItem[]>(endpoints.skills),
+        fetchWithError<HeroData>(endpoints.hero, 3600),           // 1 jam
+        fetchWithError<AboutData>(endpoints.about, 3600),         // 1 jam
+        fetchWithError<ContactData>(endpoints.contact, 3600),     // 1 jam
+        fetchWithError<string[]>(endpoints.marquee, 3600),        // 1 jam
+        fetchWithError<NavigationData>(endpoints.navigation, 86400), // 24 jam
+        fetchWithError<FooterData>(endpoints.footer, 86400),      // 24 jam
+        fetchWithError<ResumeData>(endpoints.resume, 3600),       // 1 jam
+        fetchWithError<ProjectRaw[]>(endpoints.projects, 1800),   // 30 menit
+        fetchWithError<ExperienceRaw[]>(endpoints.experiences, 3600), // 1 jam
+        fetchWithError<SkillItem[]>(endpoints.skills, 3600),      // 1 jam
     ]);
 
     // Transform API structures into our frontend domain models
