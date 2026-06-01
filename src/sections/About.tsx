@@ -8,9 +8,9 @@ export const About: React.FC = () => {
     const { badge, portraitLabel, headline, manifesto, rules } = aboutData;
 
     return (
-        <section className="py-24 px-gutter bg-theme-red neo-section-divider relative w-full overflow-hidden" id="about">
+        <section className="py-12 md:py-24 px-gutter bg-theme-red neo-section-divider relative w-full overflow-hidden" id="about">
             <div className="max-w-container-max mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
                     <div className="order-2 md:order-1 relative reveal-left">
                         <div className="relative animate-float">
                             <div className="absolute inset-0 bg-on-surface neo-border translate-x-4 translate-y-4 z-0"></div>
@@ -23,7 +23,7 @@ export const About: React.FC = () => {
                                     )}
                                 </div>
                             </div>
-                            <div className="absolute -bottom-8 -right-8 bg-surface text-on-surface px-6 py-3 font-label-bold uppercase neo-border-heavy neo-shadow rotate-[-5deg] z-20 hover:rotate-0 transition-transform">
+                            <div className="absolute bottom-[-1rem] right-[-0.5rem] md:-bottom-8 md:-right-8 bg-surface text-on-surface px-6 py-3 font-label-bold uppercase neo-border-heavy neo-shadow rotate-[-5deg] z-20 hover:rotate-0 transition-transform">
                                 {portraitLabel}
                             </div>
                         </div>
