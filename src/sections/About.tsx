@@ -10,7 +10,20 @@ export const About: React.FC = () => {
     return (
         <section className="py-16 md:py-24 px-gutter bg-theme-red neo-section-divider relative w-full overflow-hidden" id="about">
             <div className="max-w-container-max mx-auto">
+                {/* Mobile Section Header (Only visible on mobile) */}
+                <div className="block md:hidden mb-8">
+                    <div className="reveal-top">
+                        <Badge as="span" className="inline-block bg-on-surface text-surface-container-lowest mb-6 animate-float" style={{ animationDelay: '0.5s' }}>
+                            {badge}
+                        </Badge>
+                    </div>
+                    <h2 className="font-display-2xl text-[32px] sm:text-[48px] leading-none uppercase mb-4 text-on-surface tracking-tighter reveal-right">
+                        {headline.line1}<br/>{headline.line2}<br/><span className="bg-theme-blue text-surface-container-lowest px-4 neo-border inline-block rotate-2 animate-float mt-2">{headline.highlight}</span>
+                    </h2>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
+                    {/* Portrait column */}
                     <div className="relative reveal-left">
                         <div className="relative animate-float">
                             <div className="absolute inset-0 bg-on-surface neo-border translate-x-4 translate-y-4 z-0"></div>
@@ -28,18 +41,24 @@ export const About: React.FC = () => {
                             </div>
                         </div>
                     </div>
+
+                    {/* Text column */}
                     <div>
-                        <div className="reveal-top">
-                            <Badge as="span" className="inline-block bg-on-surface text-surface-container-lowest mb-6 animate-float" style={{ animationDelay: '0.5s' }}>
-                                {badge}
-                            </Badge>
+                        {/* Desktop Section Header (Only visible on desktop) */}
+                        <div className="hidden md:block">
+                            <div className="reveal-top">
+                                <Badge as="span" className="inline-block bg-on-surface text-surface-container-lowest mb-6 animate-float" style={{ animationDelay: '0.5s' }}>
+                                    {badge}
+                                </Badge>
+                            </div>
+                            <h2 className="font-display-2xl md:text-[64px] lg:text-[96px] leading-none uppercase mb-8 text-on-surface tracking-tighter reveal-right">
+                                {headline.line1}<br/>{headline.line2}<br/><span className="bg-theme-blue text-surface-container-lowest px-4 neo-border inline-block rotate-2 animate-float mt-2">{headline.highlight}</span>
+                            </h2>
                         </div>
-                        <h2 className="font-display-2xl text-[36px] sm:text-[48px] md:text-[64px] lg:text-[96px] leading-none uppercase mb-8 text-on-surface tracking-tighter reveal-right">
-                            {headline.line1}<br/>{headline.line2}<br/><span className="bg-theme-blue text-surface-container-lowest px-4 neo-border inline-block rotate-2 animate-float">{headline.highlight}</span>
-                        </h2>
+
                         <div className="flex flex-col gap-6 text-on-surface">
                             <div className="reveal-bottom">
-                                <p className="font-body-lg text-body-lg font-bold bg-surface p-6 neo-border neo-shadow-sm hover:-translate-y-2 hover:shadow-[8px_8px_0px_0px_#1e1b19] transition-all duration-300">
+                                <p className="font-body-lg text-body-md sm:text-body-lg font-bold bg-surface p-6 neo-border neo-shadow-sm hover:-translate-y-2 hover:shadow-[8px_8px_0px_0px_#1e1b19] transition-all duration-300">
                                     {manifesto}
                                 </p>
                             </div>
