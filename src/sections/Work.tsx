@@ -50,7 +50,7 @@ export const Work: React.FC = () => {
   const expandedProject = expandedIndex !== null ? projectsData[expandedIndex] : null;
 
   return (
-    <section ref={sectionRef} className="py-24 px-gutter bg-surface neo-section-divider w-full overflow-hidden" id="work">
+    <section ref={sectionRef} className="py-16 md:py-24 px-gutter bg-surface neo-section-divider w-full overflow-hidden" id="work">
       <div className="max-w-container-max mx-auto">
         {/* Header */}
         <div className="flex justify-between items-end mb-16 border-b-[8px] border-on-surface pb-4">
