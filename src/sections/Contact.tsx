@@ -10,7 +10,7 @@ export const Contact: React.FC = () => {
     const { headline, subtitle, form, emailDestination } = contactData;
 
     return (
-        <section className="py-12 md:py-24 px-gutter bg-theme-yellow neo-section-divider w-full" id="contact">
+        <section className="py-16 md:py-24 px-gutter bg-theme-yellow neo-section-divider w-full overflow-hidden" id="contact">
             <div className="max-w-container-max mx-auto">
                 <div className="bg-surface neo-border-heavy neo-shadow p-4 sm:p-8 md:p-16 flex flex-col items-center text-center transform rotate-[-1deg] hover:rotate-0 transition-transform duration-500 animate-float reveal-bottom">
                     <div className="reveal-left" style={{ transitionDelay: '0.15s' }}>
@@ -19,7 +19,7 @@ export const Contact: React.FC = () => {
                             highlight={headline.highlight}
                             highlightColorClass="bg-on-surface text-surface"
                             highlightRotateClass="rotate-[-2deg]"
-                            className="font-display-2xl text-[48px] md:text-[64px] lg:text-[80px] uppercase tracking-tighter mb-4 text-on-surface leading-none"
+                            className="font-display-2xl text-[32px] sm:text-[48px] md:text-[64px] lg:text-[80px] uppercase tracking-tighter mb-4 text-on-surface leading-none"
                         />
                     </div>
                     <div className="reveal-right" style={{ transitionDelay: '0.3s' }}>
