@@ -116,11 +116,11 @@ export const Experience: React.FC = () => {
     const { experiencesData: experienceData } = useData();
     const isMobile = useMediaQuery('(max-width: 768px)');
     return (
-        <section className="py-24 px-gutter bg-theme-grey neo-section-divider w-full" id="experience">
+        <section className="py-16 md:py-24 px-gutter bg-theme-grey neo-section-divider w-full overflow-hidden" id="experience">
             <div className="max-w-container-max mx-auto">
                 <div className="mb-16 border-b-[8px] border-on-surface pb-4 reveal-section">
                     <Title 
-                        className="font-display-2xl text-[48px] md:text-[64px] lg:text-[96px] uppercase tracking-tighter text-on-surface leading-none"
+                        className="font-display-2xl text-[36px] sm:text-[48px] md:text-[64px] lg:text-[96px] uppercase tracking-tighter text-on-surface leading-none"
                         prefix={<>{experienceSectionData.headline.prefix}<br/></>}
                         highlight={experienceSectionData.headline.highlight}
                         highlightColorClass="bg-theme-blue text-surface-container-lowest"
