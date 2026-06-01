@@ -1,5 +1,6 @@
 {
-  "name": "porto",
+  "name": "portofolio-neo-gruv",
+  "description": "Neo-brutalist personal portfolio website built with Next.js 15 and React 19.",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,6 +11,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "jose": "^6.2.3",
     "next": "^15.2.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
