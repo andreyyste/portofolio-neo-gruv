@@ -10,7 +10,7 @@ export const Hero: React.FC = () => {
     const { headline, tagline, ctaText, heroImage } = heroData;
 
     return (
-        <section className="relative pt-28 pb-32 w-full neo-section-divider z-[100] overflow-hidden">
+        <section className="relative pt-20 pb-20 md:pt-28 md:pb-32 w-full neo-section-divider z-[100] overflow-hidden">
             <div className="px-gutter max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
                 <div className="md:col-span-8 z-10 relative">
                     <div className="reveal-left">
