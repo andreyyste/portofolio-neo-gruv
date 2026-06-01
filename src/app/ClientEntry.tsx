@@ -5,6 +5,7 @@ import { useReveal } from '../hooks/useReveal';
 import { Layout } from '../layout/Layout';
 import { MouseTrail } from '../ui/MouseTrail';
 import { Hero } from '../sections/Hero';
+import { Marquee } from '../ui/Marquee';
 import { About } from '../sections/About';
 import { Work } from '../sections/Work';
 import { Experience } from '../sections/Experience';
@@ -19,6 +20,7 @@ export const ClientEntry: React.FC = () => {
         <Layout>
             <MouseTrail />
             <Hero />
+            <Marquee />
             <About />
             <Work />
             <Experience />
