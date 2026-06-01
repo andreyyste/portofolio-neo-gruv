@@ -95,6 +95,7 @@ export interface Project {
         src: string;
         alt: string;
     };
+    isAllProjectsCard?: boolean;
 }
 
 export interface Experience {
