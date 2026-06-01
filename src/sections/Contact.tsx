@@ -10,9 +10,9 @@ export const Contact: React.FC = () => {
     const { headline, subtitle, form, emailDestination } = contactData;
 
     return (
-        <section className="py-24 px-gutter bg-theme-yellow neo-section-divider w-full" id="contact">
+        <section className="py-12 md:py-24 px-gutter bg-theme-yellow neo-section-divider w-full" id="contact">
             <div className="max-w-container-max mx-auto">
-                <div className="bg-surface neo-border-heavy neo-shadow p-8 md:p-16 flex flex-col items-center text-center transform rotate-[-1deg] hover:rotate-0 transition-transform duration-500 animate-float reveal-bottom">
+                <div className="bg-surface neo-border-heavy neo-shadow p-4 sm:p-8 md:p-16 flex flex-col items-center text-center transform rotate-[-1deg] hover:rotate-0 transition-transform duration-500 animate-float reveal-bottom">
                     <div className="reveal-left" style={{ transitionDelay: '0.15s' }}>
                         <Title 
                             prefix={<>{headline.line1}<br/>{headline.line2} </>}
