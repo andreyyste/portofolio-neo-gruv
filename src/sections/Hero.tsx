@@ -19,11 +19,11 @@ export const Hero: React.FC = () => {
                             prefix={<>{headline.line1}<br/>{headline.line2}<br/></>}
                             highlight={headline.highlight}
                             highlightColorClass="bg-theme-yellow"
-                            className="font-display-2xl text-[56px] md:text-[80px] lg:text-display-2xl uppercase text-on-background leading-none mb-8 tracking-tighter"
+                            className="font-display-2xl text-[32px] sm:text-[56px] md:text-[80px] lg:text-display-2xl uppercase text-on-background leading-none mb-8 tracking-tighter"
                         />
                     </div>
                     <div className="reveal-bottom" style={{ transitionDelay: '0.15s' }}>
-                        <p className="font-body-lg text-body-lg max-w-2xl mb-12 bg-surface-container p-6 neo-border neo-shadow-sm -rotate-1">
+                        <p className="font-body-lg text-body-md sm:text-body-lg max-w-2xl mb-12 bg-surface-container p-6 neo-border neo-shadow-sm -rotate-1">
                             {tagline}
                         </p>
                     </div>
