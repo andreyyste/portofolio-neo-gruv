@@ -41,7 +41,7 @@ export const Navbar: React.FC = () => {
 
     const [floating, setFloating] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const { navigationData } = useData();
+    const { navigationData, marqueeItems } = useData();
     const { brandName, navLinks, ctaText } = navigationData;
 
     useEffect(() => {
@@ -106,18 +106,34 @@ export const Navbar: React.FC = () => {
 
     return (
         <>
+            {/* Thin Black Marquee (Mobile Only) */}
+            <div className="w-full overflow-hidden bg-on-surface text-surface py-2 border-b-[3px] border-on-surface md:hidden z-[115] relative">
+                <div className="flex w-max animate-[marquee_200s_linear_infinite] font-label-bold text-[10px] uppercase whitespace-nowrap">
+                    <div className="flex gap-8 pr-8">
+                        {Array.from({ length: 5 }).flatMap(() => marqueeItems || []).map((item, i) => (
+                            <span key={`g1-${i}`}>{item}</span>
+                        ))}
+                    </div>
+                    <div className="flex gap-8 pr-8">
+                        {Array.from({ length: 5 }).flatMap(() => marqueeItems || []).map((item, i) => (
+                            <span key={`g2-${i}`}>{item}</span>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
             <nav
                 className={[
                     'sticky top-0 z-[110] flex justify-between items-center px-gutter text-primary',
                     'transition-all duration-300 ease-in-out',
                     floating
                         ? 'mx-4 mt-5 h-16 rounded-2xl border-[3px] border-on-surface bg-background/90 backdrop-blur-md shadow-[4px_4px_0px_0px_#1e1b19]'
-                        : 'w-full h-24 border-b-[4px] border-on-surface bg-background shadow-[8px_8px_0px_0px_#1e1b19]',
+                        : 'w-full h-16 md:h-24 border-b-[4px] border-on-surface bg-background md:shadow-[8px_8px_0px_0px_#1e1b19]',
                 ].join(' ')}
             >
                 <div className={[
                     'font-display-2xl font-extrabold uppercase tracking-tighter text-on-surface transition-all duration-300 relative z-[120]',
-                    floating ? 'text-[24px]' : 'text-[32px]',
+                    floating ? 'text-[24px]' : 'text-[24px] md:text-[32px]',
                 ].join(' ')}>
                     {brandName}
                 </div>
