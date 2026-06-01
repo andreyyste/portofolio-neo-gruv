@@ -99,6 +99,7 @@ export const Work: React.FC = () => {
               showAll={showAll}
               expandedIndex={expandedIndex}
               setExpandedIndex={setExpandedIndex}
+              onShowAll={() => setShowAll(true)}
             />
           )}
         </div>
