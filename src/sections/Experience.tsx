@@ -10,12 +10,15 @@ const TAG_COLORS = [
     'bg-theme-yellow text-on-surface'
 ];
 
+import { useMediaQuery } from '../hooks/useMediaQuery';
+
 interface TimelineItemProps {
     exp: any;
     index: number;
+    isMobile: boolean;
 }
 
-const TimelineItem: React.FC<TimelineItemProps> = ({ exp, index }) => {
+const TimelineItem: React.FC<TimelineItemProps> = ({ exp, index, isMobile }) => {
     const itemRef = useRef<HTMLDivElement>(null);
     const [visible, setVisible] = useState(false);
 
@@ -37,7 +40,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ exp, index }) => {
         return () => observer.disconnect();
     }, []);
 
-    const isLeft = index % 2 === 0;
+    const isLeft = !isMobile && index % 2 === 0;
 
     return (
         <div 
@@ -111,6 +114,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ exp, index }) => {
 
 export const Experience: React.FC = () => {
     const { experiencesData: experienceData } = useData();
+    const isMobile = useMediaQuery('(max-width: 768px)');
     return (
         <section className="py-24 px-gutter bg-theme-grey neo-section-divider w-full" id="experience">
             <div className="max-w-container-max mx-auto">
@@ -130,7 +134,7 @@ export const Experience: React.FC = () => {
                     {/* Items container */}
                     <div className="relative z-10 flex flex-col w-full">
                         {experienceData.map((exp, index) => (
-                            <TimelineItem key={index} exp={exp} index={index} />
+                            <TimelineItem key={index} exp={exp} index={index} isMobile={isMobile} />
                         ))}
                     </div>
                 </div>
