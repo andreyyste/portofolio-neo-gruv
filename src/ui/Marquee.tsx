@@ -7,8 +7,8 @@ export const Marquee: React.FC = () => {
     const repeatedItems = Array.from({ length: 10 }).flatMap(() => marqueeItems);
 
     return (
-        <div className="relative w-full z-[100] h-0 select-none">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] overflow-hidden bg-on-surface text-surface py-4 neo-border-heavy rotate-[-1deg] hover:scale-105 transition-transform duration-500">
+        <div className="relative w-full z-[100] h-[80px] -mt-[40px] -mb-[40px] overflow-hidden select-none">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] overflow-hidden bg-on-surface text-surface py-4 neo-border-heavy rotate-[-1deg] hover:scale-105 transition-transform duration-500">
                 <div className="flex w-max animate-[marquee_200s_linear_infinite] font-label-bold text-label-bold uppercase whitespace-nowrap">
                     {/* Group 1 */}
                     <div className="flex gap-12 pr-12">
