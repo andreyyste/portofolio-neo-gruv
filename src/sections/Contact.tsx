@@ -1,13 +1,18 @@
-import React from 'react';
+"use client";
+
+import React, { useActionState } from 'react';
 import { Button } from '../ui/Button';
 import { Title } from '../ui/Title';
 import { Input } from '../ui/Input';
 import { Textarea } from '../ui/Textarea';
 import { useData } from '../context/DataContext';
+import { sendContactAction } from '../app/actions/contact';
 
 export const Contact: React.FC = () => {
     const { contactData } = useData();
-    const { headline, subtitle, form, emailDestination } = contactData;
+    const { headline, subtitle, form } = contactData;
+
+    const [state, formAction, isPending] = useActionState(sendContactAction, null);
 
     return (
         <section className="py-16 md:py-24 px-gutter bg-theme-yellow neo-section-divider w-full overflow-hidden" id="contact">
@@ -27,19 +32,36 @@ export const Contact: React.FC = () => {
                             {subtitle}
                         </p>
                     </div>
-                    <form action={contactData.emailDestination} method="POST" encType="text/plain" className="w-full max-w-2xl flex flex-col gap-6 relative z-10">
+                    <form action={formAction} className="w-full max-w-2xl flex flex-col gap-6 relative z-10">
                         <div className="reveal-bottom" style={{ transitionDelay: '0.4s' }}>
-                            <Input focusColorClass="focus:bg-theme-red" placeholder={form.namePlaceholder} type="text" name="name" />
+                            <Input focusColorClass="focus:bg-theme-red" placeholder={form.namePlaceholder} type="text" name="name" required />
                         </div>
                         <div className="reveal-bottom" style={{ transitionDelay: '0.5s' }}>
-                            <Input focusColorClass="focus:bg-theme-blue" placeholder={form.emailPlaceholder} type="email" name="email" />
+                            <Input focusColorClass="focus:bg-theme-blue" placeholder={form.emailPlaceholder} type="email" name="email" required />
                         </div>
                         <div className="reveal-bottom" style={{ transitionDelay: '0.6s' }}>
-                            <Textarea focusColorClass="focus:bg-theme-green" placeholder={form.messagePlaceholder} name="message"></Textarea>
+                            <Textarea focusColorClass="focus:bg-theme-green" placeholder={form.messagePlaceholder} name="message" required></Textarea>
                         </div>
+
+                        {state?.error && (
+                            <div className="text-theme-red font-bold text-left p-4 bg-surface border-2 border-theme-red neo-shadow-sm rounded-none">
+                                ⚠️ {state.error}
+                            </div>
+                        )}
+
+                        {state?.success && (
+                            <div className="text-theme-green font-bold text-left p-4 bg-surface border-2 border-theme-green neo-shadow-sm rounded-none">
+                                🎉 Message sent successfully! I will get back to you soon.
+                            </div>
+                        )}
+
                         <div className="reveal-bottom" style={{ transitionDelay: '0.7s' }}>
-                            <Button type="submit" className="w-full bg-on-surface text-theme-yellow font-display-2xl text-[32px] md:text-[40px] py-6 neo-border-heavy hover:bg-surface hover:text-on-surface hover:-translate-y-2 shadow-[8px_8px_0px_0px_#1e1b19] hover:shadow-[16px_16px_0px_0px_#1e1b19] active:translate-y-2 active:shadow-none duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] mt-4 tracking-tighter">
-                                {form.submitText}
+                            <Button 
+                                type="submit" 
+                                disabled={isPending}
+                                className="w-full bg-on-surface text-theme-yellow font-display-2xl text-[32px] md:text-[40px] py-6 neo-border-heavy hover:bg-surface hover:text-on-surface hover:-translate-y-2 shadow-[8px_8px_0px_0px_#1e1b19] hover:shadow-[16px_16px_0px_0px_#1e1b19] active:translate-y-2 active:shadow-none duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] mt-4 tracking-tighter disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {isPending ? 'Sending...' : form.submitText}
                             </Button>
                         </div>
                     </form>
