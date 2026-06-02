@@ -5,27 +5,6 @@ import { usePathname } from 'next/navigation';
 import { Button } from '../ui/Button';
 import { useData } from '../context/DataContext';
 
-const getOrderedLinks = (links: Array<{ label: string; href: string }>) => {
-    if (!links || links.length === 0) return [];
-    const skillsLink = links.find(l => l.label.toLowerCase() === 'skills' || l.href.toLowerCase().includes('skills'));
-    if (!skillsLink) return links;
-
-    const filtered = links.filter(l => l !== skillsLink);
-    const expIdx = filtered.findIndex(l => l.label.toLowerCase() === 'experience' || l.href.toLowerCase().includes('experience'));
-    const resumeIdx = filtered.findIndex(l => l.label.toLowerCase() === 'resume' || l.href.toLowerCase().includes('resume'));
-
-    if (expIdx !== -1) {
-        const res = [...filtered];
-        res.splice(expIdx + 1, 0, skillsLink);
-        return res;
-    } else if (resumeIdx !== -1) {
-        const res = [...filtered];
-        res.splice(resumeIdx, 0, skillsLink);
-        return res;
-    }
-    return links;
-};
-
 export const Navbar: React.FC = () => {
     const pathname = usePathname();
     const isSourceCode = pathname?.startsWith('/source-code/');
@@ -138,7 +117,7 @@ export const Navbar: React.FC = () => {
                     {brandName}
                 </div>
                 <div className="hidden md:flex items-center gap-8">
-                    {getOrderedLinks(navLinks).map((link) => (
+                    {(navLinks || []).map((link) => (
                         <a key={link.href} className="text-on-surface font-label-bold text-label-bold uppercase hover:bg-theme-yellow hover:text-on-surface transition-colors duration-100 p-2 border-[4px] border-transparent hover:border-on-surface active:translate-x-1 active:translate-y-1" href={link.href}>{link.label}</a>
                     ))}
                 </div>
@@ -174,7 +153,7 @@ export const Navbar: React.FC = () => {
                 ].join(' ')}
             >
                 <div className="flex flex-col items-center gap-8 w-full px-8">
-                    {getOrderedLinks(navLinks).map((link, index) => (
+                    {(navLinks || []).map((link, index) => (
                         <button 
                             key={link.href} 
                             onClick={() => handleMobileNav(link.href)}
