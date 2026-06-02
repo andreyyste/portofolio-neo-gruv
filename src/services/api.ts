@@ -1,7 +1,5 @@
 import { 
     SiteData, 
-    Project, 
-    Experience, 
     HeroData, 
     AboutData, 
     ContactData, 
@@ -10,9 +8,16 @@ import {
     ResumeData, 
     SkillItem 
 } from '../types';
+import { 
+    mapProject, 
+    mapExperience, 
+    ProjectRaw, 
+    ExperienceRaw 
+} from './mappers';
 
 /**
- * Custom error class for API failures
+ * Custom error class for API failures.
+ * Captures the HTTP status code and response details.
  */
 export class APIError extends Error {
     constructor(public status: number, message: string) {
@@ -22,11 +27,15 @@ export class APIError extends Error {
 }
 
 /**
- * Generic fetcher with basic error handling
+ * Generic fetcher with error handling.
+ * Integrates Next.js Incremental Static Regeneration (ISR) configuration via next.revalidate.
+ * 
+ * @param url - The full API URL endpoint
+ * @param revalidate - Cache lifetime in seconds (defaults to 3600 / 1 hour)
  */
 async function fetchWithError<T>(url: string, revalidate: number = 3600): Promise<T> {
     const response = await fetch(url, {
-        next: { revalidate } // ISR: cache N detik, lalu revalidate di background
+        next: { revalidate } // ISR: Cache for N seconds, then revalidate in the background
     });
     if (!response.ok) {
         throw new APIError(response.status, `Failed to fetch from ${url}: ${response.statusText}`);
@@ -34,48 +43,58 @@ async function fetchWithError<T>(url: string, revalidate: number = 3600): Promis
     return await response.json() as T;
 }
 
-interface ProjectRaw {
-    id: number;
-    title: string;
-    brief: string;
-    description: string;
-    tags?: string[];
-    coverImage?: string | null;
-    featured: boolean;
-    hasSourceCode: boolean;
-    liveUrl?: string | null;
-    source: 'GITHUB' | 'CMS';
-    githubRepo?: string | null;
+// ---- INDIVIDUAL DOMAIN FETCHERS (SRP) ----
+
+export async function fetchHero(baseUrl: string, revalidate = 3600): Promise<HeroData> {
+    return fetchWithError<HeroData>(`${baseUrl}/config/hero`, revalidate);
 }
 
-interface ExperienceRaw {
-    id: number;
-    role: string;
-    company: string;
-    period: string;
-    description: string;
-    skills?: Array<{ id: number; name: string; experienceId: number }>;
+export async function fetchAbout(baseUrl: string, revalidate = 3600): Promise<AboutData> {
+    return fetchWithError<AboutData>(`${baseUrl}/config/about`, revalidate);
+}
+
+export async function fetchContact(baseUrl: string, revalidate = 3600): Promise<ContactData> {
+    return fetchWithError<ContactData>(`${baseUrl}/config/contact`, revalidate);
+}
+
+export async function fetchMarquee(baseUrl: string, revalidate = 3600): Promise<string[]> {
+    return fetchWithError<string[]>(`${baseUrl}/config/marquee`, revalidate);
+}
+
+export async function fetchNavigation(baseUrl: string, revalidate = 86400): Promise<NavigationData> {
+    return fetchWithError<NavigationData>(`${baseUrl}/config/navigation`, revalidate);
+}
+
+export async function fetchFooter(baseUrl: string, revalidate = 86400): Promise<FooterData> {
+    return fetchWithError<FooterData>(`${baseUrl}/config/footer`, revalidate);
+}
+
+export async function fetchResume(baseUrl: string, revalidate = 3600): Promise<ResumeData> {
+    return fetchWithError<ResumeData>(`${baseUrl}/config/resume`, revalidate);
+}
+
+export async function fetchProjects(baseUrl: string, revalidate = 1800): Promise<ProjectRaw[]> {
+    return fetchWithError<ProjectRaw[]>(`${baseUrl}/portfolio/projects`, revalidate);
+}
+
+export async function fetchExperiences(baseUrl: string, revalidate = 3600): Promise<ExperienceRaw[]> {
+    return fetchWithError<ExperienceRaw[]>(`${baseUrl}/portfolio/experiences`, revalidate);
+}
+
+export async function fetchSkills(baseUrl: string, revalidate = 3600): Promise<SkillItem[]> {
+    return fetchWithError<SkillItem[]>(`${baseUrl}/portfolio/skills`, revalidate);
 }
 
 /**
- * Fetch all site data needed for the portfolio concurrently.
- * Centralizes data fetching logic and error handling (SRP).
+ * Orchestrator to fetch all site configurations and portfolio data concurrently.
+ * Employs Promise.all for optimized HTTP request parallelism.
+ * Transforms API response structures into frontend domain models using mappers (SRP).
+ * 
+ * @param baseUrl - The backend domain base URL
+ * @returns Fully compiled SiteData object for the portfolio page
  */
 export async function fetchSiteData(baseUrl: string): Promise<SiteData> {
-    const endpoints = {
-        hero: `${baseUrl}/config/hero`,
-        about: `${baseUrl}/config/about`,
-        contact: `${baseUrl}/config/contact`,
-        marquee: `${baseUrl}/config/marquee`,
-        navigation: `${baseUrl}/config/navigation`,
-        footer: `${baseUrl}/config/footer`,
-        resume: `${baseUrl}/config/resume`,
-        projects: `${baseUrl}/portfolio/projects`,
-        experiences: `${baseUrl}/portfolio/experiences`,
-        skills: `${baseUrl}/portfolio/skills`,
-    };
-
-    // Use Promise.all to fetch all endpoints concurrently
+    // Run all HTTP requests in parallel to avoid waterfalls
     const [
         heroData,
         aboutData,
@@ -88,42 +107,21 @@ export async function fetchSiteData(baseUrl: string): Promise<SiteData> {
         experiencesDataRaw,
         skillsData
     ] = await Promise.all([
-        fetchWithError<HeroData>(endpoints.hero, 3600),           // 1 jam
-        fetchWithError<AboutData>(endpoints.about, 3600),         // 1 jam
-        fetchWithError<ContactData>(endpoints.contact, 3600),     // 1 jam
-        fetchWithError<string[]>(endpoints.marquee, 3600),        // 1 jam
-        fetchWithError<NavigationData>(endpoints.navigation, 86400), // 24 jam
-        fetchWithError<FooterData>(endpoints.footer, 86400),      // 24 jam
-        fetchWithError<ResumeData>(endpoints.resume, 3600),       // 1 jam
-        fetchWithError<ProjectRaw[]>(endpoints.projects, 1800),   // 30 menit
-        fetchWithError<ExperienceRaw[]>(endpoints.experiences, 3600), // 1 jam
-        fetchWithError<SkillItem[]>(endpoints.skills, 3600),      // 1 jam
+        fetchHero(baseUrl),
+        fetchAbout(baseUrl),
+        fetchContact(baseUrl),
+        fetchMarquee(baseUrl),
+        fetchNavigation(baseUrl),
+        fetchFooter(baseUrl),
+        fetchResume(baseUrl),
+        fetchProjects(baseUrl),
+        fetchExperiences(baseUrl),
+        fetchSkills(baseUrl),
     ]);
 
-    // Transform API structures into our frontend domain models
-    const mappedProjects: Project[] = projectsDataRaw.map((p: ProjectRaw) => ({
-        title: p.title,
-        brief: p.brief,
-        description: p.description,
-        tags: p.tags || [],
-        coverImage: p.coverImage || null,
-        featured: p.featured,
-        hasSourceCode: p.hasSourceCode,
-        liveUrl: p.liveUrl || null,
-        source: p.source,
-        githubRepo: p.githubRepo || null,
-        // Compatibility fallbacks
-        link: p.liveUrl || '#',
-        image: { src: p.coverImage || '', alt: p.title }
-    }));
-
-    const mappedExperiences: Experience[] = experiencesDataRaw.map((e: ExperienceRaw) => ({
-        role: e.role,
-        company: e.company,
-        period: e.period,
-        description: e.description,
-        skills: e.skills?.map((s: { name: string }) => s.name) || []
-    }));
+    // Map database/API entities to localized frontend models
+    const mappedProjects = projectsDataRaw.map(mapProject);
+    const mappedExperiences = experiencesDataRaw.map(mapExperience);
 
     return {
         heroData,
