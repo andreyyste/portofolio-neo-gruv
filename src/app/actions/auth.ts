@@ -12,7 +12,7 @@ export async function loginAction(prevState: { error: string } | null, formData:
   }
 
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    const baseUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
     const res = await fetch(`${baseUrl}/auth/login`, {
       method: 'POST',
       headers: {
