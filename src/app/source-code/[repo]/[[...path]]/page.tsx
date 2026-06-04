@@ -2,6 +2,7 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { codeToHtml } from 'shiki';
+import { Metadata } from 'next';
 import { RepoHeaderWidgets } from '../components/RepoHeaderWidgets';
 import { ContributorsWidget } from '../components/ContributorsWidget';
 import { CodeTabContent } from '../components/CodeTabContent';
@@ -19,6 +20,59 @@ interface PageProps {
   searchParams: Promise<{
     tab?: string;
   }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { repo, path } = await params;
+  const filePath = path ? path.join('/') : '';
+  const baseUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+
+  let title = `${repo} - Source Code Explorer`;
+  let description = `Explore the files and directory structure of ${repo} repository.`;
+
+  try {
+    const metaRes = await fetch(`${baseUrl}/github/repos/${repo}/metadata`, {
+      next: { revalidate: 3600 }
+    });
+    if (metaRes.ok) {
+      const repoMetadata: GithubRepoMetadata = await metaRes.json();
+      if (repoMetadata.description) {
+        description = repoMetadata.description;
+      }
+      title = `${repo} - ${repoMetadata.description ? repoMetadata.description.slice(0, 50) + '...' : 'Source Code'}`;
+    }
+  } catch (error) {
+    // Fail silently
+  }
+
+  if (filePath) {
+    title = `${filePath} - ${repo} | Source Code`;
+    description = `View the source code of ${filePath} inside the ${repo} repository.`;
+  }
+
+  const siteUrl = 'https://nre.codes';
+  const canonicalPath = filePath 
+    ? `/source-code/${repo}/${encodeURIComponent(filePath)}` 
+    : `/source-code/${repo}`;
+
+  return {
+    title: `${title} | nre.codes`,
+    description,
+    alternates: {
+      canonical: canonicalPath,
+    },
+    openGraph: {
+      title: `${title} | nre.codes`,
+      description,
+      url: `${siteUrl}${canonicalPath}`,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} | nre.codes`,
+      description,
+    },
+  };
 }
 
 export default async function SourceCodePage({ params, searchParams }: PageProps) {
