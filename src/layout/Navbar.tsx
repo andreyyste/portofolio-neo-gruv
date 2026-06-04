@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '../ui/Button';
 import { useData } from '../context/DataContext';
 
 export const Navbar: React.FC = () => {
     const pathname = usePathname();
+    const router = useRouter();
     const isSourceCode = pathname?.startsWith('/source-code/');
     
     // Extract repo name if in source code
@@ -57,7 +58,7 @@ export const Navbar: React.FC = () => {
                 ].join(' ')}
             >
                 <div 
-                    onClick={() => window.location.href = '/'}
+                    onClick={() => router.push('/')}
                     className={[
                         'font-display-2xl font-extrabold uppercase tracking-tighter text-on-surface transition-all duration-300 relative z-[120] cursor-pointer',
                         floating ? 'text-[24px]' : 'text-[32px]',
@@ -67,7 +68,7 @@ export const Navbar: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-3 md:gap-4 z-[120]">
                     <Button 
-                        onClick={() => window.location.href = '/'}
+                        onClick={() => router.push('/')}
                         className="bg-surface text-on-surface neo-border neo-shadow px-3 py-1.5 text-xs md:text-sm md:px-6 md:py-2 hover:bg-theme-red hover:text-surface-container-lowest hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_#1e1b19]"
                     >
                         BACK TO PORTFOLIO
@@ -123,7 +124,7 @@ export const Navbar: React.FC = () => {
                 </div>
                 <div className="hidden md:flex items-center gap-4">
                     <Button 
-                        onClick={() => window.location.href = '/nre-masuk'}
+                        onClick={() => router.push('/nre-masuk')}
                         className="bg-surface text-on-surface neo-border neo-shadow px-6 py-2 hover:bg-theme-red hover:text-surface-container-lowest hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_#1e1b19]"
                     >
                         LOGIN
@@ -181,7 +182,7 @@ export const Navbar: React.FC = () => {
                         {ctaText}
                     </Button>
                     <Button 
-                        onClick={() => window.location.href = '/nre-masuk'}
+                        onClick={() => router.push('/nre-masuk')}
                         className="mt-4 bg-transparent text-surface-container-lowest border-[4px] border-surface-container-lowest px-8 py-4 text-2xl uppercase w-full max-w-[280px] hover:bg-theme-red hover:border-theme-red transition-colors"
                         style={{ 
                             transitionDelay: isMobileMenuOpen ? `${(navLinks.length + 1) * 100}ms` : '0ms',
