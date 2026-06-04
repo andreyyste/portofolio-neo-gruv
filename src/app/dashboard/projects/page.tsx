@@ -4,9 +4,16 @@ import React, { useState, useEffect } from 'react';
 import { Title } from '../../../ui/Title';
 import { Button } from '../../../ui/Button';
 import { Input } from '../../../ui/Input';
+import {
+  getProjects,
+  createProject,
+  updateProject,
+  deleteProject,
+  ProjectEntity
+} from '../../../services/dashboard';
 
 export default function ProjectsDashboard() {
-  const [projects, setProjects] = useState<any[]>([]);
+  const [projects, setProjects] = useState<ProjectEntity[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [formData, setFormData] = useState({
@@ -26,11 +33,8 @@ export default function ProjectsDashboard() {
 
   const fetchProjects = async () => {
     try {
-      const res = await fetch('/api/proxy/portfolio/projects');
-      if (res.ok) {
-        const data = await res.json();
-        setProjects(data);
-      }
+      const data = await getProjects();
+      setProjects(data);
     } catch (e) {
       console.error(e);
     } finally {
@@ -41,8 +45,6 @@ export default function ProjectsDashboard() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const isEditing = editingId !== null;
-    const url = isEditing ? `/api/proxy/portfolio/projects/${editingId}` : '/api/proxy/portfolio/projects';
-    const method = isEditing ? 'PATCH' : 'POST';
 
     try {
       const payload = {
@@ -55,25 +57,22 @@ export default function ProjectsDashboard() {
         hasSourceCode: !!formData.githubLink,
         tags: formData.tags ? formData.tags.split(',').map((t: string) => t.trim()).filter(Boolean) : []
       };
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      
-      if (res.ok) {
-        setFormData({ title: '', brief: '', description: '', link: '', githubLink: '', imageSrc: '', imageAlt: '', tags: '' });
-        setEditingId(null);
-        fetchProjects();
+
+      if (isEditing) {
+        await updateProject(editingId, payload);
       } else {
-        alert('Failed to save project');
+        await createProject(payload);
       }
-    } catch (e) {
-      alert('Error saving project');
+
+      setFormData({ title: '', brief: '', description: '', link: '', githubLink: '', imageSrc: '', imageAlt: '', tags: '' });
+      setEditingId(null);
+      fetchProjects();
+    } catch (err: any) {
+      alert(err.message || 'Error saving project');
     }
   };
 
-  const handleEdit = (project: any) => {
+  const handleEdit = (project: ProjectEntity) => {
     setEditingId(project.id);
     setFormData({
       title: project.title,
@@ -83,7 +82,7 @@ export default function ProjectsDashboard() {
       githubLink: project.githubRepo || '',
       imageSrc: project.coverImage || '',
       imageAlt: '',
-      tags: project.tags ? project.tags.map((t: any) => typeof t === 'string' ? t : t.name).join(', ') : '',
+      tags: project.tags ? project.tags.map(t => typeof t === 'string' ? t : (t as { name: string }).name).join(', ') : '',
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -91,14 +90,10 @@ export default function ProjectsDashboard() {
   const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to delete this project?')) return;
     try {
-      const res = await fetch(`/api/proxy/portfolio/projects/${id}`, { method: 'DELETE' });
-      if (res.ok) {
-        fetchProjects();
-      } else {
-        alert('Failed to delete project');
-      }
-    } catch (e) {
-      alert('Error deleting project');
+      await deleteProject(id);
+      fetchProjects();
+    } catch (err: any) {
+      alert(err.message || 'Error deleting project');
     }
   };
 
