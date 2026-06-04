@@ -65,7 +65,7 @@ export const About: React.FC = () => {
                             {rules.map((rule, index) => (
                                 <div key={index} className="reveal-right" style={{ transitionDelay: `${index * 0.15}s` }}>
                                     <div className="border-l-[6px] border-on-surface pl-6 py-2 hover:pl-8 transition-all duration-300">
-                                        <h4 className="font-headline-lg-mobile text-[24px] uppercase font-bold mb-2">{rule.label}</h4>
+                                        <h3 className="font-headline-lg-mobile text-[24px] uppercase font-bold mb-2">{rule.label}</h3>
                                         <p className="font-body-md font-bold">{rule.text}</p>
                                     </div>
                                 </div>
