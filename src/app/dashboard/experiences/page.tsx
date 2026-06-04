@@ -4,9 +4,16 @@ import React, { useState, useEffect } from 'react';
 import { Title } from '../../../ui/Title';
 import { Button } from '../../../ui/Button';
 import { Input } from '../../../ui/Input';
+import {
+  getExperiences,
+  createExperience,
+  updateExperience,
+  deleteExperience,
+  ExperienceEntity
+} from '../../../services/dashboard';
 
 export default function ExperiencesDashboard() {
-  const [experiences, setExperiences] = useState<any[]>([]);
+  const [experiences, setExperiences] = useState<ExperienceEntity[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [formData, setFormData] = useState({
@@ -23,11 +30,8 @@ export default function ExperiencesDashboard() {
 
   const fetchExperiences = async () => {
     try {
-      const res = await fetch('/api/proxy/portfolio/experiences');
-      if (res.ok) {
-        const data = await res.json();
-        setExperiences(data);
-      }
+      const data = await getExperiences();
+      setExperiences(data);
     } catch (e) {
       console.error(e);
     } finally {
@@ -38,8 +42,6 @@ export default function ExperiencesDashboard() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const isEditing = editingId !== null;
-    const url = isEditing ? `/api/proxy/portfolio/experiences/${editingId}` : '/api/proxy/portfolio/experiences';
-    const method = isEditing ? 'PATCH' : 'POST';
 
     const payload = {
       ...formData,
@@ -49,32 +51,27 @@ export default function ExperiencesDashboard() {
     };
 
     try {
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      
-      if (res.ok) {
-        setFormData({ role: '', company: '', period: '', description: '', skills: '' });
-        setEditingId(null);
-        fetchExperiences();
+      if (isEditing) {
+        await updateExperience(editingId, payload);
       } else {
-        alert('Failed to save experience');
+        await createExperience(payload);
       }
-    } catch (e) {
-      alert('Error saving experience');
+      setFormData({ role: '', company: '', period: '', description: '', skills: '' });
+      setEditingId(null);
+      fetchExperiences();
+    } catch (err: any) {
+      alert(err.message || 'Error saving experience');
     }
   };
 
-  const handleEdit = (exp: any) => {
+  const handleEdit = (exp: ExperienceEntity) => {
     setEditingId(exp.id);
     setFormData({
       role: exp.role,
       company: exp.company,
       period: exp.period,
       description: exp.description,
-      skills: exp.skills ? exp.skills.map((s: any) => s.name).join(', ') : '',
+      skills: exp.skills ? exp.skills.map(s => s.name).join(', ') : '',
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -82,14 +79,10 @@ export default function ExperiencesDashboard() {
   const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to delete this experience?')) return;
     try {
-      const res = await fetch(`/api/proxy/portfolio/experiences/${id}`, { method: 'DELETE' });
-      if (res.ok) {
-        fetchExperiences();
-      } else {
-        alert('Failed to delete experience');
-      }
-    } catch (e) {
-      alert('Error deleting experience');
+      await deleteExperience(id);
+      fetchExperiences();
+    } catch (err: any) {
+      alert(err.message || 'Error deleting experience');
     }
   };
 
@@ -156,7 +149,7 @@ export default function ExperiencesDashboard() {
               <p className="text-sm font-mono opacity-80 line-clamp-2">{exp.description}</p>
               {exp.skills && exp.skills.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 mt-3">
-                  {exp.skills.map((s: any) => (
+                  {exp.skills.map((s) => (
                     <span key={s.id} className="font-mono text-xs uppercase px-2 py-0.5 bg-theme-yellow/20 neo-border border-[2px]">
                       {s.name}
                     </span>
