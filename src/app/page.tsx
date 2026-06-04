@@ -45,9 +45,37 @@ export default async function Page() {
         };
     }
 
+    const schemaJson = {
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: 'Andre Christian Manurung',
+        url: 'https://nre.codes',
+        jobTitle: 'Fullstack Software Engineer',
+        description: siteData.aboutData?.manifesto || 'Fullstack Software Engineer specializing in web and mobile development.',
+        sameAs: siteData.footerData?.socials
+            ? siteData.footerData.socials
+                .map((s: { href: string }) => s.href)
+                .filter((link: string) => link && link !== '#')
+            : [],
+        knowsAbout: [
+            'Software Engineering',
+            'Fullstack Development',
+            'Web Development',
+            'Mobile Development',
+            ...(siteData.skillsData ? siteData.skillsData.map((s: { name: string }) => s.name) : []),
+        ],
+        image: siteData.heroData?.heroImage?.src || undefined,
+    };
+
     return (
-        <DataProvider data={siteData}>
-            <ClientEntry />
-        </DataProvider>
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }}
+            />
+            <DataProvider data={siteData}>
+                <ClientEntry />
+            </DataProvider>
+        </>
     );
 }
