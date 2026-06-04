@@ -1,9 +1,41 @@
 import type { Metadata } from 'next';
 import './globals.css';
 
+const siteUrl = 'https://nre.codes';
+const title = 'Andre Christian Manurung | nre.codes';
+const description = 'Personal portfolio of Andre Christian Manurung - Fullstack Software Engineer specializing in web and mobile development.';
+
 export const metadata: Metadata = {
-  title: 'Andre Christian Manurung | nre.codes',
-  description: 'Personal portfolio of Andre Christian Manurung - Fullstack Software Engineer specializing in web and mobile development.',
+  metadataBase: new URL(siteUrl),
+  title,
+  description,
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title,
+    description,
+    url: siteUrl,
+    siteName: 'nre.codes',
+    type: 'website',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({
