@@ -4,9 +4,16 @@ import React, { useState, useEffect } from 'react';
 import { Title } from '../../../ui/Title';
 import { Button } from '../../../ui/Button';
 import { Input } from '../../../ui/Input';
+import {
+  getSkills,
+  createSkill,
+  updateSkill,
+  deleteSkill,
+  SkillEntity
+} from '../../../services/dashboard';
 
 export default function SkillsDashboard() {
-  const [skills, setSkills] = useState<any[]>([]);
+  const [skills, setSkills] = useState<SkillEntity[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [formData, setFormData] = useState({
@@ -25,11 +32,8 @@ export default function SkillsDashboard() {
 
   const fetchSkills = async () => {
     try {
-      const res = await fetch('/api/proxy/portfolio/skills');
-      if (res.ok) {
-        const data = await res.json();
-        setSkills(data);
-      }
+      const data = await getSkills();
+      setSkills(data);
     } catch (e) {
       console.error(e);
     } finally {
@@ -40,29 +44,23 @@ export default function SkillsDashboard() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const isEditing = editingId !== null;
-    const url = isEditing ? `/api/proxy/portfolio/skills/${editingId}` : '/api/proxy/portfolio/skills';
-    const method = isEditing ? 'PATCH' : 'POST';
 
     try {
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      
-      if (res.ok) {
-        setFormData({ name: '', color: 'bg-theme-blue', text: 'text-surface', delay: '0s', dur: '5s', rotate: 'rotate-2', mt: 'mt-0' });
-        setEditingId(null);
-        fetchSkills();
+      if (isEditing) {
+        await updateSkill(editingId, formData);
       } else {
-        alert('Failed to save skill');
+        await createSkill(formData);
       }
-    } catch (e) {
-      alert('Error saving skill');
+
+      setFormData({ name: '', color: 'bg-theme-blue', text: 'text-surface', delay: '0s', dur: '5s', rotate: 'rotate-2', mt: 'mt-0' });
+      setEditingId(null);
+      fetchSkills();
+    } catch (err: any) {
+      alert(err.message || 'Error saving skill');
     }
   };
 
-  const handleEdit = (skill: any) => {
+  const handleEdit = (skill: SkillEntity) => {
     setEditingId(skill.id);
     setFormData({
       name: skill.name,
@@ -79,14 +77,10 @@ export default function SkillsDashboard() {
   const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to delete this skill?')) return;
     try {
-      const res = await fetch(`/api/proxy/portfolio/skills/${id}`, { method: 'DELETE' });
-      if (res.ok) {
-        fetchSkills();
-      } else {
-        alert('Failed to delete skill');
-      }
-    } catch (e) {
-      alert('Error deleting skill');
+      await deleteSkill(id);
+      fetchSkills();
+    } catch (err: any) {
+      alert(err.message || 'Error deleting skill');
     }
   };
 
