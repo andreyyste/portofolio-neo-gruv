@@ -31,7 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       const repos: GithubRepo[] = await response.json();
       repoRoutes = repos.map((repo) => ({
         url: `${siteUrl}/source-code/${repo.githubRepo}`,
-        lastModified: new Date(repo.updatedAt || new Date()),
+        lastModified: new Date(),
         changeFrequency: 'weekly' as const,
         priority: 0.6,
       }));
