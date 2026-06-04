@@ -110,10 +110,6 @@ export interface SkillItem {
     name: string;
     color: string;
     text: string;
-    rotate?: string;
-    mt?: string;
-    delay?: string;
-    dur?: string;
 }
 
 export interface SiteData {
