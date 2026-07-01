@@ -50,41 +50,22 @@ export const ContributorsWidget: React.FC<ContributorsWidgetProps> = ({ contribu
   };
 
   // Fallback profiles if list is empty
-  const fallbackContributors: ContributorDetail[] = [
-    {
-      id: 'andreyyste',
-      name: 'Andre Christian',
-      username: 'andreyyste',
-      role: 'Lead Developer & Architect',
-      avatarUrl: '',
-      avatarChar: 'A',
-      bgColor: 'bg-theme-yellow text-on-surface border-[#cacd39]',
-      commits: 135,
-      bio: 'Crafting brutalist web interfaces and optimizing full-stack performance pipelines.'
-    },
-    {
-      id: 'antigravity-ai',
-      name: 'Antigravity',
-      username: 'antigravity-ai',
-      role: 'AI Pair Programmer',
-      avatarUrl: '',
-      avatarChar: 'AG',
-      bgColor: 'bg-theme-blue text-white border-theme-blue',
-      commits: 18,
-      bio: 'DeepMind AI agent pair-programming codebases with laser-focused architectural alignment.'
-    },
-    {
-      id: 'brutalist-bot',
-      name: 'Brutalist Bot',
-      username: 'brutalist-bot',
-      role: 'CI/CD Quality Enforcer',
-      avatarUrl: '',
-      avatarChar: 'BB',
-      bgColor: 'bg-theme-green text-on-surface border-theme-green',
-      commits: 3,
-      bio: 'Continuous integration agent rejecting soft gradients and enforcing high-contrast borders.'
-    }
-  ];
+  const fallbackCommits: Record<string, { commits: number; char: string }> = {
+    andreyyste: { commits: 135, char: 'A' },
+    'antigravity-ai': { commits: 18, char: 'AG' },
+    'brutalist-bot': { commits: 3, char: 'BB' }
+  };
+  const fallbackContributors: ContributorDetail[] = Object.entries(developerProfiles).map(([username, profile]) => ({
+    id: username,
+    username,
+    name: profile.name,
+    role: profile.role,
+    avatarUrl: '',
+    avatarChar: fallbackCommits[username]?.char || username.substring(0, 2).toUpperCase(),
+    bgColor: profile.bgColor,
+    commits: fallbackCommits[username]?.commits || 0,
+    bio: profile.bio
+  }));
 
   let activeList: ContributorDetail[] = [];
   if (contributors.length > 0) {

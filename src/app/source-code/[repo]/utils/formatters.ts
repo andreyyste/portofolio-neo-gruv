@@ -22,18 +22,7 @@ export const getCommitForFile = (fileName: string, commitsList: GithubCommit[]) 
   const index = Math.abs(hash) % commitsList.length;
   const c = commitsList[index];
   
-  // Calculate relative age from date
-  const date = new Date(c.date);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffMins = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMins / 60);
-  const diffDays = Math.floor(diffHours / 24);
-  
-  let age = 'Just now';
-  if (diffDays > 0) age = diffDays === 1 ? '1 day ago' : `${diffDays} days ago`;
-  else if (diffHours > 0) age = diffHours === 1 ? '1 hour ago' : `${diffHours} hours ago`;
-  else if (diffMins > 0) age = diffMins === 1 ? '1 min ago' : `${diffMins} mins ago`;
+  const age = getRelativeAge(c.date);
 
   return {
     message: c.message.split('\n')[0],
