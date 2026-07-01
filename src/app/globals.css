@@ -40,34 +40,35 @@
 }
 
 .dark {
-  --background: #121212;
+  --background: #0f0f11;
   --on-background: #e2e8f0;
-  --surface: #1a1a1a;
+  --surface: #17171a;
   --on-surface: #e2e8f0;
-  --surface-dim: #141414;
-  --surface-container: #242424;
-  --surface-container-low: #1f1f1f;
-  --surface-container-lowest: #121212;
-  --surface-container-high: #2a2a2a;
-  --surface-container-highest: #333333;
+  --surface-dim: #0a0a0b;
+  --surface-container: #1b1b1f;
+  --surface-container-low: #141416;
+  --surface-container-lowest: #ffffff; /* Stays white to keep high-contrast text on badges readable */
+  --surface-container-high: #202024;
+  --surface-container-highest: #28282d;
   --on-secondary-container: #e2e8f0;
   --on-primary-fixed: #e2e8f0;
   --on-primary-fixed-variant: #94a3b8;
-  --on-primary: #121212;
-  --primary-container: #1e293b;
+  --on-primary: #0f0f11;
+  --primary-container: #1b1b1f;
   --on-surface-variant: #94a3b8;
   --surface-tint: #3b82f6;
   --primary: #3b82f6;
   --secondary: #ef4444;
-  --on-secondary: #121212;
+  --on-secondary: #0f0f11;
   --on-secondary-fixed: #ef4444;
   --on-secondary-fixed-variant: #ef4444;
 
-  --theme-blue: #3b82f6;
-  --theme-red: #ef4444;
-  --theme-green: #10b981;
-  --theme-yellow: #f59e0b;
-  --theme-grey: #262626;
+  /* Premium, deep muted dark background tones for neobrutalist sections */
+  --theme-blue: #0f172a;       /* Deep navy blue for Skills section */
+  --theme-red: #1b1315;        /* Deep rich burgundy for About section */
+  --theme-green: #0d1e14;      /* Deep forest green for Resume background */
+  --theme-yellow: #1c140a;     /* Deep warm amber/brown for Contact section */
+  --theme-grey: #151516;       /* Dark charcoal gray for Experience section */
 
   --neo-border-color: #1e1b19;
 }
