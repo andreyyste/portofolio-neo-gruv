@@ -15,7 +15,7 @@ export const Contact: React.FC = () => {
     const [state, formAction, isPending] = useActionState(sendContactAction, null);
 
     return (
-        <section className="py-16 md:py-24 px-gutter bg-theme-yellow neo-section-divider w-full overflow-hidden" id="contact">
+        <section className="py-16 md:py-24 px-gutter bg-[var(--contact-bg)] neo-section-divider w-full overflow-hidden" id="contact">
             <div className="max-w-container-max mx-auto">
                 <div className="bg-surface neo-border-heavy neo-shadow p-4 sm:p-8 md:p-16 flex flex-col items-center text-center transform rotate-[-1deg] hover:rotate-0 transition-transform duration-500 animate-float reveal-bottom">
                     <div className="reveal-left" style={{ transitionDelay: '0.15s' }}>

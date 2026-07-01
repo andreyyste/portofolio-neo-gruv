@@ -39,6 +39,12 @@
   --neo-border-color: #1e1b19;
   --footer-bg: #1e1b19;
   --footer-text: #fff8f5;
+
+  /* Section backgrounds - Light Mode */
+  --about-bg: #9d0006;
+  --skills-bg: #458588;
+  --contact-bg: #d79921;
+  --experience-bg: #ebdbb2;
 }
 
 .dark {
@@ -65,16 +71,22 @@
   --on-secondary-fixed: #ef4444;
   --on-secondary-fixed-variant: #ef4444;
 
-  /* Premium, deep muted dark background tones for neobrutalist sections */
-  --theme-blue: #0f172a;       /* Deep navy blue for Skills section */
-  --theme-red: #1b1315;        /* Deep rich burgundy for About section */
-  --theme-green: #0d1e14;      /* Deep forest green for Resume background */
-  --theme-yellow: #1c140a;     /* Deep warm amber/brown for Contact section */
-  --theme-grey: #151516;       /* Dark charcoal gray for Experience section */
+  /* Accent highlights stay bright in both modes */
+  --theme-blue: #3b82f6;
+  --theme-red: #ef4444;
+  --theme-green: #10b981;
+  --theme-yellow: #f59e0b;
+  --theme-grey: #262626;
 
   --neo-border-color: #1e1b19;
   --footer-bg: #070708;
   --footer-text: #e2e8f0;
+
+  /* Section backgrounds - Dark Mode */
+  --about-bg: #1b1315;
+  --skills-bg: #0f172a;
+  --contact-bg: #1c140a;
+  --experience-bg: #151516;
 }
 
 body {

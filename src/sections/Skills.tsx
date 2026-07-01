@@ -17,7 +17,7 @@ const BRUTALIST_LAYOUTS = [
 export const Skills: React.FC = () => {
     const { skillsData } = useData();
     return (
-        <section className="py-12 md:py-24 px-gutter bg-theme-blue neo-section-divider overflow-hidden w-full" id="skills">
+        <section className="py-12 md:py-24 px-gutter bg-[var(--skills-bg)] neo-section-divider overflow-hidden w-full" id="skills">
             <div className="max-w-container-max mx-auto">
                 <div className="text-center mb-16 border-b-[8px] border-on-surface pb-8 reveal-section">
                     <Title

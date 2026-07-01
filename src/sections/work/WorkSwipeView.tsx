@@ -207,9 +207,9 @@ export const WorkSwipeView: React.FC<WorkSwipeViewProps> = ({
                         key={index}
                         onClick={() => setActiveIndex(index)}
                         className={[
-                            'w-4 h-4 neo-border border-[3px] transition-all duration-300',
+                            'w-4 h-4 border-[3px] border-on-surface transition-all duration-300',
                             index === activeIndex
-                                ? 'bg-theme-yellow scale-125 shadow-[2px_2px_0px_0px_#1e1b19]'
+                                ? 'bg-theme-yellow scale-125 shadow-[2px_2px_0px_0px_var(--neo-border-color)]'
                                 : 'bg-surface hover:bg-theme-yellow/50 hover:scale-110',
                         ].join(' ')}
                     />

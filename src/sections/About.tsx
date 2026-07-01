@@ -8,7 +8,7 @@ export const About: React.FC = () => {
     const { badge, portraitLabel, headline, manifesto, rules } = aboutData;
 
     return (
-        <section className="py-16 md:py-24 px-gutter bg-theme-red neo-section-divider relative w-full overflow-hidden" id="about">
+        <section className="py-16 md:py-24 px-gutter bg-[var(--about-bg)] neo-section-divider relative w-full overflow-hidden" id="about">
             <div className="max-w-container-max mx-auto">
                 {/* Mobile Section Header (Only visible on mobile) */}
                 <div className="block md:hidden mb-8">
