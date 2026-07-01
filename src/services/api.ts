@@ -35,7 +35,10 @@ export class APIError extends Error {
  */
 async function fetchWithError<T>(url: string, revalidate: number = 3600): Promise<T> {
     const response = await fetch(url, {
-        next: { revalidate } // ISR: Cache for N seconds, then revalidate in the background
+        next: { 
+            revalidate,
+            tags: ['site-data']
+        }
     });
     if (!response.ok) {
         throw new APIError(response.status, `Failed to fetch from ${url}: ${response.statusText}`);

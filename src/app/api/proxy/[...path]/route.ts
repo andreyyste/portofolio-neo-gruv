@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -49,6 +49,7 @@ async function handleProxy(request: NextRequest) {
     try { parsedData = JSON.parse(data); } catch { parsedData = data; }
 
     if (response.ok && request.method !== 'GET' && request.method !== 'HEAD') {
+      revalidateTag('site-data');
       revalidatePath('/');
       revalidatePath('/sitemap.xml');
     }
