@@ -15,6 +15,7 @@ export interface ExperienceEntity {
   company: string;
   period: string;
   description: string;
+  order: number;
   skills?: ExperienceSkill[];
 }
 
@@ -23,6 +24,7 @@ export interface ExperiencePayload {
   company: string;
   period: string;
   description: string;
+  order: number;
   skills: string[];
 }
 

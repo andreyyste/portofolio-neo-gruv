@@ -71,41 +71,86 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ exp, index, isMobile }) => 
                         ? 'md:after:left-auto md:after:-right-[11px] md:after:border-l-0 md:after:border-b-0 md:after:border-r-[6px] md:after:border-t-[6px]'
                         : 'md:after:-left-[11px]'
                 }`}>
-                    <div className="flex flex-col mb-4 gap-2">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                            <h3 className="font-headline-lg-mobile text-2xl uppercase font-bold text-on-surface leading-tight">
-                                {exp.role}
-                            </h3>
-                            <div className="font-label-bold text-xs uppercase text-on-surface bg-on-surface-variant/10 px-3 py-1.5 neo-border inline-block self-start sm:self-auto">
-                                {exp.period}
+                    {exp.roles.length === 1 ? (
+                        <>
+                            <div className="flex flex-col mb-4 gap-2">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                    <h3 className="font-headline-lg-mobile text-2xl uppercase font-bold text-on-surface leading-tight">
+                                        {exp.roles[0].role}
+                                    </h3>
+                                    <div className="font-label-bold text-xs uppercase text-on-surface bg-on-surface-variant/10 px-3 py-1.5 neo-border inline-block self-start sm:self-auto">
+                                        {exp.roles[0].period}
+                                    </div>
+                                </div>
+                                <div className="font-label-bold text-xs uppercase text-on-surface-variant">
+                                    <span className="bg-theme-yellow px-2.5 py-0.5 neo-border border-[2px] text-on-surface inline-block">
+                                        {exp.company}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div className="border-t-[3px] border-on-surface pt-4 mb-6">
+                                <p className="font-body-md text-on-surface-variant leading-relaxed text-sm">
+                                    {exp.roles[0].description}
+                                </p>
+                            </div>
+
+                            <div className="flex flex-wrap gap-2">
+                                {exp.roles[0].skills.map((skill: string, sIdx: number) => {
+                                    const colorClass = TAG_COLORS[sIdx % TAG_COLORS.length];
+                                    return (
+                                        <span 
+                                            key={sIdx}
+                                            className={`font-label-bold text-[10px] uppercase px-2.5 py-1 neo-border border-[2px] transition-colors duration-300 ${colorClass}`}
+                                        >
+                                            {skill}
+                                        </span>
+                                    );
+                                })}
+                            </div>
+                        </>
+                    ) : (
+                        <div className="flex flex-col">
+                            <div className="mb-4">
+                                <span className="bg-theme-yellow px-3 py-1.5 neo-border border-[3px] text-on-surface font-display-xl text-lg font-bold uppercase inline-block">
+                                    {exp.company}
+                                </span>
+                            </div>
+                            
+                            <div className="flex flex-col gap-6">
+                                {exp.roles.map((roleObj: any, rIdx: number) => (
+                                    <div key={rIdx} className="border-t-[3px] border-on-surface pt-4 first:border-t-0 first:pt-0">
+                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                                            <h4 className="font-headline-lg-mobile text-lg uppercase font-bold text-on-surface leading-tight">
+                                                {roleObj.role}
+                                            </h4>
+                                            <div className="font-label-bold text-[10px] uppercase text-on-surface bg-on-surface-variant/10 px-2 py-1 neo-border inline-block self-start sm:self-auto">
+                                                {roleObj.period}
+                                            </div>
+                                        </div>
+                                        
+                                        <p className="font-body-md text-on-surface-variant leading-relaxed text-sm mb-4">
+                                            {roleObj.description}
+                                        </p>
+                                        
+                                        <div className="flex flex-wrap gap-2">
+                                            {roleObj.skills.map((skill: string, sIdx: number) => {
+                                                const colorClass = TAG_COLORS[sIdx % TAG_COLORS.length];
+                                                return (
+                                                    <span 
+                                                        key={sIdx}
+                                                        className={`font-label-bold text-[9px] uppercase px-2 py-0.5 neo-border border-[1.5px] transition-colors duration-300 ${colorClass}`}
+                                                    >
+                                                        {skill}
+                                                    </span>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
-                        <div className="font-label-bold text-xs uppercase text-on-surface-variant">
-                            <span className="bg-theme-yellow px-2.5 py-0.5 neo-border border-[2px] text-on-surface inline-block">
-                                {exp.company}
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <div className="border-t-[3px] border-on-surface pt-4 mb-6">
-                        <p className="font-body-md text-on-surface-variant leading-relaxed text-sm">
-                            {exp.description}
-                        </p>
-                    </div>
-
-                    <div className="flex flex-wrap gap-2">
-                        {exp.skills.map((skill: string, sIdx: number) => {
-                            const colorClass = TAG_COLORS[sIdx % TAG_COLORS.length];
-                            return (
-                                <span 
-                                    key={sIdx}
-                                    className={`font-label-bold text-[10px] uppercase px-2.5 py-1 neo-border border-[2px] transition-colors duration-300 ${colorClass}`}
-                                >
-                                    {skill}
-                                </span>
-                            );
-                        })}
-                    </div>
+                    )}
                 </div>
             </div>
         </div>
@@ -115,6 +160,35 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ exp, index, isMobile }) => 
 export const Experience: React.FC = () => {
     const { experiencesData: experienceData } = useData();
     const isMobile = useMediaQuery('(max-width: 768px)');
+
+    // Group experiences by company name (preserving sorted order)
+    const groupedExperiences: any[] = [];
+    experienceData.forEach((exp) => {
+        const existingGroup = groupedExperiences.find(
+            (g) => g.company.toLowerCase() === exp.company.toLowerCase()
+        );
+        if (existingGroup) {
+            existingGroup.roles.push({
+                role: exp.role,
+                period: exp.period,
+                description: exp.description,
+                skills: exp.skills,
+            });
+        } else {
+            groupedExperiences.push({
+                company: exp.company,
+                roles: [
+                    {
+                        role: exp.role,
+                        period: exp.period,
+                        description: exp.description,
+                        skills: exp.skills,
+                    },
+                ],
+            });
+        }
+    });
+
     return (
         <section className="py-16 md:py-24 px-gutter bg-theme-grey neo-section-divider w-full overflow-hidden" id="experience">
             <div className="max-w-container-max mx-auto">
@@ -133,7 +207,7 @@ export const Experience: React.FC = () => {
                     
                     {/* Items container */}
                     <div className="relative z-10 flex flex-col w-full">
-                        {experienceData.map((exp, index) => (
+                        {groupedExperiences.map((exp, index) => (
                             <TimelineItem key={index} exp={exp} index={index} isMobile={isMobile} />
                         ))}
                     </div>

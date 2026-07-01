@@ -22,6 +22,7 @@ export default function ExperiencesDashboard() {
     period: '',
     description: '',
     skills: '',
+    order: '0',
   });
 
   useEffect(() => {
@@ -45,6 +46,7 @@ export default function ExperiencesDashboard() {
 
     const payload = {
       ...formData,
+      order: parseInt(formData.order, 10) || 0,
       skills: formData.skills
         ? formData.skills.split(',').map(s => s.trim()).filter(Boolean)
         : [],
@@ -56,7 +58,7 @@ export default function ExperiencesDashboard() {
       } else {
         await createExperience(payload);
       }
-      setFormData({ role: '', company: '', period: '', description: '', skills: '' });
+      setFormData({ role: '', company: '', period: '', description: '', skills: '', order: '0' });
       setEditingId(null);
       fetchExperiences();
     } catch (err: any) {
@@ -72,6 +74,7 @@ export default function ExperiencesDashboard() {
       period: exp.period,
       description: exp.description,
       skills: exp.skills ? exp.skills.map(s => s.name).join(', ') : '',
+      order: String(exp.order || 0),
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -109,9 +112,13 @@ export default function ExperiencesDashboard() {
               <label className="font-label-bold text-sm uppercase opacity-80 mb-2 block">Company</label>
               <Input className="w-full" value={formData.company} onChange={e => setFormData({...formData, company: e.target.value})} required />
             </div>
-            <div className="md:col-span-2">
+            <div>
               <label className="font-label-bold text-sm uppercase opacity-80 mb-2 block">Period (e.g. 2021 - Present)</label>
               <Input className="w-full" value={formData.period} onChange={e => setFormData({...formData, period: e.target.value})} required />
+            </div>
+            <div>
+              <label className="font-label-bold text-sm uppercase opacity-80 mb-2 block">Order</label>
+              <Input type="number" className="w-full" value={formData.order} onChange={e => setFormData({...formData, order: e.target.value})} required />
             </div>
             <div className="md:col-span-2">
               <label className="font-label-bold text-sm uppercase opacity-80 mb-2 block">Skills / Tags (Comma-separated, e.g. HTML5, SASS, JavaScript)</label>
@@ -132,7 +139,7 @@ export default function ExperiencesDashboard() {
               {editingId ? 'UPDATE EXPERIENCE' : 'ADD EXPERIENCE'}
             </Button>
             {editingId && (
-              <Button type="button" onClick={() => { setEditingId(null); setFormData({ role: '', company: '', period: '', description: '', skills: '' }); }} className="bg-theme-grey text-on-surface py-4 neo-border hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_#1e1b19] transition-all px-8">
+              <Button type="button" onClick={() => { setEditingId(null); setFormData({ role: '', company: '', period: '', description: '', skills: '', order: '0' }); }} className="bg-theme-grey text-on-surface py-4 neo-border hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_#1e1b19] transition-all px-8">
                 CANCEL
               </Button>
             )}
@@ -145,7 +152,7 @@ export default function ExperiencesDashboard() {
           <div key={exp.id} className="bg-surface p-6 neo-border flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="flex-1">
               <h4 className="font-display-2xl text-2xl uppercase tracking-tighter">{exp.role}</h4>
-              <p className="font-label-bold opacity-60 text-sm mb-2">{exp.company} • {exp.period}</p>
+              <p className="font-label-bold opacity-60 text-sm mb-2">{exp.company} • {exp.period} • Order: {exp.order}</p>
               <p className="text-sm font-mono opacity-80 line-clamp-2">{exp.description}</p>
               {exp.skills && exp.skills.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 mt-3">
