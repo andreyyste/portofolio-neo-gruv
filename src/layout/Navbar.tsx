@@ -4,10 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '../ui/Button';
 import { useData } from '../context/DataContext';
+import { useTheme } from '../context/ThemeContext';
 
 export const Navbar: React.FC = () => {
     const pathname = usePathname();
     const router = useRouter();
+    const { theme, toggleTheme } = useTheme();
     const isSourceCode = pathname?.startsWith('/source-code/');
     
     // Extract repo name if in source code
@@ -67,6 +69,15 @@ export const Navbar: React.FC = () => {
                     {brandName}
                 </div>
                 <div className="flex items-center gap-3 md:gap-4 z-[120]">
+                    <button
+                        onClick={toggleTheme}
+                        className="h-8 w-8 md:h-10 md:w-10 bg-theme-yellow text-on-surface neo-border shadow-[2px_2px_0px_0px_var(--neo-border-color)] flex items-center justify-center hover:bg-theme-blue hover:text-surface-container-lowest hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_var(--neo-border-color)] duration-200"
+                        title="Toggle Theme"
+                    >
+                        <span className="material-symbols-outlined text-lg md:text-xl">
+                            {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+                        </span>
+                    </button>
                     <Button 
                         onClick={() => router.push('/')}
                         className="bg-surface text-on-surface neo-border neo-shadow px-3 py-1.5 text-xs md:text-sm md:px-6 md:py-2 hover:bg-theme-red hover:text-surface-container-lowest hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_#1e1b19]"
@@ -123,6 +134,15 @@ export const Navbar: React.FC = () => {
                     ))}
                 </div>
                 <div className="hidden md:flex items-center gap-4">
+                    <button
+                        onClick={toggleTheme}
+                        className="h-10 w-10 bg-theme-yellow text-on-surface neo-border shadow-[2px_2px_0px_0px_var(--neo-border-color)] flex items-center justify-center hover:bg-theme-blue hover:text-surface-container-lowest hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_var(--neo-border-color)] duration-200"
+                        title="Toggle Theme"
+                    >
+                        <span className="material-symbols-outlined text-xl">
+                            {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+                        </span>
+                    </button>
                     <Button 
                         onClick={() => router.push('/nre-masuk')}
                         className="bg-surface text-on-surface neo-border neo-shadow px-6 py-2 hover:bg-theme-red hover:text-surface-container-lowest hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_#1e1b19]"
@@ -136,14 +156,25 @@ export const Navbar: React.FC = () => {
                         {ctaText}
                     </Button>
                 </div>
-                <button 
-                    className="md:hidden text-on-surface relative z-[120]"
-                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                >
-                    <span className="material-symbols-outlined text-4xl">
-                        {isMobileMenuOpen ? 'close' : 'menu'}
-                    </span>
-                </button>
+                <div className="flex md:hidden items-center gap-3 relative z-[120]">
+                    <button
+                        onClick={toggleTheme}
+                        className="h-9 w-9 bg-theme-yellow text-on-surface neo-border shadow-[2px_2px_0px_0px_var(--neo-border-color)] flex items-center justify-center active:translate-x-0.5 active:translate-y-0.5 active:shadow-none duration-100"
+                        title="Toggle Theme"
+                    >
+                        <span className="material-symbols-outlined text-lg">
+                            {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+                        </span>
+                    </button>
+                    <button 
+                        className="text-on-surface"
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    >
+                        <span className="material-symbols-outlined text-4xl">
+                            {isMobileMenuOpen ? 'close' : 'menu'}
+                        </span>
+                    </button>
+                </div>
             </nav>
  
             {/* Mobile Menu Overlay */}
