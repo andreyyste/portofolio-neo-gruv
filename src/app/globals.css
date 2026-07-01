@@ -37,6 +37,8 @@
   --theme-grey: #ebdbb2;
 
   --neo-border-color: #1e1b19;
+  --footer-bg: #1e1b19;
+  --footer-text: #fff8f5;
 }
 
 .dark {
@@ -71,6 +73,8 @@
   --theme-grey: #151516;       /* Dark charcoal gray for Experience section */
 
   --neo-border-color: #1e1b19;
+  --footer-bg: #070708;
+  --footer-text: #e2e8f0;
 }
 
 body {
