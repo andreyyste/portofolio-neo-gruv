@@ -26,8 +26,8 @@ export const Resume: React.FC = () => {
                         </div>
                         <div className="reveal-bottom" style={{ transitionDelay: '0.35s' }}>
                             <a href={resumeData.downloadUrl} download className="block">
-                                <Button className="bg-on-surface text-theme-green neo-border-heavy px-6 md:px-12 py-4 md:py-8 font-display-2xl text-[24px] sm:text-[32px] md:text-[48px] hover:-translate-y-2 hover:shadow-[16px_16px_0px_0px_#b8bb26] hover:bg-surface hover:text-on-surface shadow-[8px_8px_0px_0px_#b8bb26] duration-300 gap-4 active:translate-y-2 active:shadow-[0px_0px_0px_0px_#b8bb26]">
-                                    <span className="material-symbols-outlined text-[24px] sm:text-[32px] md:text-[48px] group-hover:animate-bounce flex-shrink-0">download</span>
+                                <Button className="bg-on-surface text-theme-green neo-border-heavy px-4 sm:px-8 py-3 sm:py-6 font-display-2xl text-[16px] sm:text-[28px] md:text-[40px] hover:-translate-y-2 hover:shadow-[16px_16px_0px_0px_#b8bb26] hover:bg-surface hover:text-on-surface shadow-[8px_8px_0px_0px_#b8bb26] duration-300 gap-3 sm:gap-4 active:translate-y-2 active:shadow-[0px_0px_0px_0px_#b8bb26]">
+                                    <span className="material-symbols-outlined text-[18px] sm:text-[28px] md:text-[40px] group-hover:animate-bounce flex-shrink-0">download</span>
                                     {ctaText}
                                 </Button>
                             </a>

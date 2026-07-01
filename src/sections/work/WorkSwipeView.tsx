@@ -247,14 +247,14 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                 {/* Neo shadow behind card */}
                 <div
                     className={[
-                        'absolute inset-0 neo-border-heavy translate-x-2 translate-y-2 z-0 transition-all duration-300',
+                        'absolute inset-0 neo-border md:neo-border-heavy translate-x-2 translate-y-2 z-0 transition-all duration-300',
                         isActive ? 'bg-theme-yellow' : 'bg-on-surface/30',
                     ].join(' ')}
                 />
                 {/* Card Body */}
                 <div
                     className={[
-                        'relative z-10 neo-border-heavy overflow-hidden flex flex-col transition-all duration-300',
+                        'relative z-10 neo-border md:neo-border-heavy overflow-hidden flex flex-col transition-all duration-300',
                         isActive ? 'bg-theme-grey animate-float-vertical' : 'bg-surface-dim',
                     ].join(' ')}
                 >

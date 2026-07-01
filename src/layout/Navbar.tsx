@@ -158,7 +158,7 @@ export const Navbar: React.FC = () => {
                         <button 
                             key={link.href} 
                             onClick={() => handleMobileNav(link.href)}
-                            className="text-surface-container-lowest font-headline-lg-mobile text-[48px] uppercase font-bold hover:text-theme-yellow transition-colors duration-200"
+                            className="text-surface-container-lowest font-headline-lg-mobile text-[32px] sm:text-[40px] uppercase font-bold hover:text-theme-yellow transition-colors duration-200"
                             style={{ 
                                 transitionDelay: isMobileMenuOpen ? `${index * 100}ms` : '0ms',
                                 opacity: isMobileMenuOpen ? 1 : 0,
@@ -171,7 +171,7 @@ export const Navbar: React.FC = () => {
                     ))}
                     <Button 
                         onClick={() => handleMobileNav('contact')}
-                        className="mt-8 bg-theme-yellow text-on-surface neo-border-heavy px-8 py-4 text-2xl uppercase w-full max-w-[280px]"
+                        className="mt-8 bg-theme-yellow text-on-surface neo-border-heavy px-6 py-3 text-lg sm:text-xl uppercase w-full max-w-[280px]"
                         style={{ 
                             transitionDelay: isMobileMenuOpen ? `${navLinks.length * 100}ms` : '0ms',
                             opacity: isMobileMenuOpen ? 1 : 0,
@@ -183,7 +183,7 @@ export const Navbar: React.FC = () => {
                     </Button>
                     <Button 
                         onClick={() => router.push('/nre-masuk')}
-                        className="mt-4 bg-transparent text-surface-container-lowest border-[4px] border-surface-container-lowest px-8 py-4 text-2xl uppercase w-full max-w-[280px] hover:bg-theme-red hover:border-theme-red transition-colors"
+                        className="mt-4 bg-transparent text-surface-container-lowest border-[4px] border-surface-container-lowest px-6 py-3 text-lg sm:text-xl uppercase w-full max-w-[280px] hover:bg-theme-red hover:border-theme-red transition-colors"
                         style={{ 
                             transitionDelay: isMobileMenuOpen ? `${(navLinks.length + 1) * 100}ms` : '0ms',
                             opacity: isMobileMenuOpen ? 1 : 0,

@@ -43,7 +43,7 @@ export const Skills: React.FC = () => {
                                     className={[
                                         skill.color,
                                         skill.text,
-                                        'px-8 py-5 neo-border-heavy neo-shadow flex items-center justify-center font-bold',
+                                        'px-4 md:px-8 py-2.5 md:py-5 neo-border md:neo-border-heavy neo-shadow flex items-center justify-center font-bold',
                                         layout.rotate,
                                         layout.hoverRotate,
                                         layout.mt,
@@ -55,7 +55,7 @@ export const Skills: React.FC = () => {
                                         animationDuration: `${5 + (index % 3)}s` 
                                     }}
                                 >
-                                    <h3 className="font-display-2xl text-[20px] md:text-[28px] font-bold uppercase tracking-tighter text-center group-hover:scale-110 transition-transform duration-300 whitespace-nowrap">
+                                    <h3 className="font-display-2xl text-[16px] md:text-[28px] font-bold uppercase tracking-tighter text-center group-hover:scale-110 transition-transform duration-300 whitespace-nowrap">
                                         {skill.name}
                                     </h3>
                                 </div>

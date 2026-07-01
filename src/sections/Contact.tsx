@@ -59,7 +59,7 @@ export const Contact: React.FC = () => {
                             <Button 
                                 type="submit" 
                                 disabled={isPending}
-                                className="w-full bg-on-surface text-theme-yellow font-display-2xl text-[32px] md:text-[40px] py-6 neo-border-heavy hover:bg-surface hover:text-on-surface hover:-translate-y-2 shadow-[8px_8px_0px_0px_#1e1b19] hover:shadow-[16px_16px_0px_0px_#1e1b19] active:translate-y-2 active:shadow-none duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] mt-4 tracking-tighter disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full bg-on-surface text-theme-yellow font-display-2xl text-[18px] sm:text-[28px] md:text-[40px] py-3.5 sm:py-6 neo-border-heavy hover:bg-surface hover:text-on-surface hover:-translate-y-2 shadow-[8px_8px_0px_0px_#1e1b19] hover:shadow-[16px_16px_0px_0px_#1e1b19] active:translate-y-2 active:shadow-none duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] mt-4 tracking-tighter disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {isPending ? 'Sending...' : form.submitText}
                             </Button>
